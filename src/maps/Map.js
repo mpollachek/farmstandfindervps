@@ -5,6 +5,13 @@ import {
   ModalFooter,
   ModalBody,
   Button as RSButton,
+  Row,
+  InputGroup,
+  Input,
+  Container,
+  Offcanvas,
+  OffcanvasBody,
+  OffcanvasHeader
 } from 'reactstrap';
 import { renderToStaticMarkup } from "react-dom/server";
 import L, { divIcon, InvalidateSizeOptions } from "leaflet";
@@ -18,6 +25,7 @@ import {
   useMapEvent,
   LayerGroup,
   useMapEvents,
+  ZoomControl,
 } from "react-leaflet";
 import Control from "react-leaflet-custom-control";
 import { Button } from "@mui/material";
@@ -32,6 +40,9 @@ import NewFarmstand from "../components/NewFarmstand";
 import { Link } from "react-router-dom";
 import SheepLogo from '../assets/sheep.jpg';
 //import FormModal from "../../components/FormModal";
+import Header from "../components/Header";
+import Header2 from "../components/Header2";
+import Sidebar from "../sidebar/Sidebar";
 
 const { BaseLayer } = LayersControl;
 
@@ -44,6 +55,9 @@ function Map() {
 
   const [modal2, setModal2] = useState(false);
   const toggle2 = () => setModal2(!modal2);
+
+  const [offcanvas, setOffcanvas] = useState(false);
+  const toggleOffcanvas = () => setOffcanvas(!offcanvas);
 
   const [lat, setLat] = useState('');
   const [long, setLong] = useState('');
@@ -86,17 +100,34 @@ function Map() {
 
   useEffect(() => {
     ChangeMyLocation()
-  }, [])
+  }, []);
 
   return (
+    <Container >
+      <Row className="map-wrapper">
+        {/* <Header /> */}
     <MapContainer
       center={myLocation}
-      zoom={12}
-    >
+      zoom={13}
+    >      
+    
       <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png "
           />
+      
+          
+          
+      {/* <Control prepend position='topright' style={{marginTop: '0px'}}>
+          <div className='map-list' >
+          <Link to="/farmstands">
+          <RSButton color='primary' size='lg' style={{opacity: '80%', width: '200px'}}>
+            List View
+          </RSButton>
+          </Link>
+          </div>
+      </Control> */}
+
       {/* <LayersControl position='topright'>     
         <LayersControl.Overlay checked name='farmstands'> */}
           <LayerGroup>
@@ -104,7 +135,8 @@ function Map() {
           </LayerGroup>
         {/* </LayersControl.Overlay> 
       </LayersControl> */}
-      <Control prepend position="topright" >
+
+      {/* <Control prepend position="topright" >
       <Link to="/">
         <img 
           src={SheepLogo}
@@ -112,7 +144,7 @@ function Map() {
           className="brand-map"
         />
       </Link>
-      </Control>
+      </Control> */}
 
       <Control prepend position="bottomright">
         <Button
@@ -132,7 +164,7 @@ function Map() {
         
       <RSButton color="primary" onClick={toggle}>share a farmstand</RSButton>
       <Modal isOpen={modal} toggle={toggle} size='lg'>
-        <ModalHeader toggle={toggle}>Modal title 1</ModalHeader>
+        <ModalHeader toggle={toggle} >How will you enter the farmstand's location?</ModalHeader>
         <ModalBody>          
             <NewFarmstand toggle={toggle} toggle2={toggle2} lat={lat} long={long} setLat={setLat} setLong={setLong} />          
         </ModalBody>
@@ -146,7 +178,35 @@ function Map() {
         </ModalBody>
       </Modal>
       </Control>
+
+      {/* Offcanvas button/wrapper */}
+      <Control prepend position='topleft'>
+      
+      <div>
+  <RSButton
+    color="primary"
+    onClick={toggleOffcanvas}
+  >
+    Open
+  </RSButton>
+  <Offcanvas  isOpen={offcanvas} toggle={toggleOffcanvas}>
+    <OffcanvasHeader toggle={toggleOffcanvas}>
+      Offcanvas
+    </OffcanvasHeader>
+    <OffcanvasBody>
+      <strong>
+        This is the Offcanvas body.
+      </strong>
+      <Sidebar />
+    </OffcanvasBody>
+  </Offcanvas>
+</div>
+
+      </Control>
+
     </MapContainer>
+    </Row>
+    </Container>
   );
 }
 

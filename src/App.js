@@ -3,12 +3,13 @@ import FarmstandsPage from "./pages/FarmstandsPage";
 import FarmstandDetailPage from "./pages/FarmstandDetailPage";
 import MapsPage from "./pages/MapsPage";
 import TestPage from "./pages/TestPage";
+import Header from "./components/Header";
 
 const App = () => {
 
   return (
     <div className="App">
-      <Routes>
+      <Routes>        
         <Route path="/" element={<MapsPage />} />
         <Route path="farmstands" element={<FarmstandsPage />} />
           <Route

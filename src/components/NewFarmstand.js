@@ -81,19 +81,19 @@ const NewFarmstand = ({ toggle, toggle2, lat, long, setLat, setLong }) => {
 
       return (
         <Container>
-          <Row>
+          <Row className="text-center">
             <Col md="4">
-              <h2>Choose Location on Map</h2>
+              <h3>Choose Location on Map</h3>
               <br />
               <Button onClick={chooseLocation} color="primary">Choose Location</Button>
             </Col>
             <Col md="4">
-              <h2>Use Current Location</h2>
+              <h3>Use Current Location</h3>
               <br />
               <Button onClick={currentLocation} color="primary">Current Location</Button>
             </Col>
             <Col md="4">
-              <h2>Choose Location on Map</h2>
+              <h3>Use Address for Location</h3>
               <br />
               <Button onClick={chooseAddress} color="primary">Input Address</Button>
             </Col>
