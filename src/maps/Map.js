@@ -33,7 +33,7 @@ import LocationSearchingIcon from "@mui/icons-material/LocationSearching";
 import AgricultureIcon from '@mui/icons-material/Agriculture';
 import "leaflet/dist/leaflet.css";
 import '../css/MapsPage.css';
-import { rgba } from "@react-spring/shared";
+// import { rgba } from "@react-spring/shared";
 import MapList from "./MapList";
 import CreateListingForm from "../forms/CreateListingForm";
 import NewFarmstand from "../components/NewFarmstand";
@@ -43,6 +43,7 @@ import SheepLogo from '../assets/sheep.jpg';
 import Header from "../components/Header";
 import Header2 from "../components/Header2";
 import Sidebar from "../sidebar/Sidebar";
+import { selectAllFarmstands } from "../farmstands/farmstandFilter";
 
 const { BaseLayer } = LayersControl;
 
@@ -61,6 +62,19 @@ function Map() {
 
   const [lat, setLat] = useState('');
   const [long, setLong] = useState('');
+
+  const [farmstands, setFarmstands] = useState([]);
+
+  const getFarmstands = async () => {
+    const allFarms = await selectAllFarmstands();
+    setFarmstands(allFarms);
+    console.log("current farmstands: " + allFarms);
+    console.log("JSON stringify current farmstands: " + JSON.stringify(allFarms));
+  } 
+
+    useEffect(() => {
+      getFarmstands();
+  }, [])
 
   // const changeLat = (newLat) => {
   //   setLat(newLat);
@@ -131,7 +145,7 @@ function Map() {
       {/* <LayersControl position='topright'>     
         <LayersControl.Overlay checked name='farmstands'> */}
           <LayerGroup>
-            <MapList />
+            {farmstands.length > 0 && <MapList farmstands={farmstands} />} 
           </LayerGroup>
         {/* </LayersControl.Overlay> 
       </LayersControl> */}
