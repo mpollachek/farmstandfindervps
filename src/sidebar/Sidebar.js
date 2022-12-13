@@ -11,7 +11,11 @@ const Sidebar = () => {
     <Container>
       <Row>
         <Col>
-        <h1>hi</h1>
+        {/* 
+          mileage slider 
+          products list (add to list)
+          seasons open (checkboxes)
+         */}
         </Col>
       </Row>
     </Container>

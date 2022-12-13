@@ -8,12 +8,14 @@ import {
   Modal,
   ModalHeader,
   ModalBody,
+  FormText
 } from "reactstrap";
 
 import { Formik, Field, Form, ErrorMessage, FieldArray } from "formik";
 import { useState, useEffect } from "react";
 //import { validateCreateListingForm } from "../utils/validateCreateListingForm";
 import MultipleFileUpload from "../utils/MultipleFileUpload";
+import Axios from "axios";
 
 const CreateListingForm = ({addressState = false, latLongState= true, lat = "", long = "", addressChecked=true, latlongChecked=false}) => {
 
@@ -39,6 +41,10 @@ const CreateListingForm = ({addressState = false, latLongState= true, lat = "", 
   const [addressDisabled, setAddressDisabled] = useState(initialAddressState);
 
   const [latLongDisabled, setLatLongDisabled] = useState(initialLatlongState);
+
+  const [files, setFiles] = useState([]);
+
+  const [image, setImage] = useState('');
 
   console.log("lat: " + lat);
   console.log("long: " + long);
@@ -69,11 +75,11 @@ const CreateListingForm = ({addressState = false, latLongState= true, lat = "", 
 
   const initialValues = {
     farmstandName: "",
-        image: "",
+        image: image,
         description: "",
         products: [''],
-        latitude: {lat},
-        longitude: {long},
+        latitude: lat.toString(),
+        longitude: long.toString(),
         road: "",
         town: "",
         state: "",
@@ -81,20 +87,134 @@ const CreateListingForm = ({addressState = false, latLongState= true, lat = "", 
       
   }
 
-  const handleSubmit = (values, { resetForm }) => {
+  const handleSubmitFile = async (e) => {
+    //const file = e.target.files[0]
+    const formData = new FormData()
+    formData.append('image', image)
+
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+  
+      const { response } = await Axios.post('http://localhost:8080/api/farms', formData, config)
+      setImage(response)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const handleSubmit2 = async (values) => {
+    console.log("files: " + JSON.stringify(files));
     console.log("form values:", values);
     console.log("in JSON format:", JSON.stringify(values));
-    resetForm();
+//const file = values.target.files[0]
+  const formData = new FormData()
+  formData.append('image', image)
+  for (const item of values) {
+    formData.append(`$(item)`, item)
+  }
+
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+    await Axios.post(`http://localhost:8080/api/farms`, formData, config).then((response) => {
+      console.log("post: " + JSON.stringify(values));
+      console.log("response: " + JSON.stringify(response));
+    })
+  } catch (error) {
+    console.error(error)
+  }
   };
+
+
+  const handleSubmit3 = async (values) => {
+    console.log("files: " + JSON.stringify(files));
+    console.log("form values:", values);
+    console.log("in JSON format:", JSON.stringify(values));
+//const file = values.target.files[0]
+  const formData = new FormData()
+  formData.append('image', image)
+  formData.append('farmstandName', values.farmstandName)
+  formData.append('description', values.description)
+  formData.append('latitude', values.latitude)
+  formData.append('longitude', values.longitude)      
+  formData.append('products', values.products)
+  formData.append('road', values.road)
+  formData.append('town', values.town)
+  formData.append('state', values.state)
+  formData.append('country', values.country)
+
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+    await Axios.post(`http://localhost:8080/api/farms`, formData, config).then((response) => {
+      console.log("post: " + JSON.stringify(values));
+      console.log("response: " + JSON.stringify(response));
+    })
+  } catch (error) {
+    console.error(error)
+  }
+  };
+  
+
+  const handleSubmit = async (values) => {
+    console.log("files: " + JSON.stringify(files));
+    console.log("form values:", values);
+    console.log("in JSON format:", JSON.stringify(values));
+//const file = values.target.files[0]
+  const formData = new FormData()
+  formData.append('image', image)
+
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+    await Axios.post(`http://localhost:8080/api/farms`, {
+      farmstandName: values.farmstandName,
+      description: values.description,
+      latitude: values.latitude,
+      longitude: values.longitude,
+      image: formData,
+        products: values.products,
+        road: values.road,
+        town: values.town,
+        state: values.state,
+        country: values.country,
+
+    }, config).then((response) => {
+      console.log("post: " + JSON.stringify(values));
+      console.log("response: " + JSON.stringify(response));
+    })
+  } catch (error) {
+    console.error(error)
+  }
+  };
+
+  useEffect(() => {
+    console.log("images: " + JSON.stringify(image));
+  }, [image])
+
   return (
     
     <Formik
-      initialValues={initialValues}
-        
-      onSubmit={handleSubmit}
+      initialValues={initialValues}        
+      onSubmit={handleSubmit3}
       //validate={validateCreateListingForm}
     >
-      <Form>
+      <Form
+      //encType="multipart/form-data"
+      >
         <FormGroup row tag="fieldset">
           <Col className="text-center">
           <FormGroup check inline>
@@ -247,7 +367,7 @@ const CreateListingForm = ({addressState = false, latLongState= true, lat = "", 
         <FormGroup row className='form-control'>
           <label htmlFor="products">Products For Sale</label>
           <Col>
-          <FieldArray name='products'>
+          <FieldArray name='products' type='file'>
             {fieldArrayProps => {
                 const { push, remove, form } = fieldArrayProps
                 const { values } = form
@@ -276,10 +396,21 @@ const CreateListingForm = ({addressState = false, latLongState= true, lat = "", 
           </Col>
         </FormGroup>
         <FormGroup row>
-          <label htmlFor="images">Upload Farmstand Images</label>
+          <label htmlFor="image">Upload Farmstand Images</label>
           <Col>
-            <MultipleFileUpload />
+          <Input 
+          type="file" 
+          name="image" 
+          id="exampleFile" 
+          value={undefined} 
+          onChange={(e) => setImage(e.target.files[0])}
+          />
+          <FormText color="muted">
+            This is some placeholder block-level help text for the above input.
+            It's a bit lighter and easily wraps to a new line.
+          </FormText>
           </Col>
+          
         </FormGroup>
         
         

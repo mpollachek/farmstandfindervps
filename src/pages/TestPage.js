@@ -5,30 +5,28 @@ import {
   OffcanvasBody,
   OffcanvasHeader,
 } from 'reactstrap'
+import axios, { Axios } from 'axios';
 
 const TestPage = () => {
 
-  const [offcanvas, setOffcanvas] = useState(false);
-  const toggleOffcanvas = () => setOffcanvas(!offcanvas);
+  const showData = async () => {
+    axios.get(`http://66.135.5.166/farms`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((response) => {
+      console.log(response.data);
+    })};
 
   return(
 <div>
   <RSButton
     color="primary"
-    onClick={toggleOffcanvas}
+    onClick={showData}
   >
     Open
   </RSButton>
-  <Offcanvas  isOpen={offcanvas} toggle={toggleOffcanvas}>
-    <OffcanvasHeader toggle={toggleOffcanvas}>
-      Offcanvas
-    </OffcanvasHeader>
-    <OffcanvasBody>
-      <strong>
-        This is the Offcanvas body.
-      </strong>
-    </OffcanvasBody>
-  </Offcanvas>
+
 </div>
   )
 }
