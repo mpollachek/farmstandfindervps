@@ -16,6 +16,7 @@ import { useState, useEffect } from "react";
 //import { validateCreateListingForm } from "../utils/validateCreateListingForm";
 import MultipleFileUpload from "../utils/MultipleFileUpload";
 import Axios from "axios";
+import { Dropzone, FileItem, FullScreenPreview } from "@dropzone-ui/react";
 
 const CreateListingForm = ({addressState = false, latLongState= true, lat = "", long = "", addressChecked=true, latlongChecked=false}) => {
 
@@ -44,7 +45,7 @@ const CreateListingForm = ({addressState = false, latLongState= true, lat = "", 
 
   const [files, setFiles] = useState([]);
 
-  const [image, setImage] = useState('');
+  const [image, setImage] = useState([]);
 
   console.log("lat: " + lat);
   console.log("long: " + long);
@@ -72,6 +73,32 @@ const CreateListingForm = ({addressState = false, latLongState= true, lat = "", 
       console.log("latlongdisabled: " + latLongDisabled)
     }
   }
+
+
+  // For Dropzone:
+  // const fd = new FormData
+  // const [imageSrc, setImageSrc] = useState(undefined);
+  // const updateFiles = async (e) => {
+  //   console.log("incoming files", e);
+  //   console.log("e0: " + e)
+  //   setFiles(e);
+  //   e.forEach((item, index) => {
+  //     console.log("item: " + item)
+  //     fd.append(`item[${index}]`, item);
+  //   })
+  //   console.log("fd: " + JSON.stringify(fd))
+  // };
+  // const onDelete = (id) => {
+  //   setFiles(files.filter((x) => x.id !== id));
+  // };
+  // const handleSee = (imageSource) => {
+  //   setImageSrc(imageSource);
+  // };
+  // const handleClean = (files) => {
+  //   console.log("list cleaned", files);
+  // };
+
+
 
   const initialValues = {
     farmstandName: "",
@@ -106,40 +133,15 @@ const CreateListingForm = ({addressState = false, latLongState= true, lat = "", 
     }
   }
 
-  const handleSubmit2 = async (values) => {
+  const handleSubmit = async (values) => {
     console.log("files: " + JSON.stringify(files));
     console.log("form values:", values);
     console.log("in JSON format:", JSON.stringify(values));
 //const file = values.target.files[0]
   const formData = new FormData()
-  formData.append('image', image)
-  for (const item of values) {
-    formData.append(`$(item)`, item)
-  }
-
-    try {
-      const config = {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      }
-    await Axios.post(`http://localhost:8080/api/farms`, formData, config).then((response) => {
-      console.log("post: " + JSON.stringify(values));
-      console.log("response: " + JSON.stringify(response));
-    })
-  } catch (error) {
-    console.error(error)
-  }
-  };
-
-
-  const handleSubmit3 = async (values) => {
-    console.log("files: " + JSON.stringify(files));
-    console.log("form values:", values);
-    console.log("in JSON format:", JSON.stringify(values));
-//const file = values.target.files[0]
-  const formData = new FormData()
-  formData.append('image', image)
+  for (const i of image) {
+    formData.append('image', i)
+  }  
   formData.append('farmstandName', values.farmstandName)
   formData.append('description', values.description)
   formData.append('latitude', values.latitude)
@@ -165,42 +167,6 @@ const CreateListingForm = ({addressState = false, latLongState= true, lat = "", 
   }
   };
   
-
-  const handleSubmit = async (values) => {
-    console.log("files: " + JSON.stringify(files));
-    console.log("form values:", values);
-    console.log("in JSON format:", JSON.stringify(values));
-//const file = values.target.files[0]
-  const formData = new FormData()
-  formData.append('image', image)
-
-    try {
-      const config = {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      }
-    await Axios.post(`http://localhost:8080/api/farms`, {
-      farmstandName: values.farmstandName,
-      description: values.description,
-      latitude: values.latitude,
-      longitude: values.longitude,
-      image: formData,
-        products: values.products,
-        road: values.road,
-        town: values.town,
-        state: values.state,
-        country: values.country,
-
-    }, config).then((response) => {
-      console.log("post: " + JSON.stringify(values));
-      console.log("response: " + JSON.stringify(response));
-    })
-  } catch (error) {
-    console.error(error)
-  }
-  };
-
   useEffect(() => {
     console.log("images: " + JSON.stringify(image));
   }, [image])
@@ -209,7 +175,7 @@ const CreateListingForm = ({addressState = false, latLongState= true, lat = "", 
     
     <Formik
       initialValues={initialValues}        
-      onSubmit={handleSubmit3}
+      onSubmit={handleSubmit}
       //validate={validateCreateListingForm}
     >
       <Form
@@ -396,19 +362,65 @@ const CreateListingForm = ({addressState = false, latLongState= true, lat = "", 
           </Col>
         </FormGroup>
         <FormGroup row>
+            {/* <Dropzone
+      style={{ minWidth: "200px" }}
+      //view={"list"}
+      //onChange={(e) => setImage(e.target.files[0])}
+      onChange={updateFiles}
+      minHeight="195px"
+      onClean={handleClean}
+      value={files}
+      maxFiles={5}
+      //header={false}
+      // footer={false}
+      maxFileSize={2998000}
+      //label="Drag'n drop files here or click to browse"
+      //label="Suleta tus archivos aquí"
+      accept=".png,image/*"
+      // uploadingMessage={"Uploading..."}
+      //url="https://my-awsome-server/upload-my-file"
+      //of course this url doens´t work, is only to make upload button visible
+      //uploadOnDrop
+      //clickable={false}
+      //fakeUploading
+      //localization={"FR-fr"}
+      disableScroll
+    >
+      {files.map((file) => (
+        <FileItem
+          {...file}
+          key={file.id}
+          onDelete={onDelete}
+          onSee={handleSee}
+          //localization={"ES-es"}
+          resultOnTooltip
+          preview
+          info
+          hd
+        />
+      ))}
+      <FullScreenPreview
+        imgSource={imageSrc}
+        openImage={imageSrc}
+        onClose={(e) => handleSee(undefined)}
+      />
+    </Dropzone> */}
+
+
           <label htmlFor="image">Upload Farmstand Images</label>
           <Col>
           <Input 
           type="file" 
+          multiple="multiple"
           name="image" 
           id="exampleFile" 
           value={undefined} 
-          onChange={(e) => setImage(e.target.files[0])}
+          onChange={(e) => setImage(e.target.files)}
           />
           <FormText color="muted">
             This is some placeholder block-level help text for the above input.
             It's a bit lighter and easily wraps to a new line.
-          </FormText>
+          </FormText> 
           </Col>
           
         </FormGroup>

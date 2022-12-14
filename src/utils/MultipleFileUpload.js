@@ -34,11 +34,11 @@ const MultipleFileUpload = () => {
       //label="Suleta tus archivos aquí"
       accept=".png,image/*"
       // uploadingMessage={"Uploading..."}
-      url="https://my-awsome-server/upload-my-file"
+      //url="https://my-awsome-server/upload-my-file"
       //of course this url doens´t work, is only to make upload button visible
       //uploadOnDrop
       //clickable={false}
-      fakeUploading
+      //fakeUploading
       //localization={"FR-fr"}
       disableScroll
     >
