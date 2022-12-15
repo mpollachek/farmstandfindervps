@@ -44,6 +44,7 @@ import Header from "../components/Header";
 import Header2 from "../components/Header2";
 import Sidebar from "../sidebar/Sidebar";
 import { selectAllFarmstands } from "../farmstands/farmstandFilter";
+import MapBoundsFilter from "./MapBoundsFilter";
 
 const { BaseLayer } = LayersControl;
 
@@ -62,6 +63,9 @@ function Map() {
 
   const [lat, setLat] = useState('');
   const [long, setLong] = useState('');
+
+  const [moved, setMoved] = useState(false);
+  const [distance, setDistance] = useState(null);
 
   const [farmstands, setFarmstands] = useState([]);
 
@@ -112,9 +116,66 @@ function Map() {
   console.log("Lat: " + lat);
   console.log("long: " + long);
 
+  // For MapMoveEvent: Determine how to calculate distance only when user clicks "search this area" button
+
+  const MapMoveEvent = () => {
+    const mapMoveEnd = useMapEvent('moveend', () => {
+      console.log("get bounds: " + JSON.stringify(mapMoveEnd.getBounds()));
+      setMoved(true);      
+      console.log("moved: " + moved)
+      const currentBounds = mapMoveEnd.getBounds()
+      console.log("currentBounds._southwest ", currentBounds._southWest);
+      const boundsDistance = mapMoveEnd.distance(currentBounds._northEast, currentBounds._southWest)
+      console.log("currentBounds: " + currentBounds)
+      console.log("boundsDistance: " + boundsDistance)
+    })
+  }
+
+  // const MapMoveEvent = () => {
+  //   const mapMoveEnd = useMap() 
+  //     console.log("get bounds: " + JSON.stringify(mapMoveEnd.getBounds()));
+  //     setMoved(true);      
+  //     console.log("moved: " + moved)
+  //     const currentBounds = mapMoveEnd.getBounds()
+  //     console.log("currentBounds._southwest ", currentBounds._southWest);
+  //     const boundsDistance = mapMoveEnd.distance(currentBounds._northEast, currentBounds._southWest)
+  //     console.log("currentBounds: " + currentBounds)
+  //     console.log("boundsDistance: " + boundsDistance)
+  // }
+
+
+
+
+
+  const ZoomFilter = () => {
+    const map = useMap();
+    //map.getBounds()
+    console.log('bounds: ', map.getBounds)
+    // map.distance(currentBounds._northEast.lng, currentBounds._southWest.lng)
+    // console.log("currentBounds: " + currentBounds)
+    // console.log("boundsDistance: " + boundsDistance)
+  }
+
+  const ShowSearchButton = () => {
+    if (moved) {
+    return <MapSearchButton />
+    }}
+
+  const MapSearchButton = () => {
+        <RSButton
+          onClick={() => {
+            ChangeMyLocation()
+          }}
+          color="info"
+        >          
+          Search this Area
+        </RSButton>
+  }
+
   useEffect(() => {
     ChangeMyLocation()
   }, []);
+
 
   return (
     <Container >
@@ -124,6 +185,7 @@ function Map() {
       center={myLocation}
       zoom={13}
     >      
+    <MapMoveEvent />
     
       <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -173,6 +235,12 @@ function Map() {
           />
         </Button>
       </Control>
+
+      <Control prepend position="topright">
+      <MapBoundsFilter />
+      </Control>
+      
+
       <Control prepend position="bottomleft">
         {/* Button/Modal for share a farmstand */}
         

@@ -106,9 +106,11 @@ const MapList = ({farmstands}) => {
       {console.log("type of farmstands: " + typeof farmstands)}
       {farmstands.map((farmstand) => {
         console.log(farmstand)
-        console.log("lat, long: " + farmstand.location.coordinates[1] + ", " + farmstand.location.coordinates[0])
+        console.log("lat, long: " + farmstand.location.coordinates[1] + ", " + farmstand.location.coordinates[0]) 
+        console.log("farmstandid: ", farmstand._id)
         return (
-          <Marker key={farmstand.id}
+          <Marker 
+            key={farmstand._id}
             position={[farmstand.location.coordinates[1], farmstand.location.coordinates[0]]}
             icon={farmIcon}
           >
