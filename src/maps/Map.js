@@ -1,4 +1,4 @@
-import { useState, useEffect, createContext } from "react";
+import { useState, useEffect, createContext, useMemo } from "react";
 import {
   Modal,
   ModalHeader,
@@ -50,7 +50,10 @@ const { BaseLayer } = LayersControl;
 
 function Map() {
   
+  //const [myLocation, setMyLocation] = useState({lat: 51.505, lng: -0.09});
   const [myLocation, setMyLocation] = useState([51.505, -0.09]);
+
+  const [runGet, setRunGet] = useState(false)
 
   const [modal, setModal] = useState(false);
   const toggle = () => setModal(!modal);
@@ -69,16 +72,22 @@ function Map() {
 
   const [farmstands, setFarmstands] = useState([]);
 
+  //const [mapCenter, setMapCenter] = useState({lat: 51.505, lng: -0.09})
+  const [mapCenter, setMapCenter] = useState([51.505, -0.09]);
+
+
   const getFarmstands = async () => {
-    const allFarms = await selectAllFarmstands();
+    console.log("runGet: ", runGet)
+    console.log("get lat: ", mapCenter[0]); 
+    console.log("get lng: ", mapCenter[1]);
+    if (runGet) {
+    //const allFarms = await selectAllFarmstands(mapCenter.lat, mapCenter.lng);
+    const allFarms = await selectAllFarmstands(mapCenter[0], mapCenter[1]);
     setFarmstands(allFarms);
     console.log("current farmstands: " + allFarms);
     console.log("JSON stringify current farmstands: " + JSON.stringify(allFarms));
-  } 
-
-    useEffect(() => {
-      getFarmstands();
-  }, [])
+    setRunGet(false);
+  }} 
 
   // const changeLat = (newLat) => {
   //   setLat(newLat);
@@ -98,38 +107,78 @@ function Map() {
   function ChangeMapView({ coords }) {
     const map = useMap();
     map.setView(coords, map.getZoom());
+    console.log("setting view")
+    console.log("coords: ", coords.lat)
+    // setMyLocation({lat: coords.lat, lng: coords.lng});
+    // setMapCenter({lat: coords.lat, lng: coords.lng});
     return null;
   }
 
-  const ChangeMyLocation = () => {
+  const ChangeMyLocation = async () => {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
+      navigator.geolocation.getCurrentPosition( (position) => {
         const lat = position.coords.latitude;
         const long = position.coords.longitude;
-        setMyLocation([lat, long]);
-        console.log("2: " + myLocation);
+        console.log("position.coords.latitude: ", position.coords.latitude)
+        // setMyLocation({lat: position.coords.latitude, lng: position.coords.longitude});
+        // setMyLocation([position.coords.latitude, position.coords.longitude]);
+        setMapCenter([position.coords.latitude, position.coords.longitude]);
+        console.log("2: ",  mapCenter);
       });
     }
   }
 
-  console.log("1: " + myLocation);
-  console.log("Lat: " + lat);
-  console.log("long: " + long);
+  // useEffect(() => {
+  //   setMyLocation({lat: lat, lng: long});
+  //   console.log("2: ",  myLocation);
+  // }, [lat])
 
   // For MapMoveEvent: Determine how to calculate distance only when user clicks "search this area" button
 
-  const MapMoveEvent = () => {
-    const mapMoveEnd = useMapEvent('moveend', () => {
+  const MapMoveEventDrag = () => {
+    const mapMoveEnd = useMapEvent('dragend', () => {
+      setMapCenter([mapMoveEnd.getCenter().lat, mapMoveEnd.getCenter().lng ]);
       console.log("get bounds: " + JSON.stringify(mapMoveEnd.getBounds()));
       setMoved(true);      
-      console.log("moved: " + moved)
-      const currentBounds = mapMoveEnd.getBounds()
+      console.log("moved: " + moved);
+      const currentBounds = mapMoveEnd.getBounds();
       console.log("currentBounds._southwest ", currentBounds._southWest);
-      const boundsDistance = mapMoveEnd.distance(currentBounds._northEast, currentBounds._southWest)
-      console.log("currentBounds: " + currentBounds)
-      console.log("boundsDistance: " + boundsDistance)
+      const boundsDistance = mapMoveEnd.distance(currentBounds._northEast, currentBounds._southWest);
+      //setMapCenter(mapMoveEnd.getCenter());      
+      console.log("currentBounds: ", currentBounds);
+      console.log("boundsDistance: " + boundsDistance);
+      console.log("get center: ", mapMoveEnd.getCenter());
     })
   }
+
+  const MapMoveEventZoom = () => {
+    const mapMoveEnd = useMapEvent('zoomend', () => {
+      setMapCenter([mapMoveEnd.getCenter().lat, mapMoveEnd.getCenter().lng ]);
+      console.log("get bounds: " + JSON.stringify(mapMoveEnd.getBounds()));
+      setMoved(true);      
+      console.log("moved: " + moved);
+      const currentBounds = mapMoveEnd.getBounds();
+      console.log("currentBounds._southwest ", currentBounds._southWest);
+      const boundsDistance = mapMoveEnd.distance(currentBounds._northEast, currentBounds._southWest);
+      //setMapCenter(mapMoveEnd.getCenter());
+      console.log("currentBounds: ", currentBounds);
+      console.log("boundsDistance: " + boundsDistance);
+      console.log("get center: ", mapMoveEnd.getCenter());
+    })
+  }
+
+  useEffect(() => {
+    setRunGet(true)
+  }, [mapCenter])
+
+  useEffect(() => {
+    let timer = setTimeout(() => {
+      console.log("useEffect getFarmstands mapcenter: ", mapCenter)
+      console.log("useEffect runGet: ", runGet)
+      getFarmstands();
+    }, 1000);
+    return () => clearTimeout(timer);
+}, [runGet]);
 
   // const MapMoveEvent = () => {
   //   const mapMoveEnd = useMap() 
@@ -164,7 +213,7 @@ function Map() {
   const MapSearchButton = () => {
         <RSButton
           onClick={() => {
-            ChangeMyLocation()
+            console.log("MapSearchButtonPressed")
           }}
           color="info"
         >          
@@ -182,10 +231,11 @@ function Map() {
       <Row className="map-wrapper">
         {/* <Header /> */}
     <MapContainer
-      center={myLocation}
-      zoom={13}
+      center={mapCenter}
+      zoom={11}
     >      
-    <MapMoveEvent />
+    <MapMoveEventDrag />
+    <MapMoveEventZoom />
     
       <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -207,7 +257,8 @@ function Map() {
       {/* <LayersControl position='topright'>     
         <LayersControl.Overlay checked name='farmstands'> */}
           <LayerGroup>
-            {farmstands.length > 0 && <MapList farmstands={farmstands} />} 
+            {farmstands.length > 0 && 
+            <MapList farmstands={farmstands} />} 
           </LayerGroup>
         {/* </LayersControl.Overlay> 
       </LayersControl> */}
@@ -229,7 +280,7 @@ function Map() {
           }}
           color="inherit"
         >
-          <ChangeMapView coords={myLocation} />
+          <ChangeMapView coords={mapCenter} />
           <LocationSearchingIcon
             style={{ backgroundColor: "white", fontSize: "40" }}
           />
