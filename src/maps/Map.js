@@ -44,7 +44,6 @@ import Header from "../components/Header";
 import Header2 from "../components/Header2";
 import Sidebar from "../sidebar/Sidebar";
 import { selectAllFarmstands } from "../farmstands/farmstandFilter";
-import MapBoundsFilter from "./MapBoundsFilter";
 
 const { BaseLayer } = LayersControl;
 
@@ -53,7 +52,8 @@ function Map() {
   //const [myLocation, setMyLocation] = useState({lat: 51.505, lng: -0.09});
   const [myLocation, setMyLocation] = useState([51.505, -0.09]);
 
-  const [runGet, setRunGet] = useState(false)
+  const [runGet, setRunGet] = useState(false);
+  const [boundsDistance, setBoundsDistance] = useState(30000);
 
   const [modal, setModal] = useState(false);
   const toggle = () => setModal(!modal);
@@ -80,60 +80,41 @@ function Map() {
     console.log("runGet: ", runGet)
     console.log("get lat: ", mapCenter[0]); 
     console.log("get lng: ", mapCenter[1]);
+    console.log("maps get farmstands type: ", typeof(getFarmstands))
     if (runGet) {
     //const allFarms = await selectAllFarmstands(mapCenter.lat, mapCenter.lng);
-    const allFarms = await selectAllFarmstands(mapCenter[0], mapCenter[1]);
+    const allFarms = await selectAllFarmstands(mapCenter[0], mapCenter[1], boundsDistance);
     setFarmstands(allFarms);
-    console.log("current farmstands: " + allFarms);
-    console.log("JSON stringify current farmstands: " + JSON.stringify(allFarms));
+    console.log("current farmstands: ", allFarms);
+    console.log("JSON stringify current farmstands: ", JSON.stringify(allFarms));
     setRunGet(false);
   }} 
-
-  // const changeLat = (newLat) => {
-  //   setLat(newLat);
-  // }
-
-  // const changeLong = (newLong) => {
-  //   setLat(newLong);
-  // }
-
-  const useLocation = () => {
-    const map = useMap();
-    map.locate();
-    console.log("testing")
-    console.log("map.locate.latlng.lat: " + map.locate.latlng.lat);
-  }
 
   function ChangeMapView({ coords }) {
     const map = useMap();
     map.setView(coords, map.getZoom());
+    const currentBounds = map.getBounds();
+    console.log("currentBounds._southwest ", currentBounds._southWest);
+    setBoundsDistance(map.distance(currentBounds._northEast, currentBounds._southWest));
+    console.log("boundsDistance: " + boundsDistance);
     console.log("setting view")
-    console.log("coords: ", coords.lat)
+    console.log("coords: ", coords)
     // setMyLocation({lat: coords.lat, lng: coords.lng});
     // setMapCenter({lat: coords.lat, lng: coords.lng});
     return null;
   }
 
-  const ChangeMyLocation = async () => {
+  const ChangeMyLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition( (position) => {
-        const lat = position.coords.latitude;
-        const long = position.coords.longitude;
+        // const lat = position.coords.latitude;
+        // const long = position.coords.longitude;
         console.log("position.coords.latitude: ", position.coords.latitude)
-        // setMyLocation({lat: position.coords.latitude, lng: position.coords.longitude});
-        // setMyLocation([position.coords.latitude, position.coords.longitude]);
         setMapCenter([position.coords.latitude, position.coords.longitude]);
         console.log("2: ",  mapCenter);
       });
     }
   }
-
-  // useEffect(() => {
-  //   setMyLocation({lat: lat, lng: long});
-  //   console.log("2: ",  myLocation);
-  // }, [lat])
-
-  // For MapMoveEvent: Determine how to calculate distance only when user clicks "search this area" button
 
   const MapMoveEventDrag = () => {
     const mapMoveEnd = useMapEvent('dragend', () => {
@@ -143,7 +124,7 @@ function Map() {
       console.log("moved: " + moved);
       const currentBounds = mapMoveEnd.getBounds();
       console.log("currentBounds._southwest ", currentBounds._southWest);
-      const boundsDistance = mapMoveEnd.distance(currentBounds._northEast, currentBounds._southWest);
+      setBoundsDistance(mapMoveEnd.distance(currentBounds._northEast, currentBounds._southWest));
       //setMapCenter(mapMoveEnd.getCenter());      
       console.log("currentBounds: ", currentBounds);
       console.log("boundsDistance: " + boundsDistance);
@@ -159,7 +140,7 @@ function Map() {
       console.log("moved: " + moved);
       const currentBounds = mapMoveEnd.getBounds();
       console.log("currentBounds._southwest ", currentBounds._southWest);
-      const boundsDistance = mapMoveEnd.distance(currentBounds._northEast, currentBounds._southWest);
+      setBoundsDistance(mapMoveEnd.distance(currentBounds._northEast, currentBounds._southWest));
       //setMapCenter(mapMoveEnd.getCenter());
       console.log("currentBounds: ", currentBounds);
       console.log("boundsDistance: " + boundsDistance);
@@ -168,58 +149,20 @@ function Map() {
   }
 
   useEffect(() => {
+    let timer = setTimeout(() => {
     setRunGet(true)
-  }, [mapCenter])
+  }, 1000);
+  return () => clearTimeout(timer);
+  }, [])
 
   useEffect(() => {
-    let timer = setTimeout(() => {
+    // let timer = setTimeout(() => {
       console.log("useEffect getFarmstands mapcenter: ", mapCenter)
       console.log("useEffect runGet: ", runGet)
       getFarmstands();
-    }, 1000);
-    return () => clearTimeout(timer);
+    // }, 1000);
+    // return () => clearTimeout(timer);
 }, [runGet]);
-
-  // const MapMoveEvent = () => {
-  //   const mapMoveEnd = useMap() 
-  //     console.log("get bounds: " + JSON.stringify(mapMoveEnd.getBounds()));
-  //     setMoved(true);      
-  //     console.log("moved: " + moved)
-  //     const currentBounds = mapMoveEnd.getBounds()
-  //     console.log("currentBounds._southwest ", currentBounds._southWest);
-  //     const boundsDistance = mapMoveEnd.distance(currentBounds._northEast, currentBounds._southWest)
-  //     console.log("currentBounds: " + currentBounds)
-  //     console.log("boundsDistance: " + boundsDistance)
-  // }
-
-
-
-
-
-  const ZoomFilter = () => {
-    const map = useMap();
-    //map.getBounds()
-    console.log('bounds: ', map.getBounds)
-    // map.distance(currentBounds._northEast.lng, currentBounds._southWest.lng)
-    // console.log("currentBounds: " + currentBounds)
-    // console.log("boundsDistance: " + boundsDistance)
-  }
-
-  const ShowSearchButton = () => {
-    if (moved) {
-    return <MapSearchButton />
-    }}
-
-  const MapSearchButton = () => {
-        <RSButton
-          onClick={() => {
-            console.log("MapSearchButtonPressed")
-          }}
-          color="info"
-        >          
-          Search this Area
-        </RSButton>
-  }
 
   useEffect(() => {
     ChangeMyLocation()
@@ -241,18 +184,6 @@ function Map() {
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png "
           />
-      
-          
-          
-      {/* <Control prepend position='topright' style={{marginTop: '0px'}}>
-          <div className='map-list' >
-          <Link to="/farmstands">
-          <RSButton color='primary' size='lg' style={{opacity: '80%', width: '200px'}}>
-            List View
-          </RSButton>
-          </Link>
-          </div>
-      </Control> */}
 
       {/* <LayersControl position='topright'>     
         <LayersControl.Overlay checked name='farmstands'> */}
@@ -262,16 +193,6 @@ function Map() {
           </LayerGroup>
         {/* </LayersControl.Overlay> 
       </LayersControl> */}
-
-      {/* <Control prepend position="topright" >
-      <Link to="/">
-        <img 
-          src={SheepLogo}
-          alt="Farmstand Finder Logo"
-          className="brand-map"
-        />
-      </Link>
-      </Control> */}
 
       <Control prepend position="bottomright">
         <Button
@@ -288,7 +209,15 @@ function Map() {
       </Control>
 
       <Control prepend position="topright">
-      <MapBoundsFilter />
+      {/* <MapBoundsFilter getFarmstands={getFarmstands} /> */}
+      {moved && <RSButton
+          color="info"
+          onClick={() => setRunGet(true)}
+        > 
+          Search this Area
+          {/* filter farmstands to current bounds */}
+          
+        </RSButton> }
       </Control>
       
 

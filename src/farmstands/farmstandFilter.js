@@ -17,18 +17,20 @@ import { FARMSTANDS } from "../testData/FARMSTANDS";
 //   return JSON.stringify(response.data);
 // })}
 
-export const selectAllFarmstands = async (lat, long) => {
+export const selectAllFarmstands = async (lat, long, distance) => {
   console.log("filter get lat: ", lat);
   console.log("filter get long: ", long);
+  console.log("filter get distance: ", distance);
   let allFarms = await axios.get(`http://localhost:8080/api/farms`, {
     params: {
       longitude: long,
-      latitude: lat
+      latitude: lat,
+      distance: distance
     },
     headers: {
       "Content-Type": "application/json",
     }});
-    console.log("response: " + allFarms.data);
+    console.log("response: ", allFarms.data);
     return allFarms.data;
   }
 
