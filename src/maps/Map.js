@@ -36,7 +36,7 @@ import '../css/MapsPage.css';
 // import { rgba } from "@react-spring/shared";
 import MapList from "./MapList";
 import CreateListingForm from "../forms/CreateListingForm";
-import NewFarmstand from "../components/NewFarmstand";
+import NewFarmstand from "../forms/NewFarmstand";
 import { Link } from "react-router-dom";
 import SheepLogo from '../assets/sheep.jpg';
 //import FormModal from "../../components/FormModal";
@@ -74,6 +74,15 @@ function Map() {
 
   //const [mapCenter, setMapCenter] = useState({lat: 51.505, lng: -0.09})
   const [mapCenter, setMapCenter] = useState([51.505, -0.09]);
+
+  // sidebar states:
+  const [sidebarProducts, setSidebarProducts] = useState([]);
+  const [sidebarSeasons, setSidebarSeasons] = useState([]);
+  const [sidebarSearch, setSidebarSearch] = useState('');
+  console.log("intial sidebarProducts: ", sidebarProducts);
+  console.log("type sidebarProducts: ", typeof(sidebarProducts) );
+  console.log("intial sidebarSeasons: ", sidebarSeasons);
+  console.log("type sidebarSeasons: ", typeof(sidebarSeasons) );
 
 
   const getFarmstands = async () => {
@@ -259,7 +268,7 @@ function Map() {
       <strong>
         This is the Offcanvas body.
       </strong>
-      <Sidebar />
+      <Sidebar sidebarProducts={sidebarProducts} setSidebarProducts={setSidebarProducts} sidebarSeasons={sidebarSeasons} setSidebarSeasons={setSidebarSeasons} sidebarSearch={sidebarSearch} setSidebarSearch={setSidebarSearch} />
     </OffcanvasBody>
   </Offcanvas>
 </div>

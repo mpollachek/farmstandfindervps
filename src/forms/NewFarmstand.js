@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useMapEvents, useMap } from "react-leaflet";
-import CreateListingForm from "../forms/CreateListingForm";
+import CreateListingForm from "./CreateListingForm";
 import {
   Container,
   Button,
