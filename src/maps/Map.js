@@ -157,6 +157,13 @@ function Map() {
     })
   }
 
+  const sidebarSubmit = (values) => {
+    console.log("form values:", values);
+    console.log("in JSON format:", JSON.stringify(values));
+    
+    setRunGet(true)
+  }
+
   useEffect(() => {
     let timer = setTimeout(() => {
     setRunGet(true)

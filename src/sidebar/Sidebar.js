@@ -12,27 +12,33 @@ import { Formik, Field, Form, ErrorMessage, FieldArray } from "formik";
 import { useState, useEffect, useMemo } from "react";
 import '../css/Sidebar.css';
 
+// const Sidebar = ({
+//   sidebarProducts,
+//   setSidebarProducts,
+//   sidebarSeasons,
+//   setSidebarSeasons,
+//   sidebarSearch,
+//   setSidebarSearch,
+// }) => {
+
+//   let products = sidebarProducts;
+//   let seasons = sidebarSeasons;
+//   let search = sidebarSearch;
+
 const Sidebar = ({
-  sidebarProducts,
   setSidebarProducts,
-  sidebarSeasons,
   setSidebarSeasons,
-  sidebarSearch,
   setSidebarSearch,
 }) => {
 
-  let products = sidebarProducts;
-  let seasons = sidebarSeasons;
-  let search = sidebarSearch;
-
   //const [tempArray, setTempArray] = useState(products);
-  let tempArray = products.slice();
+  let tempArray = [];
   const [tempProducts, setTempProducts] = useState([])
+  const [seasonsState, setSeasonsState] = useState(true)
 
   const initialValues = {
-    products: products,
-    seasons: seasons,
-    search: search,
+    products: tempArray,
+    search: "",
     tempArray: tempArray
   };
 
@@ -40,7 +46,7 @@ const Sidebar = ({
 
   const MapProducts = () => {
     return(
-      products.map((product, index) => (                      
+      tempArray.map((product, index) => (                      
         <div key={index}> 
         {console.log("return tempArray product: ", product)}
           <List type="unstyled"> 
@@ -57,7 +63,7 @@ const Sidebar = ({
       ))    
   )};
 
-            
+
 
   return (
     /* 
@@ -76,27 +82,32 @@ const Sidebar = ({
           <Col className="text-center">
             <strong>Seasons Open</strong> <br/>
             </Col>
-          <FormGroup row check>
+          <FormGroup tag="fieldset">
+          <FormGroup row check >
             <Col>
             <Input 
-            name="harvestCheckbox"
-            type="checkbox" 
-            id="harvestCheckbox" 
+            name="seasonsRadio"
+            type="radio" 
+            id="harvestRadio" 
+            onClick={() => {setSeasonsState(!seasonsState)}}
             /> 
             <Label check>Harvest (late spring, summer, early Fall)
             </Label>
             </Col>
           </FormGroup>
-          <FormGroup row check>
+          <FormGroup row check default>
             <Col>
             <Input 
-            name="yearRoundCheckbox"
-            type="checkbox" 
-            id="yearRoundCheckbox" 
+            name="seasonsRadio"
+            type="radio" 
+            id="yearRoundRadio" 
+            checked={seasonsState}
+            onClick={() => {setSeasonsState(!seasonsState)}}
             />  
             <Label check>Year Round
             </Label>
           </Col>
+        </FormGroup>
         </FormGroup>
 
         <FormGroup row className="form-control">
@@ -125,7 +136,6 @@ const Sidebar = ({
                             //setTempProducts(...tempProducts, values.newProduct);
                             //setTempArray([...tempArray, values.newProduct]);
                             //setSidebarProducts([...products, values.newProduct])
-                            console.log("all products: ", sidebarProducts);
                             console.log("tempArray: ", tempArray);
                             console.log("values: ", values.newProduct );
                             console.log("tempProducts: ", tempProducts );
@@ -146,7 +156,6 @@ const Sidebar = ({
                       <div key={index}> 
                       {console.log("return tempArray product: ", product)}
                       {console.log("temp Products in map fn: ", tempProducts)}
-                      {console.log("All Products: ", products)}
 
                         <List type="unstyled"> 
                         {/* {`${products[index]}`}      */}
@@ -176,7 +185,7 @@ const Sidebar = ({
         <FormGroup row>
           <Col md={{ size: 10, offset: 2 }}>
             <RSButton type="submit" color="primary">
-              Post Farmstand
+              Search with Filters
             </RSButton>
           </Col>
         </FormGroup>
