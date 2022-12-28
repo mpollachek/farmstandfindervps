@@ -17,7 +17,7 @@ import { FARMSTANDS } from "../testData/FARMSTANDS";
 //   return JSON.stringify(response.data);
 // })}
 
-export const selectAllFarmstands = async (lat, long, distance) => {
+export const selectAllFarmstands = async (lat, long, distance, products, seasons) => {
   console.log("filter get lat: ", lat);
   console.log("filter get long: ", long);
   console.log("filter get distance: ", distance);
@@ -25,7 +25,9 @@ export const selectAllFarmstands = async (lat, long, distance) => {
     params: {
       longitude: long,
       latitude: lat,
-      distance: distance
+      distance: distance,
+      products: products,
+      seasons: seasons
     },
     headers: {
       "Content-Type": "application/json",

@@ -77,8 +77,8 @@ function Map() {
 
   // sidebar states:
   const [sidebarProducts, setSidebarProducts] = useState([]);
-  const [sidebarSeasons, setSidebarSeasons] = useState([]);
-  const [sidebarSearch, setSidebarSearch] = useState('');
+  const [sidebarSeasons, setSidebarSeasons] = useState("yearRound");
+  const [sidebarSearch, setSidebarSearch] = useState("");
   console.log("intial sidebarProducts: ", sidebarProducts);
   console.log("type sidebarProducts: ", typeof(sidebarProducts) );
   console.log("intial sidebarSeasons: ", sidebarSeasons);
@@ -90,9 +90,10 @@ function Map() {
     console.log("get lat: ", mapCenter[0]); 
     console.log("get lng: ", mapCenter[1]);
     console.log("maps get farmstands type: ", typeof(getFarmstands))
+    console.log("getFarmstands sidebarProducts: ", sidebarProducts)
     if (runGet) {
     //const allFarms = await selectAllFarmstands(mapCenter.lat, mapCenter.lng);
-    const allFarms = await selectAllFarmstands(mapCenter[0], mapCenter[1], boundsDistance);
+    const allFarms = await selectAllFarmstands(mapCenter[0], mapCenter[1], boundsDistance, sidebarProducts, sidebarSeasons);
     setFarmstands(allFarms);
     console.log("current farmstands: ", allFarms);
     console.log("JSON stringify current farmstands: ", JSON.stringify(allFarms));
@@ -275,7 +276,7 @@ function Map() {
       <strong>
         This is the Offcanvas body.
       </strong>
-      <Sidebar sidebarProducts={sidebarProducts} setSidebarProducts={setSidebarProducts} sidebarSeasons={sidebarSeasons} setSidebarSeasons={setSidebarSeasons} sidebarSearch={sidebarSearch} setSidebarSearch={setSidebarSearch} />
+      <Sidebar sidebarProducts={sidebarProducts} setSidebarProducts={setSidebarProducts} sidebarSeasons={sidebarSeasons} setSidebarSeasons={setSidebarSeasons} sidebarSearch={sidebarSearch} setSidebarSearch={setSidebarSearch} setRunGet={setRunGet} runGet={runGet} toggleOffcanvas={toggleOffcanvas}  />
     </OffcanvasBody>
   </Offcanvas>
 </div>

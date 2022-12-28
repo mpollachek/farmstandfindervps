@@ -12,6 +12,10 @@ import { Formik, Field, Form, ErrorMessage, FieldArray } from "formik";
 import { useState, useEffect, useMemo } from "react";
 import '../css/Sidebar.css';
 
+
+/* NOTE TO SELF: NEXT STEP IS ENSURING FILTER STATE IS PASSED TO SERVER AND NOT SELECTING ANY PRODUCTS MEANS ALL PRODUCTS.  ALSO CLEAR INPUT FIELD WHEN ADDING PRODUCT. NEED TO CHECK IF STATE STAYS WHEN CLOSING AND REOPENING SIDEBAR. */
+
+
 // const Sidebar = ({
 //   sidebarProducts,
 //   setSidebarProducts,
@@ -29,39 +33,45 @@ const Sidebar = ({
   setSidebarProducts,
   setSidebarSeasons,
   setSidebarSearch,
+  sidebarSeasons,
+  sidebarProducts,
+  setRunGet,
+  runGet,
+  toggleOffcanvas
 }) => {
 
-  //const [tempArray, setTempArray] = useState(products);
-  let tempArray = [];
-  const [tempProducts, setTempProducts] = useState([])
+  const [tempArray, setTempArray] = useState(sidebarProducts)
   const [seasonsState, setSeasonsState] = useState(true)
 
   const initialValues = {
-    products: tempArray,
     search: "",
-    tempArray: tempArray
+    tempArray: sidebarProducts
   };
 
   console.log("initialValues: ", initialValues);
+  console.log("initialValues sidebarProducts: ", sidebarProducts);
+  console.log("initialValues sidebarProducts: ", typeof(sidebarProducts));
 
-  const MapProducts = () => {
-    return(
-      tempArray.map((product, index) => (                      
-        <div key={index}> 
-        {console.log("return tempArray product: ", product)}
-          <List type="unstyled"> 
-          {/* {`${tempArray[index]}`} */}
-          {product}
-          {index > 0 && (
-            <button type="button" onClick={() => tempArray.splice(index, 1)}>
-              {" "}
-              <strong>X</strong>{" "}
-            </button>
-          )}
-          </List>          
-        </div>
-      ))    
-  )};
+  const handleSubmit = () => {
+    if (!seasonsState) {
+      setSidebarSeasons('harvest')
+    } else { setSidebarSeasons('yearRound') }
+    setSidebarProducts(tempArray)
+    console.log("for submit, sidebarSeasons: ", sidebarSeasons);
+    console.log("for submit, sidebarProducts: ", sidebarProducts);
+    console.log("for submit, sidebarProducts: ", typeof(sidebarProducts));
+    console.log("for submit, tempArray: ", tempArray);
+    console.log("for submit, tempArray: ", typeof(tempArray));
+    setRunGet(true);
+    console.log("runget: ", runGet);
+    toggleOffcanvas();
+  }
+
+  useEffect(() => {
+    if (sidebarSeasons === 'harvest') {
+      setSeasonsState(false);
+    }
+  })
 
 
 
@@ -74,7 +84,7 @@ const Sidebar = ({
 
     <Formik
       initialValues={initialValues}
-      //onSubmit={handleSubmit}
+      onSubmit={handleSubmit}
       //validate={validateCreateListingForm}
     >
       <Form>
@@ -89,7 +99,7 @@ const Sidebar = ({
             name="seasonsRadio"
             type="radio" 
             id="harvestRadio" 
-            onClick={() => {setSeasonsState(!seasonsState)}}
+            onChange={() => {setSeasonsState(!seasonsState)}}
             /> 
             <Label check>Harvest (late spring, summer, early Fall)
             </Label>
@@ -102,7 +112,7 @@ const Sidebar = ({
             type="radio" 
             id="yearRoundRadio" 
             checked={seasonsState}
-            onClick={() => {setSeasonsState(!seasonsState)}}
+            onChange={() => {setSeasonsState(!seasonsState)}}
             />  
             <Label check>Year Round
             </Label>
@@ -131,14 +141,10 @@ const Sidebar = ({
                           type="button"
                           onClick={ () => {
                             tempArray.push(values.newProduct);
-                            setTempProducts([tempArray])
-                            //tempProducts.push(values.newProduct);
-                            //setTempProducts(...tempProducts, values.newProduct);
-                            //setTempArray([...tempArray, values.newProduct]);
-                            //setSidebarProducts([...products, values.newProduct])
+                            setTempArray([...tempArray])
+                            setSidebarProducts(tempArray)
                             console.log("tempArray: ", tempArray);
                             console.log("values: ", values.newProduct );
-                            console.log("tempProducts: ", tempProducts );
                           }}
                         >
                           {" "}
@@ -152,18 +158,23 @@ const Sidebar = ({
 
                         {/* Sidebar is rerendering when state is changing.  try usestate in sidebar rather than passing into component from map.  rerender what is in sidebar, not the sidebar component in map */}
 
-                    {tempArray.map((product, index) => (                      
-                      <div key={index}> 
+                    {tempArray.map((product, index) => {
+                      return(
+                      <div key={index} value={product} > 
                       {console.log("return tempArray product: ", product)}
-                      {console.log("temp Products in map fn: ", tempProducts)}
 
                         <List type="unstyled"> 
                         {/* {`${products[index]}`}      */}
                         <p>{product} {" "}
                         {index >= 0 && (
                           <button type="button" onClick={() => 
-                          {remove(index);
-                          setTempProducts([tempArray])
+                          {console.log("remove item: ", tempArray[index])
+                            //remove(index);
+                            tempArray.splice(index, 1)
+                            setTempArray([...tempArray])
+                            console.log("tempArray before setSidebarProducts: ", tempArray);
+                            console.log("index to remove: ", index)
+                            setSidebarProducts(tempArray)
                           }}>
                             {" "}
                             <strong>X</strong>{" "}
@@ -173,7 +184,7 @@ const Sidebar = ({
                         </List>
                         
                       </div>
-                    ))}
+                  )})}
 
                   </div>
                 );
