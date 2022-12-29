@@ -41,7 +41,8 @@ const Sidebar = ({
 }) => {
 
   const [tempArray, setTempArray] = useState(sidebarProducts)
-  const [seasonsState, setSeasonsState] = useState(true)
+  const [yearRoundSeasonsState, setYearRoundSeasonsState] = useState(true)
+  const [harvestSeasonsState, setHarvestSeasonsState] = useState(false)
   const [productsInput, setProductsInput] = useState('')
 
   const initialValues = {
@@ -54,7 +55,7 @@ const Sidebar = ({
   console.log("initialValues sidebarProducts: ", typeof(sidebarProducts));
 
   const handleSubmit = () => {
-    if (!seasonsState) {
+    if (!yearRoundSeasonsState) {
       setSidebarSeasons('harvest')
     } else { setSidebarSeasons('yearRound') }
     setSidebarProducts(tempArray)
@@ -69,12 +70,10 @@ const Sidebar = ({
   }
 
   useEffect(() => {
-    if (sidebarSeasons === 'harvest') {
-      setSeasonsState(false);
-    }
-  })
-
-
+    if (sidebarSeasons === 'harvest'){
+    setHarvestSeasonsState(true)
+    setYearRoundSeasonsState(false)
+}}, [])
 
   return (
     /* 
@@ -99,8 +98,12 @@ const Sidebar = ({
             <Input 
             name="seasonsRadio"
             type="radio" 
-            id="harvestRadio" 
-            onChange={() => {setSeasonsState(!seasonsState)}}
+            id="harvestRadio"
+            checked={harvestSeasonsState}
+            onChange={() => 
+              {setHarvestSeasonsState(true)
+              setYearRoundSeasonsState(false)}
+            }
             /> 
             <Label check>Harvest (late spring, summer, early Fall)
             </Label>
@@ -112,8 +115,11 @@ const Sidebar = ({
             name="seasonsRadio"
             type="radio" 
             id="yearRoundRadio" 
-            checked={seasonsState}
-            onChange={() => {setSeasonsState(!seasonsState)}}
+            checked={yearRoundSeasonsState}
+            onChange={() => 
+              {setYearRoundSeasonsState(true)
+              setHarvestSeasonsState(false)}
+            }
             />  
             <Label check>Year Round
             </Label>
@@ -136,19 +142,19 @@ const Sidebar = ({
                     name='newProduct'
                     placeholder='product for sale'
                     />
-
                     
                     <button
                           type="button"
                           onClick={ () => {
                             console.log("values: ", values );
+                            if (values.newProduct) {
                             tempArray.push(values.newProduct);
                             setTempArray([...tempArray])
                             setSidebarProducts(tempArray)
                             console.log("tempArray: ", tempArray);
                             console.log("values: ", values );
                             form.setFieldValue("newProduct", '')
-                          }}
+                          }}}
                         >
                           {" "}
                           Add Product{" "}

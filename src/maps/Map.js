@@ -86,7 +86,7 @@ function Map() {
 
 
   const getFarmstands = async () => {
-    console.log("runGet: ", runGet)
+    console.log("runGet: ", runGet);
     console.log("get lat: ", mapCenter[0]); 
     console.log("get lng: ", mapCenter[1]);
     console.log("maps get farmstands type: ", typeof(getFarmstands))
@@ -95,6 +95,9 @@ function Map() {
     //const allFarms = await selectAllFarmstands(mapCenter.lat, mapCenter.lng);
     const allFarms = await selectAllFarmstands(mapCenter[0], mapCenter[1], boundsDistance, sidebarProducts, sidebarSeasons);
     setFarmstands(allFarms);
+    if (!allFarms) {
+      setFarmstands([])
+    }
     console.log("current farmstands: ", allFarms);
     console.log("JSON stringify current farmstands: ", JSON.stringify(allFarms));
     setRunGet(false);
