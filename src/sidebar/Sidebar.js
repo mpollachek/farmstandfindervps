@@ -42,10 +42,11 @@ const Sidebar = ({
 
   const [tempArray, setTempArray] = useState(sidebarProducts)
   const [seasonsState, setSeasonsState] = useState(true)
+  const [productsInput, setProductsInput] = useState('')
 
   const initialValues = {
     search: "",
-    tempArray: sidebarProducts
+    tempArray: sidebarProducts,
   };
 
   console.log("initialValues: ", initialValues);
@@ -140,23 +141,18 @@ const Sidebar = ({
                     <button
                           type="button"
                           onClick={ () => {
+                            console.log("values: ", values );
                             tempArray.push(values.newProduct);
                             setTempArray([...tempArray])
                             setSidebarProducts(tempArray)
                             console.log("tempArray: ", tempArray);
-                            console.log("values: ", values.newProduct );
+                            console.log("values: ", values );
+                            form.setFieldValue("newProduct", '')
                           }}
                         >
                           {" "}
                           Add Product{" "}
                         </button>
-
-                      {/* below is running map function when typing in field input rather than onclick. onclick also should delete what is in field */}
-
-                        {/* <MapProducts /> */}
-
-
-                        {/* Sidebar is rerendering when state is changing.  try usestate in sidebar rather than passing into component from map.  rerender what is in sidebar, not the sidebar component in map */}
 
                     {tempArray.map((product, index) => {
                       return(
@@ -207,49 +203,3 @@ const Sidebar = ({
 };
 
 export default Sidebar;
-
-
-
-
-
-{/* <FormGroup row className="form-control">
-          <label htmlFor="products">Products For Sale</label>
-          <Col>
-            <FieldArray name="products" type="file">
-              {(fieldArrayProps) => {
-                const { push, remove, form } = fieldArrayProps;
-                console.log("form: ", form);
-                const { values } = form;
-                const { products } = values;
-                return (
-                  <div>
-                    {products.map((product, index) => (
-                      <div key={index}>
-                        <Field name={`products[${index}]`} />
-                        {index > 0 && (
-                          <button type="button" onClick={() => remove(index)}>
-                            {" "}
-                            <strong>X</strong>{" "}
-                          </button>
-                        )}
-                        {products.length - 1 === index && (
-                          <button
-                            type="button"
-                            onClick={() => {
-                              push("");
-                              console.log("product: ", product);
-                              console.log("all products: ", products);
-                            }}
-                          >
-                            {" "}
-                            Add Product{" "}
-                          </button>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                );
-              }}
-            </FieldArray>
-          </Col>
-        </FormGroup> */}
