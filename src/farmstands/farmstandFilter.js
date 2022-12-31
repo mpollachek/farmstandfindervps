@@ -36,6 +36,27 @@ export const selectAllFarmstands = async (lat, long, distance, products, seasons
     return allFarms.data;
   }
 
+  export const selectAllData = async () => {
+    let allData = await axios.get(`http://localhost:8080/api/farms`, {
+      headers: {
+        "Content-Type": "application/json",
+      }});
+    console.log("response: ", allData.data);
+    return allData.data;
+  }
+
+  export const selectAllDataImages = async (id) => {
+    let allDataImages = await axios.get(`http://localhost:8080/api/farms/images`, {
+      params: {
+        id: id
+      },
+      headers: {
+        "Content-Type": "application/json",
+      }});
+    console.log("response: ", allDataImages);
+    return allDataImages;
+  }
+
 // find one
 export const selectFeaturedFarmstand = () => {
   return FARMSTANDS.find((farmstand) => farmstand.featured);

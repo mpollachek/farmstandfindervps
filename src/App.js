@@ -4,6 +4,7 @@ import FarmstandDetailPage from "./pages/FarmstandDetailPage";
 import MapsPage from "./pages/MapsPage";
 import TestPage from "./pages/TestPage";
 import Header from "./components/Header";
+import TestPage2 from "./pages/TestPage2";
 
 const App = () => {
 
@@ -17,6 +18,7 @@ const App = () => {
             element={<FarmstandDetailPage />}
           />
         <Route path="test" element={<TestPage />} />
+        <Route path="test2" element={<TestPage2 />} />
       </Routes>
     </div>
   );
