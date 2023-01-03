@@ -71,6 +71,7 @@ function Map() {
   const [distance, setDistance] = useState(null);
 
   const [farmstands, setFarmstands] = useState([]);
+  const [farmIds, setFarmIds] = useState([]);
 
   //const [mapCenter, setMapCenter] = useState({lat: 51.505, lng: -0.09})
   const [mapCenter, setMapCenter] = useState([51.505, -0.09]);
@@ -95,8 +96,19 @@ function Map() {
     //const allFarms = await selectAllFarmstands(mapCenter.lat, mapCenter.lng);
     const allFarms = await selectAllFarmstands(mapCenter[0], mapCenter[1], boundsDistance, sidebarProducts, sidebarSeasons);
     setFarmstands(allFarms);
+    console.log("allFarms: ", allFarms );
+    console.log("object.values allfarms[0].id: ", Object.values(allFarms)[0]._id)
+    let farmIdList = [];
+    allFarms.forEach((f) => {
+      console.log('f: ', f)
+      farmIdList.push(f._id)
+      console.log('farmIdList', farmIdList)
+    })
+    setFarmIds(farmIdList);
+    console.log("farmIds: ", farmIds)
     if (!allFarms) {
       setFarmstands([])
+      setFarmIds([])
     }
     console.log("current farmstands: ", allFarms);
     console.log("JSON stringify current farmstands: ", JSON.stringify(allFarms));
