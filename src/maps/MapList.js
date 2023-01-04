@@ -117,7 +117,7 @@ const MapList = ({farmstands}) => {
             <Popup minWidth="250">
               <Col className="mx-2 mt-3" >
               <FarmstandCard item={farmstand} />
-              <Row className="mx-1 mt-3" style={{ fontSize: 20 }}>{farmstand.description}</Row>
+              {/* <Row className="mx-1 mt-3" style={{ fontSize: 20 }}>{farmstand.description}</Row> */}
               </Col>
             </Popup>
           </Marker>

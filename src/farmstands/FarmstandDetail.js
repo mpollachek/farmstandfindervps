@@ -1,12 +1,12 @@
 import { Card, CardImg, CardText, CardBody, Col, CardTitle, CardSubtitle} from 'reactstrap';
 
 const FarmstandDetail = ({farmstand}) => {
-  const {image, name, description, products} = farmstand;
+  const {images, farmstandName, description, products} = farmstand;
   return (
     <Col md='5' className='m-1'>
       <Card>
-        <CardImg top src={image} alt={name} />
-        <CardTitle className='m-2 ms-3'>{name}</CardTitle>
+        <CardImg top src={images} alt={farmstandName} />
+        <CardTitle className='m-2 ms-3'>{farmstandName}</CardTitle>
         <CardSubtitle className='ms-3'>{description}</CardSubtitle>
         <CardBody>
           <CardText>

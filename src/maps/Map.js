@@ -43,7 +43,7 @@ import SheepLogo from '../assets/sheep.jpg';
 import Header from "../components/Header";
 import Header2 from "../components/Header2";
 import Sidebar from "../sidebar/Sidebar";
-import { selectAllFarmstands } from "../farmstands/farmstandFilter";
+import { selectAllFarmstands, selectImagesByIds } from "../farmstands/farmstandFilter";
 
 const { BaseLayer } = LayersControl;
 
@@ -87,13 +87,7 @@ function Map() {
 
 
   const getFarmstands = async () => {
-    console.log("runGet: ", runGet);
-    console.log("get lat: ", mapCenter[0]); 
-    console.log("get lng: ", mapCenter[1]);
-    console.log("maps get farmstands type: ", typeof(getFarmstands))
-    console.log("getFarmstands sidebarProducts: ", sidebarProducts)
     if (runGet) {
-    //const allFarms = await selectAllFarmstands(mapCenter.lat, mapCenter.lng);
     const allFarms = await selectAllFarmstands(mapCenter[0], mapCenter[1], boundsDistance, sidebarProducts, sidebarSeasons);
     setFarmstands(allFarms);
     console.log("allFarms: ", allFarms );
@@ -119,11 +113,11 @@ function Map() {
     const map = useMap();
     map.setView(coords, map.getZoom());
     const currentBounds = map.getBounds();
-    console.log("currentBounds._southwest ", currentBounds._southWest);
+    // console.log("currentBounds._southwest ", currentBounds._southWest);
     setBoundsDistance(map.distance(currentBounds._northEast, currentBounds._southWest));
-    console.log("boundsDistance: " + boundsDistance);
-    console.log("setting view")
-    console.log("coords: ", coords)
+    // console.log("boundsDistance: " + boundsDistance);
+    // console.log("setting view")
+    // console.log("coords: ", coords)
     // setMyLocation({lat: coords.lat, lng: coords.lng});
     // setMapCenter({lat: coords.lat, lng: coords.lng});
     return null;
@@ -134,9 +128,9 @@ function Map() {
       navigator.geolocation.getCurrentPosition( (position) => {
         // const lat = position.coords.latitude;
         // const long = position.coords.longitude;
-        console.log("position.coords.latitude: ", position.coords.latitude)
+        // console.log("position.coords.latitude: ", position.coords.latitude)
         setMapCenter([position.coords.latitude, position.coords.longitude]);
-        console.log("2: ",  mapCenter);
+        // console.log("2: ",  mapCenter);
       });
     }
   }
@@ -144,38 +138,38 @@ function Map() {
   const MapMoveEventDrag = () => {
     const mapMoveEnd = useMapEvent('dragend', () => {
       setMapCenter([mapMoveEnd.getCenter().lat, mapMoveEnd.getCenter().lng ]);
-      console.log("get bounds: " + JSON.stringify(mapMoveEnd.getBounds()));
+      // console.log("get bounds: " + JSON.stringify(mapMoveEnd.getBounds()));
       setMoved(true);      
-      console.log("moved: " + moved);
+      // console.log("moved: " + moved);
       const currentBounds = mapMoveEnd.getBounds();
-      console.log("currentBounds._southwest ", currentBounds._southWest);
+      // console.log("currentBounds._southwest ", currentBounds._southWest);
       setBoundsDistance(mapMoveEnd.distance(currentBounds._northEast, currentBounds._southWest));
-      //setMapCenter(mapMoveEnd.getCenter());      
-      console.log("currentBounds: ", currentBounds);
-      console.log("boundsDistance: " + boundsDistance);
-      console.log("get center: ", mapMoveEnd.getCenter());
+      // setMapCenter(mapMoveEnd.getCenter());      
+      // console.log("currentBounds: ", currentBounds);
+      // console.log("boundsDistance: " + boundsDistance);
+      // console.log("get center: ", mapMoveEnd.getCenter());
     })
   }
 
   const MapMoveEventZoom = () => {
     const mapMoveEnd = useMapEvent('zoomend', () => {
       setMapCenter([mapMoveEnd.getCenter().lat, mapMoveEnd.getCenter().lng ]);
-      console.log("get bounds: " + JSON.stringify(mapMoveEnd.getBounds()));
+      // console.log("get bounds: " + JSON.stringify(mapMoveEnd.getBounds()));
       setMoved(true);      
-      console.log("moved: " + moved);
+      // console.log("moved: " + moved);
       const currentBounds = mapMoveEnd.getBounds();
-      console.log("currentBounds._southwest ", currentBounds._southWest);
+      // console.log("currentBounds._southwest ", currentBounds._southWest);
       setBoundsDistance(mapMoveEnd.distance(currentBounds._northEast, currentBounds._southWest));
-      //setMapCenter(mapMoveEnd.getCenter());
-      console.log("currentBounds: ", currentBounds);
-      console.log("boundsDistance: " + boundsDistance);
-      console.log("get center: ", mapMoveEnd.getCenter());
+      // setMapCenter(mapMoveEnd.getCenter());
+      // console.log("currentBounds: ", currentBounds);
+      // console.log("boundsDistance: " + boundsDistance);
+      // console.log("get center: ", mapMoveEnd.getCenter());
     })
   }
 
   const sidebarSubmit = (values) => {
-    console.log("form values:", values);
-    console.log("in JSON format:", JSON.stringify(values));
+    // console.log("form values:", values);
+    // console.log("in JSON format:", JSON.stringify(values));
     
     setRunGet(true)
   }
@@ -189,8 +183,8 @@ function Map() {
 
   useEffect(() => {
     // let timer = setTimeout(() => {
-      console.log("useEffect getFarmstands mapcenter: ", mapCenter)
-      console.log("useEffect runGet: ", runGet)
+      // console.log("useEffect getFarmstands mapcenter: ", mapCenter)
+      // console.log("useEffect runGet: ", runGet)
       getFarmstands();
     // }, 1000);
     // return () => clearTimeout(timer);
@@ -199,7 +193,6 @@ function Map() {
   useEffect(() => {
     ChangeMyLocation()
   }, []);
-
 
   return (
     <Container >

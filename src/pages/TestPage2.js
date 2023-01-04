@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { selectAllData, selectAllDataImages } from "../farmstands/farmstandFilter";
+import { selectAllData, selectImagesByIds, selectImagesByIdsTest, selectCardImage } from "../farmstands/farmstandFilter";
 import { Row, Container } from "reactstrap";
 
 
@@ -13,6 +13,7 @@ const TestPage2 = () => {
   const [runGet, setRunGet] = useState(false);
   const [images, setImages] = useState([])
   const [images2, setImages2] = useState([])
+  const [cardImage, setCardImage] = useState('')
 
   const testPath = `http://localhost:8080/images/`
 
@@ -21,18 +22,25 @@ const TestPage2 = () => {
   const id = '63ae4f5c7ab1e01e94b626e8'
 
   const getImages = async () => {
-    const allDataImages = await selectAllDataImages([`${id}`]);
-    console.log("allDataImages: ", allDataImages)
-    console.log("allDataImages.data: ", allDataImages.data)
-    console.log("allDataImages.data values: ", Object.values(allDataImages.data)[0])
-    console.log("stringify allDataImages: ", JSON.stringify(allDataImages))
-    console.log("stringify allDataImages.data: ", JSON.stringify(allDataImages.data))
-    console.log("stringify allDataImages.data values: ", JSON.stringify(Object.values(allDataImages.data)))
-    setImages(Object.values(allDataImages.data)[0])
-    setImages2(Object.values(images))
+  if (runGet) {
+    //const allDataImages = await selectImagesByIds([`${id}`]);
+    const getCardImage = await selectCardImage(`${id}`)
+    // console.log("allDataImages: ", allDataImages)
+    // console.log("allDataImages.data: ", allDataImages.data)
+    // console.log("allDataImages.data values: ", Object.values(allDataImages.data)[0])
+    // console.log("stringify allDataImages: ", JSON.stringify(allDataImages))
+    // console.log("stringify allDataImages.data: ", JSON.stringify(allDataImages.data))
+    // console.log("stringify allDataImages.data values: ", JSON.stringify(Object.values(allDataImages.data)))
+    console.log("getcardImage: ", getCardImage)
+    console.log("getCardImage.data: ", getCardImage.data)
+    console.log("getCardImage.data values: ", Object.values(getCardImage.data)[0])
+    //setImages(Object.values(allDataImages.data)[0])
+    //setImages2(Object.values(images))
+    setCardImage(getCardImage.data)
     console.log("Images: ", images)
     console.log("Images2: ", images2)
-  } 
+    setRunGet(false);
+  }} 
 
   useEffect(() => {
     let timer = setTimeout(() => {
@@ -42,23 +50,18 @@ const TestPage2 = () => {
   }, [])
 
   useEffect(() => {
-    if (runGet) {
     getImages()
-}}, [])
-
-  useEffect(() => {
-      getImages();
-}, [runGet]);
+}, [runGet])
 
   return(
     <Container>
       <img 
-      src={`http://localhost:8080/images/${id}/${images[0]}`} 
+      src={`http://localhost:8080/images/${id}/${cardImage}`} 
       style={{maxWidth: '300px'}}
       />
       {console.log("images[0]: ", images[0])}
 
-    <Row className="ms-auto">
+    {/* <Row className="ms-auto">
     { images.map((image, index) => {
       console.log("image: ", image)
       return(
@@ -69,7 +72,7 @@ const TestPage2 = () => {
       />
     )})
     }
-    </Row>
+    </Row> */}
     </Container>
   )  
 }
