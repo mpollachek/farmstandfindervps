@@ -11,7 +11,7 @@ import Loading from '../components/Loading';
 const FarmstandDetailPage = () => {
 
   const [runGet, setRunGet] = useState(false);
-  const [farmstand, setFarmstand] = useState({products: []})
+  const [farmstand, setFarmstand] = useState({products: [], images: []})
 
 
   const { farmstandId } = useParams();

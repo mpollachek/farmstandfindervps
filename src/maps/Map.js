@@ -47,7 +47,9 @@ import { selectAllFarmstands, selectImagesByIds } from "../farmstands/farmstandF
 
 const { BaseLayer } = LayersControl;
 
-function Map() {
+//export const MapCenterContext = createContext();
+
+function Map() {  
   
   //const [myLocation, setMyLocation] = useState({lat: 51.505, lng: -0.09});
   const [myLocation, setMyLocation] = useState([51.505, -0.09]);
@@ -212,10 +214,12 @@ function Map() {
 
       {/* <LayersControl position='topright'>     
         <LayersControl.Overlay checked name='farmstands'> */}
+        {/* <MapCenterContext.Provider value={mapCenter}> */}
           <LayerGroup>
             {farmstands.length > 0 && 
             <MapList farmstands={farmstands} />} 
           </LayerGroup>
+        {/* </MapCenterContext.Provider> */}
         {/* </LayersControl.Overlay> 
       </LayersControl> */}
 
