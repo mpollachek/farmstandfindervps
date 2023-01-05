@@ -27,6 +27,8 @@ import {
   useMapEvents,
   ZoomControl,
 } from "react-leaflet";
+import { GeoSearchControl, MapBoxProvider, OpenStreetMapProvider } from 'leaflet-geosearch';
+import "leaflet-geosearch/dist/geosearch.css";
 import Control from "react-leaflet-custom-control";
 import { Button } from "@mui/material";
 import LocationSearchingIcon from "@mui/icons-material/LocationSearching";
@@ -44,6 +46,9 @@ import Header from "../components/Header";
 import Header2 from "../components/Header2";
 import Sidebar from "../sidebar/Sidebar";
 import { selectAllFarmstands, selectImagesByIds } from "../farmstands/farmstandFilter";
+import icon from "./mapIcon";
+
+
 
 const { BaseLayer } = LayersControl;
 
@@ -169,12 +174,28 @@ function Map() {
     })
   }
 
-  const sidebarSubmit = (values) => {
-    // console.log("form values:", values);
-    // console.log("in JSON format:", JSON.stringify(values));
-    
-    setRunGet(true)
+  /* geosearch */
+  const SearchField = () => {
+    const map = useMap()
+    const provider = new OpenStreetMapProvider();
+      const searchControl = new GeoSearchControl({
+        provider,
+        style: 'bar',
+        // marker: {
+        //   icon
+        // },
+        autoClose: true,
+        keepResult: true 
+      });
+    useEffect(() => {
+      map.addControl(searchControl);
+      return () => map.removeControl(searchControl);
+    }, []);
+
+    return null;
   }
+  /* end geosearch */
+  
 
   useEffect(() => {
     let timer = setTimeout(() => {
@@ -222,6 +243,8 @@ function Map() {
         {/* </MapCenterContext.Provider> */}
         {/* </LayersControl.Overlay> 
       </LayersControl> */}
+
+      <SearchField />
 
       <Control prepend position="bottomright">
         <Button
