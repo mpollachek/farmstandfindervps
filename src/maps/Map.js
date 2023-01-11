@@ -11,7 +11,7 @@ import {
   Container,
   Offcanvas,
   OffcanvasBody,
-  OffcanvasHeader
+  OffcanvasHeader,
 } from 'reactstrap';
 import { renderToStaticMarkup } from "react-dom/server";
 import L, { divIcon, InvalidateSizeOptions } from "leaflet";
@@ -30,7 +30,7 @@ import {
 import { GeoSearchControl, MapBoxProvider, OpenStreetMapProvider } from 'leaflet-geosearch';
 import "leaflet-geosearch/dist/geosearch.css";
 import Control from "react-leaflet-custom-control";
-import { Button } from "@mui/material";
+import { Button, IconButton, Divider } from "@mui/material";
 import LocationSearchingIcon from "@mui/icons-material/LocationSearching";
 import AgricultureIcon from '@mui/icons-material/Agriculture';
 import "leaflet/dist/leaflet.css";
@@ -47,6 +47,8 @@ import Header2 from "../components/Header2";
 import Sidebar from "../sidebar/Sidebar";
 import { selectAllFarmstands, selectImagesByIds } from "../farmstands/farmstandFilter";
 import icon from "./mapIcon";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import UserLoginForm from "../forms/UserLoginForm";
 
 
 
@@ -67,6 +69,9 @@ function Map() {
 
   const [modal2, setModal2] = useState(false);
   const toggle2 = () => setModal2(!modal2);
+
+  const [profileModal, setProfileModal] = useState(false);
+  const profileToggle = () => setProfileModal(!profileModal);
 
   const [offcanvas, setOffcanvas] = useState(false);
   const toggleOffcanvas = () => setOffcanvas(!offcanvas);
@@ -260,16 +265,51 @@ function Map() {
         </Button>
       </Control>
 
+          {/* Search map Area for farmstands */}
       <Control prepend position="topright">
       {/* <MapBoundsFilter getFarmstands={getFarmstands} /> */}
       {moved && <RSButton
           color="info"
           onClick={() => setRunGet(true)}
+          className="mt-3 me-3"
         > 
           Search this Area
           {/* filter farmstands to current bounds */}
           
         </RSButton> }
+      </Control>
+
+      {/* Modal for opening login/register profile */}
+      <Control append position='topright'>
+        <IconButton onClick={profileToggle} >
+        <AccountCircleIcon 
+        className="me-5"
+        color="primary"
+        fontSize="large"
+        />
+        </IconButton>
+        <Divider />
+      <Modal isOpen={profileModal} toggle={profileToggle} >
+        <ModalHeader toggle={profileToggle}>Modal title</ModalHeader>
+        <ModalBody>
+          <UserLoginForm />
+        <div className="text-center">
+        <h3>Not Registered? </h3>
+          <br />
+          <Button color="primary" onClick={profileToggle}>
+            Do Something
+          </Button>{' '}
+          <Button color="secondary" onClick={profileToggle}>
+            Cancel
+          </Button>
+          </div>
+          </ModalBody>
+        <ModalFooter className="text-center">
+          
+        </ModalFooter>
+      </Modal>
+
+      
       </Control>
       
 
@@ -300,6 +340,7 @@ function Map() {
   <RSButton
     color="primary"
     onClick={toggleOffcanvas}
+    className="mt-3" 
   >
     Open
   </RSButton>

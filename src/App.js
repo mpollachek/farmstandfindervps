@@ -2,6 +2,7 @@ import { Routes, Route, Outlet } from "react-router-dom";
 import FarmstandsPage from "./pages/FarmstandsPage";
 import FarmstandDetailPage from "./pages/FarmstandDetailPage";
 import MapsPage from "./pages/MapsPage";
+import FavoritesPage from "./pages/FavoritesPage";
 import TestPage from "./pages/TestPage";
 import Header from "./components/Header";
 import TestPage2 from "./pages/TestPage2";
@@ -17,6 +18,7 @@ const App = () => {
             path="farmstands/:farmstandId"
             element={<FarmstandDetailPage />}
           />
+          <Route path='favorites' element={<FavoritesPage />} />
         <Route path="test" element={<TestPage />} />
         <Route path="test2" element={<TestPage2 />} />
       </Routes>

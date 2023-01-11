@@ -57,10 +57,6 @@ export const selectAllFarmstands = async (lat, long, distance, products, seasons
     return cardImage;
   }
 
-
- 
-
-
   export const selectImagesByIdsTest = async (id) => {
     let allDataImages = await axios.get(`http://localhost:8080/api/farms/test`, {
       params: {
@@ -96,3 +92,14 @@ export const selectFarmstandById = async (farmstandId) => {
   console.log("response: ", farmstandById.data);
   return farmstandById.data;
 };
+
+export const selectFavoriteFarmstands = async (userId) => {
+  let userFavorites = await axios.get(
+    `http://localhost:8080/api/users/${userId}`, {
+      headers: {
+        "Content-Type": "application/json",
+      }
+    })
+    console.log("favorites response: ", userFavorites);
+    return userFavorites.data;
+}
