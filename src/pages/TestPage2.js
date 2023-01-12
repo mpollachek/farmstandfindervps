@@ -53,6 +53,20 @@ const TestPage2 = () => {
     getImages()
 }, [runGet])
 
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    console.log("token: ", token)
+    axios.get("http://localhost:8080/api/users/test", {
+        headers: {
+            Authorization: 'Bearer ' + token,
+        }
+    }).then(res => {
+        console.log("You are Authenticated: ", res)
+    }).catch(err => {
+        console.log(err);
+    })
+}, [])
+
   return(
     <Container>
       <img 

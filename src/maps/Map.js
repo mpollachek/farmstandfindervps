@@ -49,6 +49,7 @@ import { selectAllFarmstands, selectImagesByIds } from "../farmstands/farmstandF
 import icon from "./mapIcon";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import UserLoginForm from "../forms/UserLoginForm";
+import axios from 'axios';
 
 
 
@@ -84,6 +85,7 @@ function Map() {
 
   const [farmstands, setFarmstands] = useState([]);
   const [farmIds, setFarmIds] = useState([]);
+  const [loggedIn, setLoggedIn] = useState(false);
 
   //const [mapCenter, setMapCenter] = useState({lat: 51.505, lng: -0.09})
   const [mapCenter, setMapCenter] = useState([51.505, -0.09]);
@@ -202,6 +204,7 @@ function Map() {
   /* end geosearch */
   
 
+  /* use effect get farmstands in local map area on page load */
   useEffect(() => {
     let timer = setTimeout(() => {
     setRunGet(true)
@@ -210,17 +213,35 @@ function Map() {
   }, [])
 
   useEffect(() => {
-    // let timer = setTimeout(() => {
-      // console.log("useEffect getFarmstands mapcenter: ", mapCenter)
-      // console.log("useEffect runGet: ", runGet)
       getFarmstands();
-    // }, 1000);
-    // return () => clearTimeout(timer);
 }, [runGet]);
 
   useEffect(() => {
     ChangeMyLocation()
   }, []);
+  /* end use effect get farmstands in local map area on page load */
+
+  /* useEffect to check and set logged in status */
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    console.log("token: ", token)
+    axios.get("http://localhost:8080/api/users/protected", {
+        headers: {
+            Authorization: token,
+        }
+    }).then(res => {
+        console.log(res)
+        setLoggedIn(true);
+        console.log("loggedIn: ", loggedIn)
+    }).catch(err => {
+        console.log(err);
+        setLoggedIn(false);
+        console.log("loggedIn: ", loggedIn)
+    })
+}, [])
+/* end useEffect to check and set logged in status */
+
+
 
   return (
     <Container >
@@ -292,7 +313,8 @@ function Map() {
       <Modal isOpen={profileModal} toggle={profileToggle} >
         <ModalHeader toggle={profileToggle}>Modal title</ModalHeader>
         <ModalBody>
-          <UserLoginForm />
+          { loggedIn ? <div>booyah</div> : <UserLoginForm /> }
+          {/* <UserLoginForm /> */}
         <div className="text-center">
         <h3>Not Registered? </h3>
           <br />

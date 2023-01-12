@@ -14,16 +14,17 @@ import axios, { Axios } from 'axios';
 const UserLoginForm = () => {
 
   const initialValues = {
-    useremail: "",
+    username: "",
     password: "",
   }
 
   const handleLoginSubmit = async (values) => {
     try {
+      console.log("post values: " + JSON.stringify(values));
       await axios.post(`http://localhost:8080/api/users/login`, values)
-      .then((response) => {
-        console.log("post: " + JSON.stringify(values));
-        console.log("response: " + JSON.stringify(response));
+      .then((user) => {
+        console.log("user: ", user);
+        localStorage.setItem('token', user.data.token)
       })
     } catch (error) {
       console.error(error)
@@ -40,13 +41,13 @@ const UserLoginForm = () => {
       <Form>
         <FormGroup row>
           <Col>
-            <Label htmlFor="useremail">Email</Label>
+            <Label htmlFor="username">Username</Label>
             <Field
               className="form-control"
-              name="useremail"
-              placeholder="johndoe@email.com"
+              name="username"
+              placeholder="johndoe"
             />
-            <ErrorMessage name="useremail">
+            <ErrorMessage name="username">
               {(msg) => <p className="text-danger">{msg}</p>}
             </ErrorMessage>
           </Col>
