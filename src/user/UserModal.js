@@ -11,6 +11,7 @@ const UserModal = () => {
   const logout = () => {
     localStorage.removeItem('token');
     setUserId('');
+    setUserName('');
   };
 
   console.log('userId: ', userId)
@@ -20,14 +21,18 @@ const UserModal = () => {
     // components: favorites, logout
     <Container className="text-center">
       <Row>
+        <Col>
         <Link to={`./favorites`}>
           <h3>Favorites</h3>
         </Link>
+        </Col>
       </Row>
-      <Row>
-        <RSButton type="submit" onClick={logout}>
+      <Row className="justify-content-center my-3">
+        <Col md="4" >
+        <RSButton type="submit" onClick={logout} color="primary">
           logout
         </RSButton>
+        </Col>
       </Row>
     </Container>
   )

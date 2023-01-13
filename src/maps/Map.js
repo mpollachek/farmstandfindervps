@@ -325,16 +325,7 @@ function Map() {
           < UserModal />
         </UserContext.Provider>
           {/* <UserLoginForm /> */}
-        <div className="text-center">
-        <h3>Not Registered? </h3>
-          <br />
-          <Button color="primary" onClick={profileToggle}>
-            Do Something
-          </Button>{' '}
-          <Button color="secondary" onClick={profileToggle}>
-            Cancel
-          </Button>
-          </div>
+        
           </ModalBody>
         <ModalFooter className="text-center">
           
