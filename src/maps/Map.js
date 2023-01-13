@@ -39,7 +39,7 @@ import '../css/MapsPage.css';
 import MapList from "./MapList";
 import CreateListingForm from "../forms/CreateListingForm";
 import NewFarmstand from "../forms/NewFarmstand";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import SheepLogo from '../assets/sheep.jpg';
 //import FormModal from "../../components/FormModal";
 import Header from "../components/Header";
@@ -49,13 +49,14 @@ import { selectAllFarmstands, selectImagesByIds } from "../farmstands/farmstandF
 import icon from "./mapIcon";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import UserLoginForm from "../forms/UserLoginForm";
+import UserModal from "../user/UserModal";
 import axios from 'axios';
 
 
 
 const { BaseLayer } = LayersControl;
 
-//export const MapCenterContext = createContext();
+export const UserContext = createContext();
 
 function Map() {  
   
@@ -85,7 +86,8 @@ function Map() {
 
   const [farmstands, setFarmstands] = useState([]);
   const [farmIds, setFarmIds] = useState([]);
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [userId, setUserId] = useState('');
+  const [userName, setUserName] = useState('');
 
   //const [mapCenter, setMapCenter] = useState({lat: 51.505, lng: -0.09})
   const [mapCenter, setMapCenter] = useState([51.505, -0.09]);
@@ -94,32 +96,32 @@ function Map() {
   const [sidebarProducts, setSidebarProducts] = useState([]);
   const [sidebarSeasons, setSidebarSeasons] = useState("yearRound");
   const [sidebarSearch, setSidebarSearch] = useState("");
-  console.log("intial sidebarProducts: ", sidebarProducts);
-  console.log("type sidebarProducts: ", typeof(sidebarProducts) );
-  console.log("intial sidebarSeasons: ", sidebarSeasons);
-  console.log("type sidebarSeasons: ", typeof(sidebarSeasons) );
+  // console.log("intial sidebarProducts: ", sidebarProducts);
+  // console.log("type sidebarProducts: ", typeof(sidebarProducts) );
+  // console.log("intial sidebarSeasons: ", sidebarSeasons);
+  // console.log("type sidebarSeasons: ", typeof(sidebarSeasons) );
 
 
   const getFarmstands = async () => {
     if (runGet) {
     const allFarms = await selectAllFarmstands(mapCenter[0], mapCenter[1], boundsDistance, sidebarProducts, sidebarSeasons);
     setFarmstands(allFarms);
-    console.log("allFarms: ", allFarms );
-    console.log("object.values allfarms[0].id: ", Object.values(allFarms)[0]._id)
+    // console.log("allFarms: ", allFarms );
+    // console.log("object.values allfarms[0].id: ", Object.values(allFarms)[0]._id)
     let farmIdList = [];
     allFarms.forEach((f) => {
-      console.log('f: ', f)
+      // console.log('f: ', f)
       farmIdList.push(f._id)
-      console.log('farmIdList', farmIdList)
+      // console.log('farmIdList', farmIdList)
     })
     setFarmIds(farmIdList);
-    console.log("farmIds: ", farmIds)
+    // console.log("farmIds: ", farmIds)
     if (!allFarms) {
       setFarmstands([])
       setFarmIds([])
     }
-    console.log("current farmstands: ", allFarms);
-    console.log("JSON stringify current farmstands: ", JSON.stringify(allFarms));
+    // console.log("current farmstands: ", allFarms);
+    // console.log("JSON stringify current farmstands: ", JSON.stringify(allFarms));
     setRunGet(false);
   }} 
 
@@ -227,16 +229,14 @@ function Map() {
     console.log("token: ", token)
     axios.get("http://localhost:8080/api/users/protected", {
         headers: {
-            Authorization: token,
+            Authorization: 'Bearer ' + token,
         }
     }).then(res => {
         console.log(res)
-        setLoggedIn(true);
-        console.log("loggedIn: ", loggedIn)
+        setUserId(res.data._id);
+        setUserName(res.data.username);
     }).catch(err => {
         console.log(err);
-        setLoggedIn(false);
-        console.log("loggedIn: ", loggedIn)
     })
 }, [])
 /* end useEffect to check and set logged in status */
@@ -311,9 +311,19 @@ function Map() {
         </IconButton>
         <Divider />
       <Modal isOpen={profileModal} toggle={profileToggle} >
-        <ModalHeader toggle={profileToggle}>Modal title</ModalHeader>
+        { userName ? 
+        <ModalHeader toggle={profileToggle}>Hi {`${userName}`}!</ModalHeader> :
+        <ModalHeader toggle={profileToggle}>Welcome!</ModalHeader>
+          }
+
+
         <ModalBody>
-          { loggedIn ? <div>booyah</div> : <UserLoginForm /> }
+
+          {/* Put everything in this modal into 1 imported component-change name from protected  */}
+        <UserContext.Provider value={{userId, setUserId, userName, setUserName}}>
+          {/* { userId ? <Protected /> : <UserLoginForm /> } */}
+          < UserModal />
+        </UserContext.Provider>
           {/* <UserLoginForm /> */}
         <div className="text-center">
         <h3>Not Registered? </h3>

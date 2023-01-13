@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import {
     FormGroup,
     Label,
@@ -8,10 +8,13 @@ import {
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import { Divider } from '@mui/material';
 import axios, { Axios } from 'axios';
+import { UserContext } from "../maps/Map";
 //import defaultAvatar from '../../app/assets/img/unicorn.png';
 //import { validateUserLoginForm } from '../../utils/validateUserLoginForm';
 
 const UserLoginForm = () => {
+
+  const {userId, setUserId, userName, setUserName} = useContext(UserContext);
 
   const initialValues = {
     username: "",
@@ -25,6 +28,8 @@ const UserLoginForm = () => {
       .then((user) => {
         console.log("user: ", user);
         localStorage.setItem('token', user.data.token)
+        setUserName(user.data.userName);
+        setUserId(user.data.userId);
       })
     } catch (error) {
       console.error(error)
