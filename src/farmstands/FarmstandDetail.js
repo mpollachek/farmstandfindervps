@@ -12,12 +12,18 @@ import {
   CarouselControl,
   CarouselIndicators,
   CarouselCaption,
+  Row,
 } from 'reactstrap';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import '../css/FarmstandDetail.css'
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import { UserContext } from "../App";
 
 const FarmstandDetail = ({farmstand}) => {
   const {images, farmstandName, description, products, _id} = farmstand;
+
+  const {userId} = useContext(UserContext);
 
   const imageLink = `http://localhost:8080/images/${_id}/`
 
@@ -114,7 +120,16 @@ const FarmstandDetail = ({farmstand}) => {
       />
     </Carousel>
         {/* <CardImg top src={imageLink + `${images[0]}`} alt={farmstandName} /> */}
-        <CardTitle className='m-2 ms-3' tag="h4" >{farmstandName}</CardTitle>
+        <Row>
+          <Col md="8">
+          <CardTitle className='m-2 ms-3' tag="h4" >{farmstandName}</CardTitle>
+          </Col>
+          <Col md="4">
+            {/* fav heart button. solid if in fav array, border if ! */}
+            {/* { userId ? <FavSolid /> : <FavBorder /> } */}
+          </Col>
+        </Row>
+        
         <ListGroup>
         <CardSubtitle className='ms-3 my-2'>{description}</CardSubtitle>
         </ListGroup>

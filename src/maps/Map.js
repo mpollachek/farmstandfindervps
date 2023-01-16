@@ -1,4 +1,4 @@
-import { useState, useEffect, createContext, useMemo } from "react";
+import { useState, useEffect, useContext, useMemo } from "react";
 import {
   Modal,
   ModalHeader,
@@ -51,14 +51,19 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import UserLoginForm from "../forms/UserLoginForm";
 import UserModal from "../user/UserModal";
 import axios from 'axios';
+import { UserContext } from "../App";
+
+/* Add a List view button that will display all farmstands on mapview current boundaries */ 
 
 
 
 const { BaseLayer } = LayersControl;
 
-export const UserContext = createContext();
+
 
 function Map() {  
+
+  const {userId, setUserId, userName, setUserName} = useContext(UserContext);
   
   //const [myLocation, setMyLocation] = useState({lat: 51.505, lng: -0.09});
   const [myLocation, setMyLocation] = useState([51.505, -0.09]);
@@ -86,8 +91,7 @@ function Map() {
 
   const [farmstands, setFarmstands] = useState([]);
   const [farmIds, setFarmIds] = useState([]);
-  const [userId, setUserId] = useState('');
-  const [userName, setUserName] = useState('');
+
 
   //const [mapCenter, setMapCenter] = useState({lat: 51.505, lng: -0.09})
   const [mapCenter, setMapCenter] = useState([51.505, -0.09]);
@@ -261,11 +265,11 @@ function Map() {
 
       {/* <LayersControl position='topright'>     
         <LayersControl.Overlay checked name='farmstands'> */}
-        {/* <MapCenterContext.Provider value={mapCenter}> */}
+        {/* <MapCenterContext.Provider value={mapCenter}> */}        
           <LayerGroup>
             {farmstands.length > 0 && 
             <MapList farmstands={farmstands} />} 
-          </LayerGroup>
+          </LayerGroup>          
         {/* </MapCenterContext.Provider> */}
         {/* </LayersControl.Overlay> 
       </LayersControl> */}

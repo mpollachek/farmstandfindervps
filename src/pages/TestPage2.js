@@ -21,6 +21,7 @@ const TestPage2 = () => {
 
   const id = '63ae4f5c7ab1e01e94b626e8'
 
+    /*
   const getImages = async () => {
   if (runGet) {
     //const allDataImages = await selectImagesByIds([`${id}`]);
@@ -52,6 +53,7 @@ const TestPage2 = () => {
   useEffect(() => {
     getImages()
 }, [runGet])
+*/
 
   useEffect(() => {
     const token = localStorage.getItem('token');

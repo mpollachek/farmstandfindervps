@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { Container, Row, Col, Button as RSButton, } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import UserLoginForm from "../forms/UserLoginForm";
-import { UserContext } from "../maps/Map";
+import { UserContext } from "../App";
 
 const UserModal = () => {
 

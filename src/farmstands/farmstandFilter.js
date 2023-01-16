@@ -45,17 +45,17 @@ export const selectAllFarmstands = async (lat, long, distance, products, seasons
     return allData.data;
   }
 
-  export const selectCardImage = async (id) => {
-    let cardImage = await axios.get(`http://localhost:8080/api/farms/cardImage`, {
-      params: {
-        id: id
-      },
-      headers: {
-        "Content-Type": "application/json",
-      }});
-    console.log("response: ", cardImage);
-    return cardImage;
-  }
+  // export const selectCardImage = async (id) => {
+  //   let cardImage = await axios.get(`http://localhost:8080/api/farms/cardImage`, {
+  //     params: {
+  //       id: id
+  //     },
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     }});
+  //   console.log("response: ", cardImage);
+  //   return cardImage;
+  // }
 
   export const selectImagesByIdsTest = async (id) => {
     let allDataImages = await axios.get(`http://localhost:8080/api/farms/test`, {

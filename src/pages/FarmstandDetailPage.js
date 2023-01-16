@@ -61,6 +61,7 @@ const FarmstandDetailPage = () => {
   }
 
   return (
+    /* will change to content once is loading and error setup */
     <Container>
       <SubHeader current={farmstand.farmstandName} detail={true} /> 
       <Row>
