@@ -1,15 +1,18 @@
 import { Row, Col } from 'reactstrap';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import Comment from './Comment';
 import { selectCommentsByFarmstandId } from './commentsFns';
 import CommentForm from '../../forms/CommentForm';
 import Error from '../../components/Error';
 import Loading from '../../components/Loading';
+import { UserContext } from '../../App';
 
 const CommentsList = ({ farmstandId }) => { 
 
+  const {userId, userName} = useContext(UserContext);
+
   const [runGet, setRunGet] = useState(false);
-  const [comments, setComments] = useState([{rating: '', text: '', author: '', date: "2000-08-04T20:11Z"}])
+  const [comments, setComments] = useState([{commentId: '', rating: '', text: '', author: '', date: "2000-08-04T20:11Z", updated: ''}])
 
 const getComments = async () => {
   if (runGet) {
@@ -50,16 +53,16 @@ const getComments = async () => {
       return (
           <Col md='5' className='m-1'>
               <h4>Comments</h4>
-              <CommentForm farmstandId={farmstandId}/>
+              { userId ? <CommentForm farmstandId={farmstandId}/> : null }
               {comments.map((comment) => {
-                  return <Comment key={comment.id} comment={comment} />;
+                  return <Comment key={comment.commentId} comment={comment} />;
               })}
           </Col>
       );
   }
   return (
       <Col md='5' className='m-1'>
-        <CommentForm farmstandId={farmstandId}/>
+        { userId ? <CommentForm farmstandId={farmstandId}/> : null }
           There are no comments for this farmstand yet.
       </Col>
   );

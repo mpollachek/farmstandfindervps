@@ -10,6 +10,7 @@ import {
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import axios from "axios";
 import { UserContext } from "../App";
+import EditIcon from '@mui/icons-material/Edit';
 //import { validateCommentForm } from "../../utils/validateCommentForm";
 //import { postComment } from "./commentsSlice";
 
@@ -59,8 +60,8 @@ const CommentForm = ({ farmstandId }) => {
 
   return (
     <>
-      <Button outline onClick={() => setModalOpen(true)}>
-        <i className="fa fa-pencil fa-lg" /> Add Comment
+      <Button outline onClick={() => setModalOpen(true)} style={{fontWeight: 'bold', color: 'black'}} className='my-3'> 
+        <EditIcon /> Add Comment
       </Button>
       <Modal isOpen={modalOpen}>
         <ModalHeader toggle={() => setModalOpen(false)}>

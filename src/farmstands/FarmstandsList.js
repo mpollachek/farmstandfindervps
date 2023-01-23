@@ -5,6 +5,8 @@ import Error from '../components/Error';
 import { selectFeaturedFarmstands, selectAllFarmstands } from '../farmstands/farmstandFilter';
 import { FARMSTANDS } from '../testData/FARMSTANDS';
 
+//bring farmstands useState array to App.js and useContext for Map.js and FarmstandsList.js.  Allow changing filter and radius parameters on this page
+
 const FarmstandList = () => {
     const items = selectAllFarmstands();
     console.log("featured farmstands: " + items);

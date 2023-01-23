@@ -324,10 +324,10 @@ function Map() {
         <ModalBody>
 
           {/* Put everything in this modal into 1 imported component-change name from protected  */}
-        <UserContext.Provider value={{userId, setUserId, userName, setUserName}}>
+        
           {/* { userId ? <Protected /> : <UserLoginForm /> } */}
           < UserModal />
-        </UserContext.Provider>
+
           {/* <UserLoginForm /> */}
         
           </ModalBody>

@@ -14,7 +14,9 @@ import {
   CarouselCaption,
   Row,
 } from 'reactstrap';
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
+import axios from "axios";
+import { IconButton } from '@mui/material';
 import '../css/FarmstandDetail.css'
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
@@ -23,9 +25,80 @@ import { UserContext } from "../App";
 const FarmstandDetail = ({farmstand}) => {
   const {images, farmstandName, description, products, _id} = farmstand;
 
-  const {userId} = useContext(UserContext);
+  const { userId, userName, setUserId, setUserName } = useContext(UserContext);
+  console.log("farmstand: ", farmstand)
 
   const imageLink = `http://localhost:8080/images/${_id}/`
+
+  const [isFavorite, setIsFavorite] = useState(false)
+  const [runGet, setRunGet] = useState(false);
+
+  const favoriteToggle = async () => {
+    const token = await localStorage.getItem('token');
+    let favToggle = await axios.put(`http://localhost:8080/api/users/isfavorite/${_id}`, {},{
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      }});
+      setRunGet(true)
+      console.log("favToggle: ", favToggle)
+      getIsFavorite()
+  }
+
+  const getIsFavorite = async () => {
+    console.log("_id: ", _id)
+    console.log("runGet: ", runGet)
+    const token = await localStorage.getItem('token');
+    if (runGet && _id) {
+    let fav = await axios.get(`http://localhost:8080/api/users/isfavorite/${_id}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: 'Bearer ' + token,
+    }});
+    console.log("fav response: ", fav.data)    
+      console.log('fav:', fav);
+      setIsFavorite(fav.data);
+      setRunGet(false);
+      console.log("isfavorite: ", isFavorite)
+    }}
+  
+    // useEffect(() => {
+    //   let timer = setTimeout(() => {
+    //   console.log('setrunget true')
+    //   setRunGet(true)
+    // }, 0);
+    // return () => clearTimeout(timer);
+    // }, [_id])
+
+    useEffect(() => {
+      console.log("farmstandId: ", _id)
+      if (_id) {
+        setRunGet(true)
+        console.log("setrunget farmstanddetail")
+      }}, [_id])
+  
+    useEffect(() => {
+      getIsFavorite()
+      console.log("farmstanddetail getisfavorite")
+  }, [runGet])
+
+    /* useEffect to check and set logged in status */
+    useEffect(() => {
+      const token = localStorage.getItem('token');
+      console.log("token: ", token)
+      axios.get("http://localhost:8080/api/users/protected", {
+          headers: {
+              Authorization: 'Bearer ' + token,
+          }
+      }).then(res => {
+          console.log(res)
+          setUserId(res.data._id);
+          setUserName(res.data.username);
+      }).catch(err => {
+          console.log(err);
+      })
+  }, [])
+  /* end useEffect to check and set logged in status */
 
   /* Carousel */  
 
@@ -120,13 +193,20 @@ const FarmstandDetail = ({farmstand}) => {
       />
     </Carousel>
         {/* <CardImg top src={imageLink + `${images[0]}`} alt={farmstandName} /> */}
-        <Row>
+        <Row className='my-2'>
           <Col md="8">
-          <CardTitle className='m-2 ms-3' tag="h4" >{farmstandName}</CardTitle>
+          <CardTitle className='ms-3' tag="h4" >{farmstandName}</CardTitle>
           </Col>
           <Col md="4">
             {/* fav heart button. solid if in fav array, border if ! */}
             {/* { userId ? <FavSolid /> : <FavBorder /> } */}
+            { isFavorite ? 
+            <IconButton onClick={favoriteToggle}>
+            <FavoriteIcon fontSize='large' color='error' />
+            </IconButton> : 
+            <IconButton onClick={favoriteToggle}>
+            <FavoriteBorderIcon fontSize='large' />
+            </IconButton> }
           </Col>
         </Row>
         
@@ -156,7 +236,6 @@ const FarmstandDetail = ({farmstand}) => {
             </ul>
             </span>
             </span>
-            
           </CardText>
 
         </CardBody>
