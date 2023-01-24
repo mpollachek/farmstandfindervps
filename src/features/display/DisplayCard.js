@@ -1,4 +1,4 @@
-import { 
+import {
   Card,
   CardImg,
   CardText,
@@ -8,20 +8,19 @@ import {
   ListGroup,
   CardHeader,
   CardFooter,
-  CardImgOverlay
-} from 'reactstrap';
-
+  CardImgOverlay,
+} from "reactstrap";
 
 const DisplayCard = ({ item }) => {
   const { id, image, name, description } = item;
   return (
-      <Card>
-          <CardImg src={image} alt={name} />
-          <CardBody>
-              <CardTitle>{name}</CardTitle>
-              <CardText>{description}</CardText>
-          </CardBody>
-      </Card>
+    <Card>
+      <CardImg src={image} alt={name} />
+      <CardBody>
+        <CardTitle>{name}</CardTitle>
+        <CardText>{description}</CardText>
+      </CardBody>
+    </Card>
   );
 };
 

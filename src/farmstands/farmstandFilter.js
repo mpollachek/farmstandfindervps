@@ -17,7 +17,13 @@ import { FARMSTANDS } from "../testData/FARMSTANDS";
 //   return JSON.stringify(response.data);
 // })}
 
-export const selectAllFarmstands = async (lat, long, distance, products, seasons) => {
+export const selectAllFarmstands = async (
+  lat,
+  long,
+  distance,
+  products,
+  seasons
+) => {
   // console.log("filter get lat: ", lat);
   // console.log("filter get long: ", long);
   // console.log("filter get distance: ", distance);
@@ -27,47 +33,50 @@ export const selectAllFarmstands = async (lat, long, distance, products, seasons
       latitude: lat,
       distance: distance,
       products: products,
-      seasons: seasons
+      seasons: seasons,
     },
     headers: {
       "Content-Type": "application/json",
-    }});
-    console.log("response: ", allFarms.data);
-    return allFarms.data;
-  }
+    },
+  });
+  console.log("response: ", allFarms.data);
+  return allFarms.data;
+};
 
-  export const selectAllData = async () => {
-    let allData = await axios.get(`http://localhost:8080/api/farms`, {
-      headers: {
-        "Content-Type": "application/json",
-      }});
-    console.log("response: ", allData.data);
-    return allData.data;
-  }
+export const selectAllData = async () => {
+  let allData = await axios.get(`http://localhost:8080/api/farms`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  console.log("response: ", allData.data);
+  return allData.data;
+};
 
-  // export const selectCardImage = async (id) => {
-  //   let cardImage = await axios.get(`http://localhost:8080/api/farms/cardImage`, {
-  //     params: {
-  //       id: id
-  //     },
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     }});
-  //   console.log("response: ", cardImage);
-  //   return cardImage;
-  // }
+// export const selectCardImage = async (id) => {
+//   let cardImage = await axios.get(`http://localhost:8080/api/farms/cardImage`, {
+//     params: {
+//       id: id
+//     },
+//     headers: {
+//       "Content-Type": "application/json",
+//     }});
+//   console.log("response: ", cardImage);
+//   return cardImage;
+// }
 
-  export const selectImagesByIdsTest = async (id) => {
-    let allDataImages = await axios.get(`http://localhost:8080/api/farms/test`, {
-      params: {
-        id: id
-      },
-      headers: {
-        "Content-Type": "application/json",
-      }});
-    console.log("response: ", allDataImages);
-    return allDataImages;
-  }
+export const selectImagesByIdsTest = async (id) => {
+  let allDataImages = await axios.get(`http://localhost:8080/api/farms/test`, {
+    params: {
+      id: id,
+    },
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  console.log("response: ", allDataImages);
+  return allDataImages;
+};
 
 // find one
 export const selectFeaturedFarmstand = () => {
@@ -81,25 +90,32 @@ export const selectFeaturedFarmstands = () => {
 
 export const selectRandomFarmstand = () => {
   return FARMSTANDS[Math.floor(FARMSTANDS.length * Math.random())];
-}
+};
 
 export const selectFarmstandById = async (farmstandId) => {
-  let farmstandById = await axios.get(`http://localhost:8080/api/farms/${farmstandId}`, {
-    headers: {
-      "Content-Type": "application/json",
+  let farmstandById = await axios.get(
+    `http://localhost:8080/api/farms/${farmstandId}`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
     }
-  })
+  );
   console.log("response: ", farmstandById.data);
   return farmstandById.data;
 };
 
-export const selectFavoriteFarmstands = async (userId) => {
+export const selectFavoriteFarmstands = async () => {
+  const token = await localStorage.getItem("token");
   let userFavorites = await axios.get(
-    `http://localhost:8080/api/users/${userId}`, {
+    `http://localhost:8080/api/users/favorites`,
+    {
       headers: {
         "Content-Type": "application/json",
-      }
-    })
-    console.log("favorites response: ", userFavorites);
-    return userFavorites.data;
-}
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  console.log("favorites response: ", userFavorites);
+  return userFavorites.data;
+};

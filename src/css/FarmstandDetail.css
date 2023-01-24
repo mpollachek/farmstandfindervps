@@ -1,3 +1,11 @@
 .products {
   columns: 2 auto;
 }
+
+.carousel-control-next-icon, 
+.carousel-control-prev-icon,
+.carousel-indicators {
+  filter: invert(100%);
+  background-color: black;
+  opacity: 60%;
+}

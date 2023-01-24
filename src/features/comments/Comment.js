@@ -1,32 +1,26 @@
-import { formatDate } from '../../utils/formatDate';
+import { formatDate } from "../../utils/formatDate";
 
 const Comment = ({ comment }) => {
-    const { text: commentText, rating, author, date, updated } = comment;
+  const { text: commentText, rating, author, date, updated } = comment;
 
-    const TextEdited = () => {
-      return(
-        <p>
-      Updated: {formatDate(updated)}
-      </p>
-    )}
+  const TextEdited = () => {
+    return <p>Updated: {formatDate(updated)}</p>;
+  };
 
-    return (
-      <>
+  return (
+    <>
       <h5>
-        {author} <br/>
+        {author} <br />
         {rating}/5 stars
       </h5>
-        <p>
-            {commentText}
-            <br />
-            Posted: {formatDate(date)} <br/>
-            <div>
-            {updated && date !== updated ? <TextEdited /> : null}
-            </div>
-            
-        </p>
-        </>
-    );
+      <p>
+        {commentText}
+        <br />
+        Posted: {formatDate(date)} <br />
+        <div>{updated && date !== updated ? <TextEdited /> : null}</div>
+      </p>
+    </>
+  );
 };
 
 export default Comment;

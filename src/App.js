@@ -9,6 +9,7 @@ import Header from "./components/Header";
 import TestPage2 from "./pages/TestPage2";
 
 export const UserContext = createContext();
+export const MapContext = createContext();
 
 const App = () => {
 
@@ -17,9 +18,12 @@ const App = () => {
   const [userId, setUserId] = useState('');
   const [userName, setUserName] = useState('');
 
+  const [farmstands, setFarmstands] = useState([]);
+
   return (
     <div className="App">
       <UserContext.Provider value={{userId, setUserId, userName, setUserName}}> 
+      <MapContext.Provider value={{farmstands, setFarmstands}}>
       <Routes>             
         <Route path="/" element={<MapsPage />} />
         <Route path="farmstands" element={<FarmstandsPage />} />
@@ -31,6 +35,7 @@ const App = () => {
         <Route path="test" element={<TestPage />} />
         <Route path="test2" element={<TestPage2 />} />        
       </Routes>
+      </MapContext.Provider>
       </UserContext.Provider>
     </div>
   );

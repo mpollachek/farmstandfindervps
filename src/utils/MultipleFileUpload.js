@@ -1,4 +1,3 @@
-
 import { Dropzone, FileItem, FullScreenPreview } from "@dropzone-ui/react";
 import { useState } from "react";
 
@@ -62,7 +61,6 @@ const MultipleFileUpload = () => {
       />
     </Dropzone>
   );
-}
-
+};
 
 export default MultipleFileUpload;

@@ -1,15 +1,15 @@
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import '../css/Header.css'
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
+import "../css/Header.css";
 
 export default function Header() {
   return (
-    <Box sx={{ flexGrow: 1, mt: 0 }} >
+    <Box sx={{ flexGrow: 1, mt: 0 }}>
       <AppBar position="fixed">
         <Toolbar>
           <IconButton

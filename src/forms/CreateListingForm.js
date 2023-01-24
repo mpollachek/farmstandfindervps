@@ -1,14 +1,14 @@
-import { 
-  Button, 
-  Label, 
-  Col, 
-  FormGroup, 
-  Input, 
-  Row, 
+import {
+  Button,
+  Label,
+  Col,
+  FormGroup,
+  Input,
+  Row,
   Modal,
   ModalHeader,
   ModalBody,
-  FormText
+  FormText,
 } from "reactstrap";
 
 import { Formik, Field, Form, ErrorMessage, FieldArray } from "formik";
@@ -18,26 +18,36 @@ import MultipleFileUpload from "../utils/MultipleFileUpload";
 import Axios from "axios";
 import { Dropzone, FileItem, FullScreenPreview } from "@dropzone-ui/react";
 
-const CreateListingForm = ({addressState = false, latLongState= true, lat = "", long = "", addressChecked=true, latlongChecked=false}) => {
-
-  if (lat!=0 && long!=0){
-    addressState=true;
-    latLongState=false;
-    addressChecked=false;
-    latlongChecked=true;
-  }  
+const CreateListingForm = ({
+  addressState = false,
+  latLongState = true,
+  lat = "",
+  long = "",
+  addressChecked = true,
+  latlongChecked = false,
+}) => {
+  if (lat != 0 && long != 0) {
+    addressState = true;
+    latLongState = false;
+    addressChecked = false;
+    latlongChecked = true;
+  }
 
   const initialAddressState = () => {
-    if (addressState){
+    if (addressState) {
       return true;
-    } else {return false}
-  }
+    } else {
+      return false;
+    }
+  };
 
   const initialLatlongState = () => {
-    if (latLongState){
+    if (latLongState) {
       return true;
-    } else {return false}
-  }
+    } else {
+      return false;
+    }
+  };
 
   const [addressDisabled, setAddressDisabled] = useState(initialAddressState);
 
@@ -54,26 +64,25 @@ const CreateListingForm = ({addressState = false, latLongState= true, lat = "", 
   console.log("addressDisabled: " + addressDisabled);
   console.log("latLongState: " + latLongState);
   console.log("initial latLongState: " + initialLatlongState);
-  console.log("latlongdisabled: " + latLongDisabled);  
+  console.log("latlongdisabled: " + latLongDisabled);
 
   const useAddress = (event) => {
-    if (event.target.value = true) {
+    if ((event.target.value = true)) {
       setAddressDisabled(false);
       setLatLongDisabled(true);
-      console.log("latlongdisabled: " + latLongDisabled)
-      console.log("addressdisabled: " + addressDisabled)
+      console.log("latlongdisabled: " + latLongDisabled);
+      console.log("addressdisabled: " + addressDisabled);
     }
-  }
+  };
 
   const useLatLong = (event) => {
-    if (event.target.value = true) {
+    if ((event.target.value = true)) {
       setAddressDisabled(true);
       setLatLongDisabled(false);
-      console.log("addressdisabled: " + addressDisabled)
-      console.log("latlongdisabled: " + latLongDisabled)
+      console.log("addressdisabled: " + addressDisabled);
+      console.log("latlongdisabled: " + latLongDisabled);
     }
-  }
-
+  };
 
   // For Dropzone:
   // const fd = new FormData
@@ -98,83 +107,87 @@ const CreateListingForm = ({addressState = false, latLongState= true, lat = "", 
   //   console.log("list cleaned", files);
   // };
 
-
-
   const initialValues = {
     farmstandName: "",
-        image: image,
-        description: "",
-        products: [''],
-        latitude: lat.toString(),
-        longitude: long.toString(),
-        road: "",
-        town: "",
-        state: "",
-        country: "",
-      
-  }
+    image: image,
+    description: "",
+    products: [""],
+    latitude: lat.toString(),
+    longitude: long.toString(),
+    road: "",
+    town: "",
+    state: "",
+    country: "",
+  };
 
   const handleSubmitFile = async (e) => {
     //const file = e.target.files[0]
-    const formData = new FormData()
-    formData.append('image', image)
+    const formData = new FormData();
+    formData.append("image", image);
 
     try {
       const config = {
         headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      }
-  
-      const { response } = await Axios.post('http://localhost:8080/api/farms', formData, config)
-      setImage(response)
+          "Content-Type": "multipart/form-data",
+        },
+      };
+
+      const { response } = await Axios.post(
+        "http://localhost:8080/api/farms",
+        formData,
+        config
+      );
+      setImage(response);
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
-  }
+  };
 
   const handleSubmit = async (values) => {
     console.log("files: " + JSON.stringify(files));
     console.log("form values:", values);
     console.log("in JSON format:", JSON.stringify(values));
-//const file = values.target.files[0]
-  const formData = new FormData()
-  for (const i of image) {
-    formData.append('image', i)
-  }  
-  formData.append('farmstandName', values.farmstandName)
-  formData.append('description', values.description)
-  formData.append('latitude', values.latitude)
-  formData.append('longitude', values.longitude)      
-  formData.append('products', values.products)
-  formData.append('road', values.road)
-  formData.append('town', values.town)
-  formData.append('state', values.state)
-  formData.append('country', values.country)
+    //const file = values.target.files[0]
+    const formData = new FormData();
+    for (const i of image) {
+      formData.append("image", i);
+    }
+    formData.append("farmstandName", values.farmstandName);
+    formData.append("description", values.description);
+    formData.append("latitude", values.latitude);
+    formData.append("longitude", values.longitude);
+    formData.append("products", values.products);
+    formData.append("road", values.road);
+    formData.append("town", values.town);
+    formData.append("state", values.state);
+    formData.append("country", values.country);
 
     try {
       const config = {
         headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      }
-    await Axios.post(`http://localhost:8080/api/farms`, formData, config).then((response) => {
-      console.log("post: " + JSON.stringify(values));
-      console.log("response: " + JSON.stringify(response));
-    })
-  } catch (error) {
-    console.error(error)
-  }
+          "Content-Type": "multipart/form-data",
+        },
+      };
+      await Axios.post(
+        `http://localhost:8080/api/farms`,
+        formData,
+        config
+      ).then((response) => {
+        console.log("post: " + JSON.stringify(values));
+        console.log("response: " + JSON.stringify(response));
+      });
+    } catch (error) {
+      console.error(error);
+    }
   };
-  
+
   useEffect(() => {
     console.log("images: " + JSON.stringify(image));
-  }, [image])
+  }, [image]);
 
   return (
-    
     <Formik
-      initialValues={initialValues}        
+      initialValues={initialValues}
       onSubmit={handleSubmit}
       //validate={validateCreateListingForm}
     >
@@ -183,40 +196,37 @@ const CreateListingForm = ({addressState = false, latLongState= true, lat = "", 
       >
         <FormGroup row tag="fieldset">
           <Col className="text-center">
-          <FormGroup check inline>
-        <Input
-        onChange={useAddress}
-          name="locationradio"
-          type="radio"
-          id="addressradio"
-          defaultChecked={addressChecked}
-        />
-        {' '}
-        <Label  htmlFor="locationradio" check>
-          Use Address
-        </Label>
-      </FormGroup>
-      <FormGroup check inline>
-        <Input
-        onChange={useLatLong}
-          name="locationradio"
-          type="radio"
-          id="latlongradio"
-          defaultChecked={latlongChecked}
-        />
-        {' '}
-        <Label  htmlFor="locationradio" check>
-          Use Latitude/Longitude
-        </Label>
-      </FormGroup>
+            <FormGroup check inline>
+              <Input
+                onChange={useAddress}
+                name="locationradio"
+                type="radio"
+                id="addressradio"
+                defaultChecked={addressChecked}
+              />{" "}
+              <Label htmlFor="locationradio" check>
+                Use Address
+              </Label>
+            </FormGroup>
+            <FormGroup check inline>
+              <Input
+                onChange={useLatLong}
+                name="locationradio"
+                type="radio"
+                id="latlongradio"
+                defaultChecked={latlongChecked}
+              />{" "}
+              <Label htmlFor="locationradio" check>
+                Use Latitude/Longitude
+              </Label>
+            </FormGroup>
           </Col>
         </FormGroup>
 
-
         <FormGroup row>
           <Col md="6">
-          <Label htmlFor="farmstandName">Farmstand Name</Label>
-          <br/>
+            <Label htmlFor="farmstandName">Farmstand Name</Label>
+            <br />
             <Field
               className="form-control"
               name="farmstandName"
@@ -227,8 +237,8 @@ const CreateListingForm = ({addressState = false, latLongState= true, lat = "", 
             </ErrorMessage>
           </Col>
           <Col md="6">
-          <Label htmlFor="road">road</Label>
-          <br/>
+            <Label htmlFor="road">road</Label>
+            <br />
             <Field
               className="form-control"
               name="road"
@@ -241,54 +251,54 @@ const CreateListingForm = ({addressState = false, latLongState= true, lat = "", 
           </Col>
         </FormGroup>
         <FormGroup row>
-        <Col md="4">
+          <Col md="4">
             <Label htmlFor="town" md="4">
               Town
             </Label>
             <Field
-                className="form-control"
-                name="town"
-                placeholder="Town"
-                disabled={addressDisabled}
-              />
-              <ErrorMessage name="town">
-                {(msg) => <p className="text-danger">{msg}</p>}
-              </ErrorMessage>
-            </Col>
+              className="form-control"
+              name="town"
+              placeholder="Town"
+              disabled={addressDisabled}
+            />
+            <ErrorMessage name="town">
+              {(msg) => <p className="text-danger">{msg}</p>}
+            </ErrorMessage>
+          </Col>
           <Col md="4">
             <Label htmlFor="state" md="4">
               State
             </Label>
             <Field
-                className="form-control"
-                name="state"
-                placeholder="State"
-                disabled={addressDisabled}
-              />
-              <ErrorMessage name="state">
-                {(msg) => <p className="text-danger">{msg}</p>}
-              </ErrorMessage>
-            </Col>            
-            <Col md="4">
+              className="form-control"
+              name="state"
+              placeholder="State"
+              disabled={addressDisabled}
+            />
+            <ErrorMessage name="state">
+              {(msg) => <p className="text-danger">{msg}</p>}
+            </ErrorMessage>
+          </Col>
+          <Col md="4">
             <Label htmlFor="country" md="4">
               Country
             </Label>
             <Field
-                className="form-control"
-                name="country"
-                placeholder="Country"
-                disabled={addressDisabled}
-              />
-              <ErrorMessage name="country">
-                {(msg) => <p className="text-danger">{msg}</p>}
-              </ErrorMessage>
-            </Col>
-          </FormGroup>
+              className="form-control"
+              name="country"
+              placeholder="Country"
+              disabled={addressDisabled}
+            />
+            <ErrorMessage name="country">
+              {(msg) => <p className="text-danger">{msg}</p>}
+            </ErrorMessage>
+          </Col>
+        </FormGroup>
 
-          <FormGroup row>
+        <FormGroup row>
           <Col md="6">
-          <Label htmlFor="latitude">Latitude</Label>
-          <br/>
+            <Label htmlFor="latitude">Latitude</Label>
+            <br />
             <Field
               className="form-control"
               name="latitude"
@@ -301,8 +311,8 @@ const CreateListingForm = ({addressState = false, latLongState= true, lat = "", 
             </ErrorMessage>
           </Col>
           <Col md="6">
-          <Label htmlFor="longitude">Longitude</Label>
-          <br/>
+            <Label htmlFor="longitude">Longitude</Label>
+            <br />
             <Field
               className="form-control"
               name="longitude"
@@ -316,8 +326,6 @@ const CreateListingForm = ({addressState = false, latLongState= true, lat = "", 
           </Col>
         </FormGroup>
 
-
-
         <FormGroup row>
           <Label htmlFor="description">Description</Label>
           <Col>
@@ -330,39 +338,41 @@ const CreateListingForm = ({addressState = false, latLongState= true, lat = "", 
           </Col>
         </FormGroup>
 
-        <FormGroup row className='form-control'>
+        <FormGroup row className="form-control">
           <label htmlFor="products">Products For Sale</label>
           <Col>
-          <FieldArray name='products' type='file'>
-            {fieldArrayProps => {
-                const { push, remove, form } = fieldArrayProps
-                const { values } = form
-                const { products } = values
+            <FieldArray name="products" type="file">
+              {(fieldArrayProps) => {
+                const { push, remove, form } = fieldArrayProps;
+                const { values } = form;
+                const { products } = values;
                 return (
                   <div>
-                  {products.map((product, index) => (
-                    <div key={index}>
-                      <Field name={`products[${index}]`}  />
-                      {index > 0 && (
-                      <button type='button' 
-                      onClick={() => remove(index)}>{' '} Remove Product{' '}</button>
-                      )}
-                      {products.length - 1 === index && (
-                      <button type='button' 
-                      onClick={() => push('')}>{' '}Add Product{' '}</button>
-                      )}
-                    </div>
-                  ))}
+                    {products.map((product, index) => (
+                      <div key={index}>
+                        <Field name={`products[${index}]`} />
+                        {index > 0 && (
+                          <button type="button" onClick={() => remove(index)}>
+                            {" "}
+                            Remove Product{" "}
+                          </button>
+                        )}
+                        {products.length - 1 === index && (
+                          <button type="button" onClick={() => push("")}>
+                            {" "}
+                            Add Product{" "}
+                          </button>
+                        )}
+                      </div>
+                    ))}
                   </div>
-                )
-              }
-            }
-
-          </FieldArray>
+                );
+              }}
+            </FieldArray>
           </Col>
         </FormGroup>
         <FormGroup row>
-            {/* <Dropzone
+          {/* <Dropzone
       style={{ minWidth: "200px" }}
       //view={"list"}
       //onChange={(e) => setImage(e.target.files[0])}
@@ -406,26 +416,23 @@ const CreateListingForm = ({addressState = false, latLongState= true, lat = "", 
       />
     </Dropzone> */}
 
-
           <label htmlFor="image">Upload Farmstand Images</label>
           <Col>
-          <Input 
-          type="file" 
-          multiple="multiple"
-          name="image" 
-          id="exampleFile" 
-          value={undefined} 
-          onChange={(e) => setImage(e.target.files)}
-          />
-          <FormText color="muted">
-            This is some placeholder block-level help text for the above input.
-            It's a bit lighter and easily wraps to a new line.
-          </FormText> 
+            <Input
+              type="file"
+              multiple="multiple"
+              name="image"
+              id="exampleFile"
+              value={undefined}
+              onChange={(e) => setImage(e.target.files)}
+            />
+            <FormText color="muted">
+              This is some placeholder block-level help text for the above
+              input. It's a bit lighter and easily wraps to a new line.
+            </FormText>
           </Col>
-          
         </FormGroup>
-        
-        
+
         <FormGroup row>
           <Col md={{ size: 10, offset: 2 }}>
             <Button type="submit" color="primary">

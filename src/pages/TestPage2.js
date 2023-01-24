@@ -1,27 +1,28 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { selectAllData, selectImagesByIds, selectImagesByIdsTest, selectCardImage } from "../farmstands/farmstandFilter";
+import {
+  selectAllData,
+  selectImagesByIds,
+  selectImagesByIdsTest,
+  selectCardImage,
+} from "../farmstands/farmstandFilter";
 import { Row, Container } from "reactstrap";
 
-
-
-
 const TestPage2 = () => {
-
-  console.log('test2')
+  console.log("test2");
 
   const [runGet, setRunGet] = useState(false);
-  const [images, setImages] = useState([])
-  const [images2, setImages2] = useState([])
-  const [cardImage, setCardImage] = useState('')
+  const [images, setImages] = useState([]);
+  const [images2, setImages2] = useState([]);
+  const [cardImage, setCardImage] = useState("");
 
-  const testPath = `http://localhost:8080/images/`
+  const testPath = `http://localhost:8080/images/`;
 
-  const testImage = `http://localhost:8080/images/63ae1562439a346736c442fb/1672353122205.jpg`
+  const testImage = `http://localhost:8080/images/63ae1562439a346736c442fb/1672353122205.jpg`;
 
-  const id = '63ae4f5c7ab1e01e94b626e8'
+  const id = "63ae4f5c7ab1e01e94b626e8";
 
-    /*
+  /*
   const getImages = async () => {
   if (runGet) {
     //const allDataImages = await selectImagesByIds([`${id}`]);
@@ -56,28 +57,31 @@ const TestPage2 = () => {
 */
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    console.log("token: ", token)
-    axios.get("http://localhost:8080/api/users/test", {
+    const token = localStorage.getItem("token");
+    console.log("token: ", token);
+    axios
+      .get("http://localhost:8080/api/users/test", {
         headers: {
-            Authorization: 'Bearer ' + token,
-        }
-    }).then(res => {
-        console.log("You are Authenticated: ", res)
-    }).catch(err => {
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((res) => {
+        console.log("You are Authenticated: ", res);
+      })
+      .catch((err) => {
         console.log(err);
-    })
-}, [])
+      });
+  }, []);
 
-  return(
+  return (
     <Container>
-      <img 
-      src={`http://localhost:8080/images/${id}/${cardImage}`} 
-      style={{maxWidth: '300px'}}
+      <img
+        src={`http://localhost:8080/images/${id}/${cardImage}`}
+        style={{ maxWidth: "300px" }}
       />
       {console.log("images[0]: ", images[0])}
 
-    {/* <Row className="ms-auto">
+      {/* <Row className="ms-auto">
     { images.map((image, index) => {
       console.log("image: ", image)
       return(
@@ -90,7 +94,7 @@ const TestPage2 = () => {
     }
     </Row> */}
     </Container>
-  )  
-}
+  );
+};
 
-export default TestPage2
+export default TestPage2;

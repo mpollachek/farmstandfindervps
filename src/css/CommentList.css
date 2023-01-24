@@ -1,0 +1,10 @@
+.star {
+  outline: 5px solid black !important;
+  font-size: 50px !important;
+  text-shadow: 2px 2px 2px black !important; 
+}
+
+/* .react-stars {
+  outline: 5px solid black;
+  font-size: 50px;
+} */
