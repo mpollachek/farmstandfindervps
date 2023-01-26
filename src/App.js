@@ -1,4 +1,4 @@
-import { Routes, Route, Outlet } from "react-router-dom";
+import { Routes, Route, useParams, Outlet } from "react-router-dom";
 import { useState, createContext } from "react";
 import FarmstandsPage from "./pages/FarmstandsPage";
 import FarmstandDetailPage from "./pages/FarmstandDetailPage";
@@ -9,6 +9,7 @@ import Header from "./components/Header";
 import TestPage2 from "./pages/TestPage2";
 
 export const UserContext = createContext();
+export const FarmstandsContext = createContext();
 export const MapContext = createContext();
 
 const App = () => {
@@ -20,12 +21,17 @@ const App = () => {
 
   const [farmstands, setFarmstands] = useState([]);
 
+  const [mapCenter, setMapCenter] = useState([51.505, -0.09]);
+  const { centerParam } = useParams()
+
   return (
     <div className="App">
       <UserContext.Provider value={{userId, setUserId, userName, setUserName}}> 
-      <MapContext.Provider value={{farmstands, setFarmstands}}>
+      <FarmstandsContext.Provider value={{farmstands, setFarmstands}}>
+      <MapContext.Provider value={{mapCenter, setMapCenter, centerParam}}>
       <Routes>             
         <Route path="/" element={<MapsPage />} />
+        {/* <Route path="/:mapCenter" element={<MapsPage mapCenter={mapCenter} />}/> */}
         <Route path="farmstands" element={<FarmstandsPage />} />
           <Route
             path="farmstands/:farmstandId"
@@ -36,6 +42,7 @@ const App = () => {
         <Route path="test2" element={<TestPage2 />} />        
       </Routes>
       </MapContext.Provider>
+      </FarmstandsContext.Provider>
       </UserContext.Provider>
     </div>
   );

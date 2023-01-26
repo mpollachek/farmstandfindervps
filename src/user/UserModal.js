@@ -21,7 +21,7 @@ const UserModal = () => {
       <Container className="text-center">
         <Row>
           <Col>
-            <Link to={`./favorites`}>
+            <Link to={`/favorites`}>
               <h3>Favorites</h3>
             </Link>
           </Col>

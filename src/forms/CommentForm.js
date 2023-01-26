@@ -65,6 +65,7 @@ const CommentForm = ({ farmstandId }) => {
           },
         }
       );
+      setModalOpen(false)
     } catch (error) {
       console.error(error);
     }

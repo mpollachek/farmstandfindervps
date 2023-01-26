@@ -71,7 +71,11 @@ const CommentsList = ({ farmstandId }) => {
           </Col>
         ) : (
           <Col className="ms-1 ">
-            {userId ? <CommentForm farmstandId={farmstandId} /> : null}
+            {userId ? 
+            <div>
+            <CommentForm farmstandId={farmstandId} /> 
+            {"\n"} </div>
+            : null}
             There are no comments for this farmstand yet.
           </Col>
         )}

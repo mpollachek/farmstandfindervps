@@ -10,7 +10,7 @@ import Loading from "../components/Loading";
 
 const FarmstandDetailPage = () => {
   const [runGet, setRunGet] = useState(false);
-  const [farmstand, setFarmstand] = useState({ products: [], images: [] });
+  const [farmstand, setFarmstand] = useState({ products: [], images: [], comments: [] });
 
   const { farmstandId } = useParams();
   console.log("farmstandId: ", farmstandId);
@@ -38,6 +38,18 @@ const FarmstandDetailPage = () => {
     getFarmstand();
   }, [runGet]);
 
+  const ratingsSum = () => {
+    console.log("farmstand: ", farmstand)
+    if (farmstand && farmstand.comments.length > 0) {
+    let sum = 0
+    for (const i of farmstand.comments){
+      sum += i.rating
+    }
+    return sum;
+  }}
+
+  const avgRating = ratingsSum()/farmstand.comments.length
+
   // const isLoading = useSelector((state) => state.farmstands.isLoading);
   // const errMsg = useSelector((state) => state.farmstands.errMsg);
   let content = null;
@@ -59,12 +71,12 @@ const FarmstandDetailPage = () => {
   return (
     /* will change to content once is loading and error setup */
     <Container>
-      <SubHeader current={farmstand.farmstandName} detail={true} />
+      <SubHeader current={farmstand.farmstandName} detail={true} avgRating={avgRating} />
       <Row>
         <Col md={{ size: 5 }} className="my-2">
           <FarmstandDetail farmstand={farmstand} />
         </Col>
-        <Col md={{ size: "auto", offset: 1 }} className="my-2">
+        <Col md={{ size: 6, offset: 1 }} className="my-2">
           <CommentsList farmstandId={farmstandId} />
         </Col>
       </Row>

@@ -7,16 +7,16 @@ import {
   selectFeaturedFarmstands,
   selectAllFarmstands,
 } from "../farmstands/farmstandFilter";
-import { MapContext } from "../App";
+import { FarmstandsContext } from "../App";
 
 //bring farmstands useState array to App.js and useContext for Map.js and FarmstandsList.js.  Allow changing filter and radius parameters on this page
 
 const FarmstandList = () => {
-  const { farmstands, setFarmstands } = useContext(MapContext);
+  const { farmstands, setFarmstands } = useContext(FarmstandsContext);
   console.log("featured farmstands: ", farmstands);
   return (
     <Row>
-      <h1 className="text-center">All Farmstands Within XXX Miles</h1>
+      <h3 className="text-center">All Farmstands Within Current Map View</h3>
       {farmstands.map((item, id) => {
         const { isLoading, errMsg } = item;
         if (isLoading) {

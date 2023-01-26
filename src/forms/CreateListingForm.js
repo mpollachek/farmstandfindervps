@@ -18,6 +18,8 @@ import MultipleFileUpload from "../utils/MultipleFileUpload";
 import Axios from "axios";
 import { Dropzone, FileItem, FullScreenPreview } from "@dropzone-ui/react";
 
+/* Create duplicate NewFarmstand.js and CreateListingForm.js files and remove ability to use address.  Free geocoding has been inaccurate and finding locations on map is easier */
+
 const CreateListingForm = ({
   addressState = false,
   latLongState = true,

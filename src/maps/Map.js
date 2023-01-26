@@ -58,8 +58,8 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import UserLoginForm from "../forms/UserLoginForm";
 import UserModal from "../user/UserModal";
 import axios from "axios";
-import { UserContext } from "../App";
-import { MapContext } from "../App";
+import { UserContext, MapContext, FarmstandsContext } from "../App";
+import { Navigation } from "@mui/icons-material";
 
 /* Add a List view button that will display all farmstands on mapview current boundaries */
 
@@ -67,7 +67,8 @@ const { BaseLayer } = LayersControl;
 
 function Map() {
   const { userId, setUserId, userName, setUserName } = useContext(UserContext);
-  const { farmstands, setFarmstands } = useContext(MapContext);
+  const { farmstands, setFarmstands } = useContext(FarmstandsContext);
+  const { mapCenter, setMapCenter } = useContext(MapContext)
 
   //const [myLocation, setMyLocation] = useState({lat: 51.505, lng: -0.09});
   const [myLocation, setMyLocation] = useState([51.505, -0.09]);
@@ -94,9 +95,6 @@ function Map() {
   const [distance, setDistance] = useState(null);
 
   const [farmIds, setFarmIds] = useState([]);
-
-  //const [mapCenter, setMapCenter] = useState({lat: 51.505, lng: -0.09})
-  const [mapCenter, setMapCenter] = useState([51.505, -0.09]);
 
   // sidebar states:
   const [sidebarProducts, setSidebarProducts] = useState([]);
@@ -162,6 +160,7 @@ function Map() {
         // const long = position.coords.longitude;
         // console.log("position.coords.latitude: ", position.coords.latitude)
         setMapCenter([position.coords.latitude, position.coords.longitude]);
+        
         // console.log("2: ",  mapCenter);
       });
     }
