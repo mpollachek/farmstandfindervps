@@ -21,14 +21,17 @@ import "../css/FarmstandDetail.css";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { UserContext } from "../App";
+import GMapsIconOld from '../assets/google-maps-old.2048x2048.ico'
 
 const FarmstandDetail = ({ farmstand }) => {
-  const { images, farmstandName, description, products, _id } = farmstand;
+  const { images, farmstandName, description, products, _id, location } = farmstand;
 
   const { userId, userName, setUserId, setUserName } = useContext(UserContext);
   console.log("farmstand: ", farmstand);
 
   const imageLink = `http://localhost:8080/images/${_id}/`;
+  const lat = location.coordinates[1]
+  const long = location.coordinates[0]
 
   const [isFavorite, setIsFavorite] = useState(false);
   const [runGet, setRunGet] = useState(false);
@@ -212,11 +215,15 @@ const FarmstandDetail = ({ farmstand }) => {
             </CardTitle>
           </Col>
           <Col md="4">
-            {/* fav heart button. solid if in fav array, border if ! */}
-            {/* { userId ? <FavSolid /> : <FavBorder /> } */}
+          <a 
+            href = {`https://www.google.com/maps/search/?api=1&query=${lat},${long}`}
+            target="blank"
+            >
+            <img src={GMapsIconOld} style={{width:'50px'}} className='mt-1' />
+            </a>
             {isFavorite ? (
               <IconButton onClick={favoriteToggle}>
-                <FavoriteIcon fontSize="large" color="error" />
+                <FavoriteIcon fontSize="large" style={{color: 'red'}} />
               </IconButton>
             ) : (
               <IconButton onClick={favoriteToggle}>

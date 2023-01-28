@@ -7,6 +7,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { divIcon } from "leaflet";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { selectFavoriteFarmstandIds } from "../farmstands/farmstandFilter";
 
 const iconMarkup = renderToStaticMarkup(
   <AgricultureIcon
@@ -25,82 +26,37 @@ const farmIcon = divIcon({
 });
 
 const MapList = ({ farmstands }) => {
-  // const [farmstands, setFarmstands] = useState([]);
+  
+  const [favoriteFarmstands, setFavoriteFarmstands] = useState([]);
+  const [runGet, setRunGet] = useState(false);
 
-  // const selectAllFarmstands = async () => {
-  //   let allFarms = await axios.get(`http://localhost:8080/api/farms`, {
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       }});
-  //       console.log("response: " + JSON.stringify(allFarms.data));
-  //       setFarmstands(JSON.stringify(allFarms.data));
-  //     }
+  const getFavorites = async () => {
+    if (runGet) {
+      //need to make empty array and add all ids 
+      const allFavorites = await selectFavoriteFarmstandIds();
+      console.log("allFavorites: ", allFavorites);
+      setFavoriteFarmstands(allFavorites);
+      setRunGet(false);
+    }
+  };
 
-  // useEffect(() => {
-  //   selectAllFarmstands();
-  // }, []);
+  useEffect(() => {
+    setRunGet(true);
+  }, []);
 
-  // Try conditional rendering in Map.js. set farmstands before rendering
-
-  // const getFarmstands = () => {
-  //   const allFarms = selectAllFarmstands();
-  //   setFarmstands(JSON.stringify(allFarms.data));
-  //   console.log("current farmstands: " + allFarms.data);
-  //   console.log("JSON stringify current farmstands: " + JSON.stringify(allFarms.data));
-  // }
-
-  // useEffect(() => {
-  //   setFarmstands(selectAllFarmstands())
-  // }, [])
-
-  // useEffect(() => {
-  //   let allFarms = selectAllFarmstands( async (response) => {
-  //     await console.log("farmstands response: " + response)
-  //   });
-  //   setFarmstands(allFarms)
-  //   console.log("current farmstands: " + allFarms);
-  //   console.log("JSON stringify current farmstands: " + JSON.stringify(allFarms));
-  // }, []);
-
-  console.log("got here");
-
-  //   return (
-  //     <Row className="ms-auto">
-  //       { useEffect(() => {
-  //         console.log("got here 2")
-  //       // let allFarms = selectAllFarmstands(() => {
-  //       //   setFarmstands(allFarms);
-
-  //       console.log("farmstands: " + farmstands);
-  //       farmstands.map((farmstand) => {
-  //         console.log("farmstand: " + farmstand)
-  //         console.log("farmstand longitude: " + farmstand.location.coordinates[1])
-  //         console.log("farmstand longitude: " + farmstand.location.coordinates[0])
-  //         return (
-  //           <Marker key={farmstand.id}
-  //             position={[farmstand.location.coordinates[1], farmstand.location.coordinates[0]]}
-  //             icon={farmIcon}
-  //           >
-  //             <Popup minWidth="250">
-  //               <Col className="mx-2 mt-3" >
-  //               <FarmstandCard item={farmstand} />
-  //               <Row className="mx-1 mt-3" style={{ fontSize: 20 }}>{farmstand.description}</Row>
-  //               </Col>
-  //             </Popup>
-  //           </Marker>
-  //         );
-  //       // })
-  //     });
-  //     }, [])}
-  //     </Row>
-  //   );
-  // };
+  useEffect(() => {
+    getFavorites();
+  }, [runGet]);
 
   return (
     <Row className="ms-auto">
       {console.log("farmstands: ", farmstands)}
       {console.log("type of farmstands: " + typeof farmstands)}
       {farmstands.map((farmstand) => {
+        let favorite = false
+        if (favoriteFarmstands.includes(farmstand._id)){
+          favorite = true
+        }
         console.log(farmstand);
         console.log(
           "lat, long: " +
@@ -109,6 +65,7 @@ const MapList = ({ farmstands }) => {
             farmstand.location.coordinates[0]
         );
         console.log("farmstandid: ", farmstand._id);
+        console.log("favorites list: ", favoriteFarmstands)
         return (
           <Marker
             key={farmstand._id}
@@ -120,7 +77,7 @@ const MapList = ({ farmstands }) => {
           >
             <Popup minWidth="250">
               <Col className="mx-2 mt-3">
-                <FarmstandCard item={farmstand} />
+                <FarmstandCard item={farmstand} favorite={favorite} getFavorites={getFavorites} setRunGet={setRunGet} />
                 {/* <Row className="mx-1 mt-3" style={{ fontSize: 20 }}>{farmstand.description}</Row> */}
               </Col>
             </Popup>

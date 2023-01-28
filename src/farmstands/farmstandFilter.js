@@ -119,3 +119,18 @@ export const selectFavoriteFarmstands = async () => {
   console.log("favorites response: ", userFavorites);
   return userFavorites.data;
 };
+
+export const selectFavoriteFarmstandIds = async () => {
+  const token = await localStorage.getItem("token");
+  let userFavorites = await axios.get(
+    `http://localhost:8080/api/users/favoritesIdList`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  console.log("favorites response: ", userFavorites);
+  return userFavorites.data;
+};

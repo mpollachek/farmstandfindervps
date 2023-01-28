@@ -8,15 +8,20 @@ import {
   ModalHeader,
   ModalFooter,
   ModalBody,
+  Container,
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import { useContext, useState } from "react";
 import { UserContext, MapContext } from "../App";
 import { IconButton, Divider } from "@mui/material";
+import '../css/SubHeader.css'
 import StarIcon from '@mui/icons-material/Star';
+import StarHalfIcon from "@mui/icons-material/StarHalf";
+import StarOutlineIcon from "@mui/icons-material/StarOutline";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import UserLoginForm from "../forms/UserLoginForm";
 import UserModal from "../user/UserModal";
+import ReactStars from "react-rating-stars-component";
 
 const SubHeader = ({ current, detail, avgRating }) => {
 
@@ -31,7 +36,22 @@ const SubHeader = ({ current, detail, avgRating }) => {
   // Need to bring map center into subheader so that when map view is clicked, center of map can remain the same
   console.log("avgRating: ", avgRating)
 
+  const starsRating = {
+    name: "rating",
+    count: 5,
+    color: "black",
+    activeColor: "#f79707",
+    value: avgRating,
+    a11y: true,
+    isHalf: true,
+    emptyIcon: <StarOutlineIcon className="stars" />,
+    halfIcon: <StarHalfIcon className="stars" />,
+    filledIcon: <StarIcon className="stars" />,
+    edit: false,
+  };
+
   return (
+    <Row>
     <Row style={{ marginTop: "1%" }}>
       <Col md={4}>
         <Breadcrumb>
@@ -45,18 +65,6 @@ const SubHeader = ({ current, detail, avgRating }) => {
           )}
           <BreadcrumbItem active>{current}</BreadcrumbItem>
         </Breadcrumb>
-        <Row>
-          <Col className="col-8">
-            <h3>{current}</h3>
-            </Col>
-            <Col className="text-end">
-            {avgRating > 0 ? (
-                <h4>
-                <StarIcon style={{color: '#f79707', fontWeight: 'bold'}}  /> {avgRating}
-                </h4>
-              ) : null}
-          </Col>
-        </Row>
       </Col>
       <Col md={4} className="text-center">
         <div>
@@ -103,6 +111,19 @@ const SubHeader = ({ current, detail, avgRating }) => {
       </Col>
       <hr />
     </Row>
+    <Row className="text-center" style={{fontWeight: 'bold', fontSize: '2em'}}>
+      <Col>
+      <div className="title d-inline" >{current}</div>
+      {avgRating > 0 ? (
+        <div className="title d-inline ms-5"  >
+          {avgRating}
+          <StarIcon style={{color: "#f79707"}} />
+          {/* <ReactStars {...starsRating} className='stars' /> */}
+        </div>
+        ) : null}
+        </Col>
+  </Row>
+  </Row>
   );
 };
 

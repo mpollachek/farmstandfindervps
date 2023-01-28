@@ -43,6 +43,8 @@ import "../css/MapsPage.css";
 import MapList from "./MapList";
 import CreateListingForm from "../forms/CreateListingForm";
 import NewFarmstand from "../forms/NewFarmstand";
+import CreateListingFormNoAddress from "../forms/CreateListingFormNoAddress";
+import NewFarmstandNoAddress from "../forms/NewFarmstandNoAddress";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import SheepLogo from "../assets/sheep.jpg";
 //import FormModal from "../../components/FormModal";
@@ -366,7 +368,7 @@ function Map() {
                 How will you enter the farmstand's location?
               </ModalHeader>
               <ModalBody>
-                <NewFarmstand
+                <NewFarmstandNoAddress
                   toggle={toggle}
                   toggle2={toggle2}
                   lat={lat}
@@ -381,7 +383,7 @@ function Map() {
             <Modal isOpen={modal2} toggle={toggle2} size="lg">
               <ModalHeader>Modal title 2</ModalHeader>
               <ModalBody>
-                <CreateListingForm lat={lat} long={long} />
+                <CreateListingFormNoAddress lat={lat} long={long} />
               </ModalBody>
             </Modal>
           </Control>

@@ -48,7 +48,7 @@ const FarmstandDetailPage = () => {
     return sum;
   }}
 
-  const avgRating = ratingsSum()/farmstand.comments.length
+  const avgRating = (ratingsSum()/farmstand.comments.length).toFixed(1)
 
   // const isLoading = useSelector((state) => state.farmstands.isLoading);
   // const errMsg = useSelector((state) => state.farmstands.errMsg);
