@@ -54,6 +54,8 @@ const CreateListingFormNoAddress = ({lat, long}) => {
 
   const initialValues = {
     farmstandName: "",
+    farmstandType: [],
+    seasons: "",
     image: image,
     description: "",
     products: [""],
@@ -87,6 +89,7 @@ const CreateListingFormNoAddress = ({lat, long}) => {
     console.log("files: " + JSON.stringify(files));
     console.log("form values:", values);
     console.log("in JSON format:", JSON.stringify(values));
+    console.log("farmstandType: ", values.farmstandType)
     const productsString = values.products.toString();
     const productsArray = productsString.split(',')
     console.log("productsString: ", productsString)
@@ -97,6 +100,8 @@ const CreateListingFormNoAddress = ({lat, long}) => {
       formData.append("image", i);
     }
     formData.append("farmstandName", values.farmstandName);
+    formData.append("farmstandType", JSON.stringify(values.farmstandType));
+    formData.append("seasons", values.seasons);
     formData.append("description", values.description);
     formData.append("latitude", values.latitude);
     formData.append("longitude", values.longitude);
@@ -137,7 +142,12 @@ const CreateListingFormNoAddress = ({lat, long}) => {
 
         <FormGroup row>
           <Col md="6">
-            <Label htmlFor="farmstandName">Farmstand Name</Label>
+            <Label htmlFor="farmstandName" >
+              <h5 style={{fontWeight: 'bold'}}>
+              Farmstand Name
+              </h5>
+            </Label>
+            
             <br />
             <Field
               className="form-control"
@@ -149,6 +159,53 @@ const CreateListingFormNoAddress = ({lat, long}) => {
             </ErrorMessage>
           </Col>
         </FormGroup>
+
+        <FormGroup row check >
+        <h5 style={{fontWeight: 'bold'}}>
+        Farmstand Type/Services (check all that apply)
+        </h5>
+          <Col > 
+            <Label check md={3} sm={6} xs={12}>
+              <Field type='checkbox' name="farmstandType" value='produce' />Produce
+            </Label>          
+            <Label check md={3} sm={6} xs={12}>
+              <Field type='checkbox' name="farmstandType" value='meat' />Meat
+            </Label>          
+            <Label check  md={3} sm={6} xs={12}>
+              <Field type='checkbox' name="farmstandType" value='dairy' />Dairy
+            </Label>
+            <Label check  md={3} sm={6} xs={12}>
+              <Field type='checkbox' name="farmstandType" value='eggs' />Eggs
+            </Label>
+            <Label check  md={3} sm={6} xs={12}>
+              <Field type='checkbox' name="farmstandType" value='farmersMarket' />Farmers Market
+            </Label>
+            <Label check  md={3} sm={6} xs={12}>
+              <Field type='checkbox' name="farmstandType" value='gardenCenter' />Garden Center
+            </Label>
+            <Label check  md={3} sm={6} xs={12}>
+              <Field type='checkbox' name="farmstandType" value='playArea' />Play Area
+            </Label>
+            <Label check md={3} sm={6} xs={12}>
+              <Field type='checkbox' name="farmstandType" value='therapy' />Therapy
+            </Label>
+          </Col>
+        </FormGroup>
+
+        <FormGroup row check >
+        <h5 style={{fontWeight: 'bold'}}>
+        Seasons Open (seasonal during harvest time or year round)
+        </h5>
+          <Col > 
+            <Label check md={3} sm={6} xs={12}>
+              <Field type='radio' name="seasons" value='yearRound' />Year Round
+            </Label>
+            <Label check md={3} sm={6} xs={12}>
+              <Field type='radio' name="seasons" value='harvest' />harvest
+            </Label>
+          </Col>
+        </FormGroup>
+
 
         <FormGroup row>
           <Col md="6">
@@ -182,7 +239,11 @@ const CreateListingFormNoAddress = ({lat, long}) => {
         </FormGroup>
 
         <FormGroup row>
-          <Label htmlFor="description">Description</Label>
+          <Label htmlFor="description">
+            <h5 style={{fontWeight: 'bold'}}>
+              Description
+            </h5>  
+          </Label>
           <Col>
             <Field
               className="form-control"
@@ -194,7 +255,11 @@ const CreateListingFormNoAddress = ({lat, long}) => {
         </FormGroup>
 
         <FormGroup row className="form-control">
-          <label htmlFor="products">Products For Sale</label>
+          <label htmlFor="products">
+            <h5 style={{fontWeight: 'bold'}}>
+            Products For Sale
+            </h5>  
+          </label>
           <Col>
             <FieldArray name="products" type="file">
               {(fieldArrayProps) => {
@@ -271,7 +336,11 @@ const CreateListingFormNoAddress = ({lat, long}) => {
       />
     </Dropzone> */}
 
-          <label htmlFor="image">Upload Farmstand Images</label>
+          <label htmlFor="image" >
+            <h5 style={{fontWeight: 'bold'}}>
+              Upload Farmstand Images
+            </h5>
+          </label>
           <Col>
             <Input
               type="file"

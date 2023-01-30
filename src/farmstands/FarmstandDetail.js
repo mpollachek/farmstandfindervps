@@ -1,4 +1,5 @@
 import {
+  Button,
   Card,
   CardImg,
   CardText,
@@ -13,9 +14,13 @@ import {
   CarouselIndicators,
   CarouselCaption,
   Row,
+  Input,
+  FormGroup,
+  FormText
 } from "reactstrap";
 import { useState, useContext, useEffect } from "react";
-import axios from "axios";
+import axios, {Axios} from "axios";
+import { Formik, Field, Form, } from "formik";
 import { IconButton } from "@mui/material";
 import "../css/FarmstandDetail.css";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -35,6 +40,9 @@ const FarmstandDetail = ({ farmstand }) => {
 
   const [isFavorite, setIsFavorite] = useState(false);
   const [runGet, setRunGet] = useState(false);
+
+  const [files, setFiles] = useState([]);
+  const [image, setImage] = useState([]);
 
   const favoriteToggle = async () => {
     const token = await localStorage.getItem("token");
@@ -116,6 +124,33 @@ const FarmstandDetail = ({ farmstand }) => {
       });
   }, []);
   /* end useEffect to check and set logged in status */
+
+  const handleSubmit = async(values) => {
+    const formData = new FormData();
+    for (const i of image) {
+      formData.append("image", i);
+    }
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      };
+      await axios.put(
+        `http://localhost:8080/api/farms/${_id}/images`,
+        formData,
+        config
+      ).then((response) => {
+        console.log("post: ", values);
+        console.log("response: " + JSON.stringify(response));
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+
+
 
   /* Carousel */
 
@@ -231,6 +266,39 @@ const FarmstandDetail = ({ farmstand }) => {
               </IconButton>
             )}
           </Col>
+        </Row>
+        <Row>
+        <Formik
+          initialValues={image}
+          onSubmit={handleSubmit}
+        >
+          <Form>
+            <FormGroup row>
+
+          <label htmlFor="image" >
+            <h5 style={{fontWeight: 'bold'}}>
+              Upload Farmstand Images
+            </h5>
+          </label>
+          <Col>
+            <Input
+              type="file"
+              multiple="multiple"
+              name="image"
+              id="exampleFile"
+              value={undefined}
+              onChange={(e) => setImage(e.target.files)}
+            />
+            <FormText color="muted">              
+              <Button type="submit" color="primary" className="me-2">
+              Add images
+            </Button>
+            Select 1 or multiple images
+            </FormText>
+          </Col>
+        </FormGroup>
+          </Form>
+        </Formik>          
         </Row>
 
         <ListGroup>

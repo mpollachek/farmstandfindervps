@@ -111,6 +111,7 @@ const CreateListingForm = ({
 
   const initialValues = {
     farmstandName: "",
+    farmstandType: [""] ,
     image: image,
     description: "",
     products: [""],
@@ -155,6 +156,7 @@ const CreateListingForm = ({
       formData.append("image", i);
     }
     formData.append("farmstandName", values.farmstandName);
+    formData.append("farmstandType", values.farmstandType);
     formData.append("description", values.description);
     formData.append("latitude", values.latitude);
     formData.append("longitude", values.longitude);

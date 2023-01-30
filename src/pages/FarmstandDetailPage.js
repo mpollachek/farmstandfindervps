@@ -10,7 +10,8 @@ import Loading from "../components/Loading";
 
 const FarmstandDetailPage = () => {
   const [runGet, setRunGet] = useState(false);
-  const [farmstand, setFarmstand] = useState({ products: [], images: [], comments: [] });
+  const [runGetRating, setRunGetRating] = useState(false);
+  const [farmstand, setFarmstand] = useState({ products: [], images: [], comments: [], location: {coordinates: []} });
 
   const { farmstandId } = useParams();
   console.log("farmstandId: ", farmstandId);
@@ -39,16 +40,25 @@ const FarmstandDetailPage = () => {
   }, [runGet]);
 
   const ratingsSum = () => {
-    console.log("farmstand: ", farmstand)
-    if (farmstand && farmstand.comments.length > 0) {
-    let sum = 0
-    for (const i of farmstand.comments){
-      sum += i.rating
+    if (runGetRating){
+      console.log("farmstand: ", farmstand)
+      if (farmstand && farmstand.comments.length > 0) {
+        let sum = 0
+        for (const i of farmstand.comments){
+          sum += i.rating
     }
     return sum;
-  }}
+  }}}
 
   const avgRating = (ratingsSum()/farmstand.comments.length).toFixed(1)
+
+  useEffect(() => {
+    setRunGetRating(true)
+  }, [farmstand])
+
+  useEffect(() => {
+    ratingsSum();
+  }, [runGetRating])
 
   // const isLoading = useSelector((state) => state.farmstands.isLoading);
   // const errMsg = useSelector((state) => state.farmstands.errMsg);
