@@ -28,38 +28,45 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { UserContext } from "../App";
 import GMapsIconOld from '../assets/google-maps-old.2048x2048.ico'
 import { selectUserOwned } from "../user/UserFns";
+import OwnerComment from "../features/comments/OwnerComment";
+import { selectOwnerCommentsByFarmstandId } from "../features/comments/commentsFns";
+import OwnerCommentForm from "../forms/OwnerCommentForm";
 
-const FarmstandDetail = ({ farmstand }) => {
-  const { images, farmstandName, description, products, _id, location } = farmstand;
+const FarmstandDetail = ({ farmstand, setRunGetFarmstands }) => {
+  const { images, farmstandName, description, products, _id: farmstandId, location, owner, ownercomments: ownerComments } = farmstand;
 
   const { userId, userName, setUserId, setUserName, userOwned, setUserOwned } = useContext(UserContext);
   console.log("farmstand: ", farmstand);
 
-  const imageLink = `http://localhost:8080/images/${_id}/`;
+  const imageLink = `http://localhost:8080/images/${farmstandId}/`;
   const lat = location.coordinates[1]
   const long = location.coordinates[0]
 
   const [isFavorite, setIsFavorite] = useState(false);
   const [runGet, setRunGet] = useState(false);
 
+  // const [isOwner, setIsOwner] = useState(false);
+  // const [runGetIsOwner, setRunGetIsOwner] = useState(false);
+
   const [files, setFiles] = useState([]);
   const [image, setImage] = useState([]);
 
-  const [ownerComments, setOwnerComments] = useState([
-    {
-      ownerCommentId: "",
-      text: "",
-      author: "",
-      date: "2000-08-04T20:11Z",
-      updated: "",
-    },
-  ]);
+  // const [runGetOwnerComments, setRunGetOwnerComments] = useState(false)
+  // const [ownerComments, setOwnerComments] = useState([
+  //   {
+  //     ownerCommentId: "",
+  //     text: "",
+  //     author: "",
+  //     date: "2000-08-04T20:11Z",
+  //     updated: "",
+  //   },
+  // ]);
 
   /* Favorite Functions */
   const favoriteToggle = async () => {
     const token = await localStorage.getItem("token");
     let favToggle = await axios.put(
-      `http://localhost:8080/api/users/isfavorite/${_id}`,
+      `http://localhost:8080/api/users/isfavorite/${farmstandId}`,
       {},
       {
         headers: {
@@ -74,12 +81,12 @@ const FarmstandDetail = ({ farmstand }) => {
   };
 
   const getIsFavorite = async () => {
-    console.log("_id: ", _id);
+    console.log("_id: ", farmstandId);
     console.log("runGet: ", runGet);
     const token = await localStorage.getItem("token");
-    if (runGet && _id) {
+    if (runGet && farmstandId) {
       let fav = await axios.get(
-        `http://localhost:8080/api/users/isfavorite/${_id}`,
+        `http://localhost:8080/api/users/isfavorite/${farmstandId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -104,12 +111,12 @@ const FarmstandDetail = ({ farmstand }) => {
   // }, [_id])
 
   useEffect(() => {
-    console.log("farmstandId: ", _id);
-    if (_id) {
+    console.log("farmstandId: ", farmstandId);
+    if (farmstandId) {
       setRunGet(true);
       console.log("setrunget farmstanddetail");
     }
-  }, [_id]);
+  }, [farmstandId]);
 
   useEffect(() => {
     getIsFavorite();
@@ -138,6 +145,29 @@ const FarmstandDetail = ({ farmstand }) => {
   }, []);
   /* end useEffect to check and set logged in status */
 
+  /* Retrieve Owner Comments */
+  // const getOwnerComments = async () => {
+  //   if (runGetOwnerComments) {
+  //     const ownerComments = await selectOwnerCommentsByFarmstandId(`${farmstandId}`);
+  //     console.log("comments:", ownerComments);
+  //     setOwnerComments(ownerComments);
+  //     setRunGetOwnerComments(false);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   let timer = setTimeout(() => {
+  //     console.log("setRunGetOwnerComments true");
+  //     setRunGetOwnerComments(true);
+  //   }, 0);
+  //   return () => clearTimeout(timer);
+  // }, []);
+
+  // useEffect(() => {
+  //   getOwnerComments();
+  // }, [runGetOwnerComments]);
+  /* End Retrieve Owner Comments */
+
   /* Add images to farmstand */
   const handleSubmit = async(values) => {
     const formData = new FormData();
@@ -151,7 +181,7 @@ const FarmstandDetail = ({ farmstand }) => {
         },
       };
       await axios.put(
-        `http://localhost:8080/api/farms/${_id}/images`,
+        `http://localhost:8080/api/farms/${farmstandId}/images`,
         formData,
         config
       ).then((response) => {
@@ -164,17 +194,17 @@ const FarmstandDetail = ({ farmstand }) => {
   }
   /* End Add Images to Farmstand */
 
-  const getIsOwner = async () => {
-      let ownedArray = await selectUserOwned();
-      console.log("owner response: ", ownedArray.data);
-      console.log("ownedArray:", ownedArray);
-      setUserOwned(ownedArray.data);
-      console.log("userOwned: ", userOwned);
-  };
+  // const getIsOwner = async () => {
+  //     let ownedArray = await selectUserOwned();
+  //     console.log("owner response: ", ownedArray.data);
+  //     console.log("ownedArray:", ownedArray);
+  //     setUserOwned(ownedArray.data);
+  //     console.log("userOwned: ", userOwned);
+  // };
 
   const ownerSubmit = async (values) => {
     const token = await localStorage.getItem("token");
-      let ownerToggle = await axios.put(`http://localhost:8080/api/users/owned/${_id}`,
+      let ownerToggle = await axios.put(`http://localhost:8080/api/users/owned/${farmstandId}`,
       {},
       {
         headers: {
@@ -184,7 +214,7 @@ const FarmstandDetail = ({ farmstand }) => {
       }
     )
   console.log("ownerToggle: ", ownerToggle)
-  getIsOwner();
+  // getIsOwner();
   };
 
   /* Carousel */
@@ -363,25 +393,28 @@ const FarmstandDetail = ({ farmstand }) => {
         </ListGroup>
       </Card>
 
+      {/* Below owner messages and buttons need to re-render after change 
+      Owner Comments couild be pulled in separate function so as to only rerender comments */} 
+
+      {/* Can remove owner from usercontext in app.js   */}
+
       {/* If owner, post message button  */}
-      {userOwned.includes(_id) ? (
-        <Button onClick={ownerSubmit} color="primary" className="mt-3">
-        Post Message
-        </Button>
+      {owner.includes(userId) ? (
+        <OwnerCommentForm farmstandId={farmstandId} setRunGetFarmstands={setRunGetFarmstands}/>
       ) : null}
 
       {/* If owner messages, display messages  */}
       <Row>
         {ownerComments && ownerComments.length > 0 ? (
           <Col className="ms-1">
-            <h4>Comments</h4>
-            {ownerComments.map((comment) => {
-              return <ownerComment key={ownerComment.commentId} ownerComment={ownerComment} />;
+            <h4>Updates from Owner</h4>
+            {ownerComments.map((ownerComment) => {
+              return <OwnerComment key={ownerComment.commentId} ownerComment={ownerComment} />;
             })}
           </Col>
         ) : (
           <Col className="ms-1 ">
-            There are no comments for this farmstand yet.
+            There are no updates for this farmstand yet.
           </Col>
         )}
       </Row>
@@ -389,7 +422,7 @@ const FarmstandDetail = ({ farmstand }) => {
       {/* Claim/reliquish ownership button  */}
       {userId ? (
         <div>
-        {userOwned.includes(_id) ? (
+        {owner.includes(userId) ? (
         <Button onClick={ownerSubmit} color="primary" className="mt-3">
           I don't own this farmstand
         </Button>) :

@@ -2,6 +2,7 @@ import { Container, Row, Col } from "reactstrap";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { selectFarmstandById } from "../farmstands/farmstandFilter";
+import { selectOwnerCommentsByFarmstandId } from "../features/comments/commentsFns";
 import FarmstandDetail from "../farmstands/FarmstandDetail";
 import CommentsList from "../features/comments/CommentList";
 import SubHeader from "../components/SubHeader";
@@ -9,35 +10,69 @@ import Error from "../components/Error";
 import Loading from "../components/Loading";
 
 const FarmstandDetailPage = () => {
-  const [runGet, setRunGet] = useState(false);
+  const [runGetFarmstands, setRunGetFarmstands] = useState(false);
   const [runGetRating, setRunGetRating] = useState(false);
-  const [farmstand, setFarmstand] = useState({ products: [], images: [], comments: [], location: {coordinates: []} });
+  const [farmstand, setFarmstand] = useState({ products: [], images: [], comments: [], owner: [], location: {coordinates: []} });
+
+  // const [runGetOwnerComments, setRunGetOwnerComments] = useState(false)
+  // const [ownerComments, setOwnerComments] = useState([
+  //   {
+  //     ownerCommentId: "",
+  //     text: "",
+  //     author: "",
+  //     date: "2000-08-04T20:11Z",
+  //     updated: "",
+  //   },
+  // ]);
 
   const { farmstandId } = useParams();
   console.log("farmstandId: ", farmstandId);
 
   const getFarmstand = async () => {
     console.log("run getFarmstand");
-    if (runGet) {
+    if (runGetFarmstands) {
       console.log("run getFarmstand2");
       const farm = await selectFarmstandById(farmstandId);
       console.log("farm:", farm);
       setFarmstand(farm);
-      setRunGet(false);
+      setRunGetFarmstands(false);
     }
   };
 
   useEffect(() => {
     let timer = setTimeout(() => {
       console.log("setrunget true");
-      setRunGet(true);
+      setRunGetFarmstands(true);
     }, 0);
     return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
     getFarmstand();
-  }, [runGet]);
+  }, [runGetFarmstands]);
+
+  /* Retrieve Owner Comments */
+  // const getOwnerComments = async () => {
+  //   if (runGetOwnerComments) {
+  //     const ownerComments = await selectOwnerCommentsByFarmstandId(`${farmstandId}`);
+  //     console.log("comments:", ownerComments);
+  //     setOwnerComments(ownerComments);
+  //     setRunGetOwnerComments(false);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   let timer = setTimeout(() => {
+  //     console.log("setRunGetOwnerComments true");
+  //     setRunGetOwnerComments(true);
+  //   }, 0);
+  //   return () => clearTimeout(timer);
+  // }, []);
+
+  // useEffect(() => {
+  //   getOwnerComments();
+  // }, [runGetOwnerComments]);
+  /* End Retrieve Owner Comments */
 
   const ratingsSum = () => {
     if (runGetRating){
@@ -72,7 +107,7 @@ const FarmstandDetailPage = () => {
   if (farmstand.farmstandName) {
     content = (
       <>
-        <FarmstandDetail farmstand={farmstand} />
+        <FarmstandDetail farmstand={farmstand} setRunGetFarmstands={setRunGetFarmstands} />
         <CommentsList farmstandId={farmstandId} />
       </>
     );
@@ -84,10 +119,10 @@ const FarmstandDetailPage = () => {
       <SubHeader current={farmstand.farmstandName} detail={true} avgRating={avgRating} />
       <Row>
         <Col md={{ size: 5 }} className="my-2">
-          <FarmstandDetail farmstand={farmstand} />
+          <FarmstandDetail farmstand={farmstand}  />
         </Col>
         <Col md={{ size: 6, offset: 1 }} className="my-2">
-          <CommentsList farmstandId={farmstandId} />
+          <CommentsList farmstandId={farmstandId} setRunGetFarmstands={setRunGetFarmstands} />
         </Col>
       </Row>
     </Container>
