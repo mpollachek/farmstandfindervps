@@ -27,11 +27,12 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { UserContext } from "../App";
 import GMapsIconOld from '../assets/google-maps-old.2048x2048.ico'
+import { selectUserOwned } from "../user/UserFns";
 
 const FarmstandDetail = ({ farmstand }) => {
   const { images, farmstandName, description, products, _id, location } = farmstand;
 
-  const { userId, userName, setUserId, setUserName } = useContext(UserContext);
+  const { userId, userName, setUserId, setUserName, userOwned, setUserOwned } = useContext(UserContext);
   console.log("farmstand: ", farmstand);
 
   const imageLink = `http://localhost:8080/images/${_id}/`;
@@ -44,6 +45,17 @@ const FarmstandDetail = ({ farmstand }) => {
   const [files, setFiles] = useState([]);
   const [image, setImage] = useState([]);
 
+  const [ownerComments, setOwnerComments] = useState([
+    {
+      ownerCommentId: "",
+      text: "",
+      author: "",
+      date: "2000-08-04T20:11Z",
+      updated: "",
+    },
+  ]);
+
+  /* Favorite Functions */
   const favoriteToggle = async () => {
     const token = await localStorage.getItem("token");
     let favToggle = await axios.put(
@@ -103,6 +115,7 @@ const FarmstandDetail = ({ farmstand }) => {
     getIsFavorite();
     console.log("farmstanddetail getisfavorite");
   }, [runGet]);
+  /* End Favorite Functions */
 
   /* useEffect to check and set logged in status */
   useEffect(() => {
@@ -125,6 +138,7 @@ const FarmstandDetail = ({ farmstand }) => {
   }, []);
   /* end useEffect to check and set logged in status */
 
+  /* Add images to farmstand */
   const handleSubmit = async(values) => {
     const formData = new FormData();
     for (const i of image) {
@@ -148,9 +162,30 @@ const FarmstandDetail = ({ farmstand }) => {
       console.error(error);
     }
   }
+  /* End Add Images to Farmstand */
 
+  const getIsOwner = async () => {
+      let ownedArray = await selectUserOwned();
+      console.log("owner response: ", ownedArray.data);
+      console.log("ownedArray:", ownedArray);
+      setUserOwned(ownedArray.data);
+      console.log("userOwned: ", userOwned);
+  };
 
-
+  const ownerSubmit = async (values) => {
+    const token = await localStorage.getItem("token");
+      let ownerToggle = await axios.put(`http://localhost:8080/api/users/owned/${_id}`,
+      {},
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+  console.log("ownerToggle: ", ownerToggle)
+  getIsOwner();
+  };
 
   /* Carousel */
 
@@ -243,19 +278,21 @@ const FarmstandDetail = ({ farmstand }) => {
           />
         </Carousel>
         {/* <CardImg top src={imageLink + `${images[0]}`} alt={farmstandName} /> */}
-        <Row className="my-2">
+        <Row className="my-2" >
           <Col md="8">
             <CardTitle className="ms-3 mt-2" tag="h4">
               {farmstandName}
             </CardTitle>
           </Col>
-          <Col md="4">
+          <Col md="4" style={{whiteSpace: 'nowrap'}}  >
           <a 
             href = {`https://www.google.com/maps/search/?api=1&query=${lat},${long}`}
             target="blank"
             >
             <img src={GMapsIconOld} style={{width:'50px'}} className='mt-1' />
             </a>
+            {userId ? ( 
+            <div style={{display: 'inline-block'}} >
             {isFavorite ? (
               <IconButton onClick={favoriteToggle}>
                 <FavoriteIcon fontSize="large" style={{color: 'red'}} />
@@ -264,7 +301,8 @@ const FarmstandDetail = ({ farmstand }) => {
               <IconButton onClick={favoriteToggle}>
                 <FavoriteBorderIcon fontSize="large" />
               </IconButton>
-            )}
+            )} 
+            </div>) : null }
           </Col>
         </Row>
         <Row>
@@ -324,6 +362,43 @@ const FarmstandDetail = ({ farmstand }) => {
           </CardBody>
         </ListGroup>
       </Card>
+
+      {/* If owner, post message button  */}
+      {userOwned.includes(_id) ? (
+        <Button onClick={ownerSubmit} color="primary" className="mt-3">
+        Post Message
+        </Button>
+      ) : null}
+
+      {/* If owner messages, display messages  */}
+      <Row>
+        {ownerComments && ownerComments.length > 0 ? (
+          <Col className="ms-1">
+            <h4>Comments</h4>
+            {ownerComments.map((comment) => {
+              return <ownerComment key={ownerComment.commentId} ownerComment={ownerComment} />;
+            })}
+          </Col>
+        ) : (
+          <Col className="ms-1 ">
+            There are no comments for this farmstand yet.
+          </Col>
+        )}
+      </Row>
+
+      {/* Claim/reliquish ownership button  */}
+      {userId ? (
+        <div>
+        {userOwned.includes(_id) ? (
+        <Button onClick={ownerSubmit} color="primary" className="mt-3">
+          I don't own this farmstand
+        </Button>) :
+        (<Button onClick={ownerSubmit} color="primary" className="mt-3">
+          I own this farmstand
+        </Button>) }
+        </div>
+        ) : null}
+      {/* End Claim/reliquish ownership button  */}
     </Col>
   );
 };

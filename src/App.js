@@ -18,6 +18,7 @@ const App = () => {
 
   const [userId, setUserId] = useState('');
   const [userName, setUserName] = useState('');
+  const [userOwned, setUserOwned] = useState([])
 
   const [farmstands, setFarmstands] = useState([]);
 
@@ -26,7 +27,7 @@ const App = () => {
 
   return (
     <div className="App">
-      <UserContext.Provider value={{userId, setUserId, userName, setUserName}}> 
+      <UserContext.Provider value={{userId, setUserId, userName, setUserName, userOwned, setUserOwned}}> 
       <FarmstandsContext.Provider value={{farmstands, setFarmstands}}>
       <MapContext.Provider value={{mapCenter, setMapCenter, centerParam}}>
       <Routes>             
