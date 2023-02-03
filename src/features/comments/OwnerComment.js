@@ -1,7 +1,8 @@
-import { Button } from "reactstrap";
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { useContext, useState } from "react";
 import { formatDate } from "../../utils/formatDate";
 import { UserContext } from "../../App";
+import axios from "axios";
 import EditIcon from "@mui/icons-material/Edit";
 import EditOwnerCommentForm from "../../forms/EditOwnerCommentForm";
 
@@ -11,6 +12,7 @@ const OwnerComment = ({ ownerComment, farmstandOwner }) => {
 
   const { userId } = useContext(UserContext);
 
+  const [modalOpen, setModalOpen] = useState(false);
   const [editCommentText, setEditCommentText] = useState("")
 
   const TextEdited = () => {
@@ -19,8 +21,22 @@ const OwnerComment = ({ ownerComment, farmstandOwner }) => {
 
   //console.log("farmstandOwner: ", farmstandOwner)
 
-  const deleteSubmit = () => {
-    
+  const deleteSubmit = async () => {
+    const token = localStorage.getItem("token");
+    try {
+      const deleteOwnerComment = await axios.delete(
+        `http://localhost:8080/api/farms/${farmstandId}/ownercomments/${commentId}`,
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+    )
+  console.log("deleteOwnerComment: ", deleteOwnerComment)
+  setModalOpen(false)
+  } catch (error) {
+      console.error(error);
+    }
   }
 
   return (
@@ -35,11 +51,24 @@ const OwnerComment = ({ ownerComment, farmstandOwner }) => {
       {farmstandOwner.includes(userId) ? (
         <div className="justify-content-between">
           <EditOwnerCommentForm farmstandId={farmstandId} commentId={commentId} commentText={commentText} />
-        <Button onClick={deleteSubmit} color="primary" >
+        <Button onClick={() => setModalOpen(true)} color="primary" >
           Delete
         </Button>
         </div>
       ) : null}
+      <Modal isOpen={modalOpen} size='lg'>
+        <ModalHeader toggle={() => setModalOpen(false)}>
+        Are you sure you wish to delete?
+        </ModalHeader>
+        <ModalFooter>
+          <Button onClick={deleteSubmit} color="primary">
+            Delete
+          </Button>
+          <Button onClick={() => setModalOpen(false)} color="primary">
+            Cancel
+          </Button>
+        </ModalFooter>
+      </Modal>
     </div>
   );
 };
