@@ -17,6 +17,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import StarIcon from "@mui/icons-material/Star";
 import StarHalfIcon from "@mui/icons-material/StarHalf";
 import StarOutlineIcon from "@mui/icons-material/StarOutline";
+import Picker, {EmojiStyle} from "emoji-picker-react";
 //import { validateCommentForm } from "../../utils/validateCommentForm";
 //import { postComment } from "./commentsSlice";
 
@@ -24,6 +25,12 @@ const CommentForm = ({ farmstandId }) => {
   const { userId, userName } = useContext(UserContext);
   const [modalOpen, setModalOpen] = useState(false);
   const [rating, setRating] = useState(0);
+  const [textAreaValue, setTextAreaValue] = useState("")
+
+  function onEmojiClick(emojiObject, event) {
+    console.log("emojiData: ", emojiObject)
+    setTextAreaValue((prevText) => prevText + emojiObject.emoji);
+  }
 
   const starsRating = {
     name: "rating",
@@ -55,7 +62,7 @@ const CommentForm = ({ farmstandId }) => {
         `http://localhost:8080/api/farms/${farmstandId}/comments`,
         {
           author: userId,
-          text: values.commentText,
+          text: textAreaValue,
           rating: rating,
           date: new Date(Date.now()).toISOString(),
         },
@@ -65,6 +72,7 @@ const CommentForm = ({ farmstandId }) => {
           },
         }
       );
+      setTextAreaValue("")
       setModalOpen(false)
     } catch (error) {
       console.error(error);
@@ -81,7 +89,7 @@ const CommentForm = ({ farmstandId }) => {
       >
         <EditIcon /> Add Comment
       </Button>
-      <Modal isOpen={modalOpen}>
+      <Modal isOpen={modalOpen} size='lg'>
         <ModalHeader toggle={() => setModalOpen(false)}>
           Add Comment
         </ModalHeader>
@@ -90,27 +98,47 @@ const CommentForm = ({ farmstandId }) => {
             initialValues={{
               rating: rating,
               author: userId,
-              commentText: "",
+              commentText: textAreaValue,
             }}
             onSubmit={handleSubmit}
             //validate={validateCommentForm}
           >
             <Form>
               <FormGroup>
+              <Row>
+                  <Col>
                 <Label htmlFor="rating">Rating</Label>
                 <ReactStars {...starsRating} />
                 <ErrorMessage name="rating">
                   {(msg) => <p className="text-danger">{msg}</p>}
                 </ErrorMessage>
+                </Col>
+                </Row>
               </FormGroup>
               <FormGroup>
+              <Row>
+                  <Col>
                 <Label htmlFor="commentText">Comment</Label>
                 <Field
                   name="commentText"
                   as="textarea"
                   rows="12"
                   className="form-control"
+                  value={textAreaValue}
+                  onChange={(e) => setTextAreaValue(e.target.value)}
                 />
+                <img
+                  className="emoji-icon"
+                  src="https://icons.getbootstrap.com/assets/icons/emoji-smile.svg"
+                  alt=""
+                />
+                </Col>
+                </Row>
+                <Row>
+                  <Col>
+                  <Picker emojiStyle={EmojiStyle.GOOGLE} onEmojiClick={onEmojiClick} width='100%' />
+                  </Col>
+                </Row>
               </FormGroup>
               <Button type="submit" color="primary">
                 Submit

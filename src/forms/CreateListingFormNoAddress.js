@@ -166,28 +166,32 @@ const CreateListingFormNoAddress = ({lat, long}) => {
         </h5>
           <Col > 
             <Label check md={3} sm={6} xs={12}>
-              <Field type='checkbox' name="farmstandType" value='produce' />Produce
+              <Field type='checkbox' name="farmstandType" value='produce' />
+              {" "} Produce
             </Label>          
             <Label check md={3} sm={6} xs={12}>
-              <Field type='checkbox' name="farmstandType" value='meat' />Meat
+              <Field type='checkbox' name="farmstandType" value='meat' />
+              {" "} Meat
             </Label>          
             <Label check  md={3} sm={6} xs={12}>
-              <Field type='checkbox' name="farmstandType" value='dairy' />Dairy
+              <Field type='checkbox' name="farmstandType" value='dairy' />
+              {" "} Dairy
             </Label>
             <Label check  md={3} sm={6} xs={12}>
-              <Field type='checkbox' name="farmstandType" value='eggs' />Eggs
+              <Field type='checkbox' name="farmstandType" value='eggs' />
+              {" "} Eggs
             </Label>
             <Label check  md={3} sm={6} xs={12}>
-              <Field type='checkbox' name="farmstandType" value='farmersMarket' />Farmers Market
+              <Field type='checkbox' name="farmstandType" value='farmersMarket' />{" "} Farmers Market
             </Label>
             <Label check  md={3} sm={6} xs={12}>
-              <Field type='checkbox' name="farmstandType" value='gardenCenter' />Garden Center
+              <Field type='checkbox' name="farmstandType" value='gardenCenter' />{" "} Garden Center
             </Label>
             <Label check  md={3} sm={6} xs={12}>
-              <Field type='checkbox' name="farmstandType" value='playArea' />Play Area
+              <Field type='checkbox' name="farmstandType" value='playArea' />{" "} Play Area
             </Label>
             <Label check md={3} sm={6} xs={12}>
-              <Field type='checkbox' name="farmstandType" value='therapy' />Therapy
+              <Field type='checkbox' name="farmstandType" value='therapy' />{" "} Therapy
             </Label>
           </Col>
         </FormGroup>
@@ -198,10 +202,12 @@ const CreateListingFormNoAddress = ({lat, long}) => {
         </h5>
           <Col > 
             <Label check md={3} sm={6} xs={12}>
-              <Field type='radio' name="seasons" value='yearRound' />Year Round
+              <Field type='radio' name="seasons" value='yearRound' />
+              {" "} Year Round
             </Label>
             <Label check md={3} sm={6} xs={12}>
-              <Field type='radio' name="seasons" value='harvest' />harvest
+              <Field type='radio' name="seasons" value='harvest' />
+              {" "} harvest
             </Label>
           </Col>
         </FormGroup>

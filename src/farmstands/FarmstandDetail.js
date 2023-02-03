@@ -21,7 +21,7 @@ import {
 import { useState, useContext, useEffect } from "react";
 import axios, {Axios} from "axios";
 import { Formik, Field, Form, } from "formik";
-import { IconButton } from "@mui/material";
+import { Divider, IconButton } from "@mui/material";
 import "../css/FarmstandDetail.css";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -31,9 +31,10 @@ import { selectUserOwned } from "../user/UserFns";
 import OwnerComment from "../features/comments/OwnerComment";
 import { selectOwnerCommentsByFarmstandId } from "../features/comments/commentsFns";
 import OwnerCommentForm from "../forms/OwnerCommentForm";
+import AddProductsForm from "../forms/AddProductsForm";
 
-const FarmstandDetail = ({ farmstand, setRunGetFarmstands }) => {
-  const { images, farmstandName, description, products, _id: farmstandId, location, owner, ownercomments: ownerComments } = farmstand;
+const FarmstandDetail = ({ farmstand }) => {
+  const { images, farmstandName, description, products, _id: farmstandId, location, owner: farmstandOwner, ownercomments: ownerComments } = farmstand;
 
   const { userId, userName, setUserId, setUserName, userOwned, setUserOwned } = useContext(UserContext);
   console.log("farmstand: ", farmstand);
@@ -44,6 +45,11 @@ const FarmstandDetail = ({ farmstand, setRunGetFarmstands }) => {
 
   const [isFavorite, setIsFavorite] = useState(false);
   const [runGet, setRunGet] = useState(false);
+
+  // const [ownerMsgSent, setOwnerMsgSent] = useState("")
+  // const handleOwnerMsgSent = (msg) => {
+  //   setOwnerMsgSent(msg)
+  // }
 
   // const [isOwner, setIsOwner] = useState(false);
   // const [runGetIsOwner, setRunGetIsOwner] = useState(false);
@@ -376,7 +382,7 @@ const FarmstandDetail = ({ farmstand, setRunGetFarmstands }) => {
           <CardBody className="ms-3 my-2">
             <CardText>
               <span className="products-list" style={{ fontWeight: "700" }}>
-                Products:
+                Products and Services:
                 <span style={{ fontWeight: "400" }}>
                   {/* <ul>
               {products.map(p => <li>{p}</li>) key=}
@@ -388,6 +394,9 @@ const FarmstandDetail = ({ farmstand, setRunGetFarmstands }) => {
                   </ul>
                 </span>
               </span>
+
+              {/* create add products component in place of below button */}
+              <AddProductsForm farmstandId={farmstandId} />
             </CardText>
           </CardBody>
         </ListGroup>
@@ -399,17 +408,21 @@ const FarmstandDetail = ({ farmstand, setRunGetFarmstands }) => {
       {/* Can remove owner from usercontext in app.js   */}
 
       {/* If owner, post message button  */}
-      {owner.includes(userId) ? (
-        <OwnerCommentForm farmstandId={farmstandId} setRunGetFarmstands={setRunGetFarmstands}/>
+      {farmstandOwner.includes(userId) ? (
+        <OwnerCommentForm farmstandId={farmstandId} />
       ) : null}
+
+      {/* {ownerMsgSent ? (
+        <p>{ownerMsgSent}</p> 
+      ) : null} */}
 
       {/* If owner messages, display messages  */}
       <Row>
         {ownerComments && ownerComments.length > 0 ? (
           <Col className="ms-1">
-            <h4>Updates from Owner</h4>
+            <h4 className="mb-4">Updates from Owner</h4>
             {ownerComments.map((ownerComment) => {
-              return <OwnerComment key={ownerComment.commentId} ownerComment={ownerComment} />;
+              return <OwnerComment key={ownerComment.commentId} ownerComment={ownerComment} farmstandOwner={farmstandOwner} />;
             })}
           </Col>
         ) : (
@@ -422,7 +435,7 @@ const FarmstandDetail = ({ farmstand, setRunGetFarmstands }) => {
       {/* Claim/reliquish ownership button  */}
       {userId ? (
         <div>
-        {owner.includes(userId) ? (
+        {farmstandOwner.includes(userId) ? (
         <Button onClick={ownerSubmit} color="primary" className="mt-3">
           I don't own this farmstand
         </Button>) :

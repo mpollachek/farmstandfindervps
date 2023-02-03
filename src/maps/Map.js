@@ -381,10 +381,13 @@ function Map() {
 
             {/* Modal for createListingForm */}
             <Modal isOpen={modal2} toggle={toggle2} size="lg">
-              <ModalHeader>Modal title 2</ModalHeader>
+              <ModalHeader>Please do not post large commercial chains. Family owned stores OK</ModalHeader>
               <ModalBody>
                 <CreateListingFormNoAddress lat={lat} long={long} />
               </ModalBody>
+              <ModalFooter className="justify-content-center">
+                Thanks for sharing!
+              </ModalFooter>
             </Modal>
           </Control>
 

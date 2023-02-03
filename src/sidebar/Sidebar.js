@@ -89,7 +89,7 @@ const Sidebar = ({
     >
       <Form>
         <Col className="text-center">
-          <strong>Seasons Open</strong> <br />
+          <strong>Filters</strong> <br />
         </Col>
         <FormGroup tag="fieldset">
           <FormGroup row check>

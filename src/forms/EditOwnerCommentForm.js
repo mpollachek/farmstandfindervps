@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import {
   Button,
   Modal,
@@ -16,10 +16,10 @@ import EditIcon from "@mui/icons-material/Edit";
 import Picker, {EmojiStyle} from "emoji-picker-react";
 //import { validateCommentForm } from "../../utils/validateCommentForm";
 
-const OwnerCommentForm = ({ farmstandId }) => {
+const EditOwnerCommentForm = ({ farmstandId, commentId, commentText }) => {
   const { userId, userName } = useContext(UserContext);
   const [modalOpen, setModalOpen] = useState(false);
-  const [textAreaValue, setTextAreaValue] = useState("")
+  const [textAreaValue, setTextAreaValue] = useState(commentText)
 
   function onEmojiClick(emojiObject, event) {
     console.log("emojiData: ", emojiObject)
@@ -31,12 +31,11 @@ const OwnerCommentForm = ({ farmstandId }) => {
     try {
       console.log("post comment values: ", values);
       console.log("textareavalue", textAreaValue)
-      axios.post(
-        `http://localhost:8080/api/farms/${farmstandId}/ownercomments`,
+      axios.put(
+        `http://localhost:8080/api/farms/${farmstandId}/ownercomments/${commentId}`,
         {
-          author: userId,
           text: textAreaValue,
-          date: new Date(Date.now()).toISOString(),
+          updatedAt: new Date(Date.now()).toISOString(),
         },
         {
           headers: {
@@ -51,15 +50,32 @@ const OwnerCommentForm = ({ farmstandId }) => {
     }
   };
 
+  // const getCommentText = () => {
+  //   const getComment = axios.get(
+  //     `http://localhost:8080/api/farms/${farmstandId}/ownercomments/${commentId}`,
+  //     {
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     }
+  //   );
+  //   console.log("Comments response: ", getComment.data);
+  //   setTextAreaValue(getComment.data);
+  // }
+
+  // useEffect(() => {
+  //   if (modalOpen)
+  //     getCommentText()
+  //   }, [modalOpen])
+
   return (
     <>
       <Button
         outline
         onClick={() => setModalOpen(true)}
         style={{ fontWeight: "bold", color: "black" }}
-        className="my-3"
       >
-        <EditIcon /> Post Message
+        <EditIcon /> Edit Message
       </Button>
       <Modal isOpen={modalOpen} size="lg">
         <ModalHeader toggle={() => setModalOpen(false)}>
@@ -98,9 +114,7 @@ const OwnerCommentForm = ({ farmstandId }) => {
                   <Col>
                   <Picker emojiStyle={EmojiStyle.GOOGLE} onEmojiClick={onEmojiClick} width='100%' />
                   </Col>
-                </Row>
-                
-                
+                </Row>                
               </FormGroup>
               <Button type="submit" color="primary">
                 Submit
@@ -113,4 +127,4 @@ const OwnerCommentForm = ({ farmstandId }) => {
   );
 };
 
-export default OwnerCommentForm;
+export default EditOwnerCommentForm;
