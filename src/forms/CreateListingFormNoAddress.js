@@ -17,8 +17,17 @@ import { useState, useEffect } from "react";
 import MultipleFileUpload from "../utils/MultipleFileUpload";
 import Axios from "axios";
 import { Dropzone, FileItem, FullScreenPreview } from "@dropzone-ui/react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCow } from "@fortawesome/free-solid-svg-icons"; // dairy
+import { faPepperHot } from "@fortawesome/free-solid-svg-icons"; // produce
+import { faDrumstickBite } from "@fortawesome/free-solid-svg-icons"; // meat
+import { faEgg } from "@fortawesome/free-solid-svg-icons"; // eggs
+import { faTents } from "@fortawesome/free-solid-svg-icons"; // farmers market
+import { faChildren } from "@fortawesome/free-solid-svg-icons"; // Play Area
+import { faUserDoctor } from "@fortawesome/free-solid-svg-icons"; // therapy
+import { faSeedling } from "@fortawesome/free-solid-svg-icons"; // garden center
 
-/* Create duplicate NewFarmstand.js and CreateListingForm.js files and remove ability to use address.  Free geocoding has been inaccurate and finding locations on map is easier */
+
 
 const CreateListingFormNoAddress = ({lat, long}) => {  
 
@@ -167,31 +176,55 @@ const CreateListingFormNoAddress = ({lat, long}) => {
           <Col > 
             <Label check md={3} sm={6} xs={12}>
               <Field type='checkbox' name="farmstandType" value='produce' />
-              {" "} Produce
+              {" "} Produce {" "}
+              <span style={{fontSize: '1.5em', color: 'red'}} >
+              <FontAwesomeIcon icon={faPepperHot} />
+              </span>
             </Label>          
             <Label check md={3} sm={6} xs={12}>
               <Field type='checkbox' name="farmstandType" value='meat' />
-              {" "} Meat
+              {" "} Meat {" "}
+              <span style={{fontSize: '1.5em', color: 'brown'}} >
+              <FontAwesomeIcon icon={faDrumstickBite} />
+              </span>
             </Label>          
             <Label check  md={3} sm={6} xs={12}>
               <Field type='checkbox' name="farmstandType" value='dairy' />
-              {" "} Dairy
+              {" "} Dairy {" "}
+              <span style={{fontSize: '1.5em', color: 'black'}} >
+              <FontAwesomeIcon icon={faCow} />
+              </span>
             </Label>
             <Label check  md={3} sm={6} xs={12}>
               <Field type='checkbox' name="farmstandType" value='eggs' />
-              {" "} Eggs
+              {" "} Eggs {" "}
+              <span style={{fontSize: '1.5em', color: '#66a1ed'}} >
+              <FontAwesomeIcon icon={faEgg} />
+              </span>
             </Label>
             <Label check  md={3} sm={6} xs={12}>
-              <Field type='checkbox' name="farmstandType" value='farmersMarket' />{" "} Farmers Market
+              <Field type='checkbox' name="farmstandType" value='farmersMarket' />{" "} Farmers Market {" "}
+              <span style={{fontSize: '1.5em', color: '#853e00'}} >
+              <FontAwesomeIcon icon={faTents} />
+              </span>
             </Label>
             <Label check  md={3} sm={6} xs={12}>
-              <Field type='checkbox' name="farmstandType" value='gardenCenter' />{" "} Garden Center
+              <Field type='checkbox' name="farmstandType" value='gardenCenter' />{" "} Garden Center {" "}
+              <span style={{fontSize: '1.5em', color: '#098200'}} >
+              <FontAwesomeIcon icon={faSeedling} />
+              </span>
             </Label>
             <Label check  md={3} sm={6} xs={12}>
-              <Field type='checkbox' name="farmstandType" value='playArea' />{" "} Play Area
+              <Field type='checkbox' name="farmstandType" value='playArea' />{" "} Play Area {" "}
+              <span style={{fontSize: '1.5em', color: '#20b2bd'}} >
+              <FontAwesomeIcon icon={faChildren} />
+              </span>
             </Label>
             <Label check md={3} sm={6} xs={12}>
-              <Field type='checkbox' name="farmstandType" value='therapy' />{" "} Therapy
+              <Field type='checkbox' name="farmstandType" value='therapy' />{" "} Therapy {" "}
+              <span style={{fontSize: '1.5em', color: '#800915'}} >
+              <FontAwesomeIcon icon={faUserDoctor} />
+              </span>
             </Label>
           </Col>
         </FormGroup>

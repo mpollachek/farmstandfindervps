@@ -32,9 +32,10 @@ import OwnerComment from "../features/comments/OwnerComment";
 import { selectOwnerCommentsByFarmstandId } from "../features/comments/commentsFns";
 import OwnerCommentForm from "../forms/OwnerCommentForm";
 import AddProductsForm from "../forms/AddProductsForm";
+import EditProductsForm from "../forms/EditProductsForm";
 
 const FarmstandDetail = ({ farmstand }) => {
-  const { images, farmstandName, description, products, _id: farmstandId, location, owner: farmstandOwner, ownercomments: ownerComments } = farmstand;
+  const { images, farmstandName, description, products, _id: farmstandId, location, owner: farmstandOwner, ownercomments: ownerComments, farmstandType } = farmstand;
 
   const { userId, userName, setUserId, setUserName, userOwned, setUserOwned } = useContext(UserContext);
   console.log("farmstand: ", farmstand);
@@ -394,9 +395,10 @@ const FarmstandDetail = ({ farmstand }) => {
                   </ul>
                 </span>
               </span>
-
-              {/* create add products component in place of below button */}
-              <AddProductsForm farmstandId={farmstandId} />
+              {farmstandOwner.includes(userId) ? (
+        <EditProductsForm farmstandId={farmstandId} prevProducts={products} />
+      ) : <AddProductsForm farmstandId={farmstandId} /> }
+              
             </CardText>
           </CardBody>
         </ListGroup>

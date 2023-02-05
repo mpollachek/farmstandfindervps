@@ -19,7 +19,8 @@ import axios from "axios";
 import StarIcon from '@mui/icons-material/Star';
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import GMapsIconOld from '../assets/google-maps-old.2048x2048.ico'
+import GMapsIconOld from '../assets/google-maps-old.2048x2048.ico';
+import FarmTypeIconsMap from "../components/FarmTypeIconsMap";
 
 /* Bring name above image and add avg rating to it
 avg of farmstand.comments.rating
@@ -27,7 +28,7 @@ Also add avg rating in farmstandDetailpage */
 
 const FarmstandCard = ({ item, favorite, getFavorites, setRunGet }) => {
   console.log("farmstand card item: ", item);
-  const { _id, images, farmstandName, comments, location } = item;
+  const { _id, images, farmstandName, comments, location, farmstandType } = item;
   const imageLink = `http://localhost:8080/images/${_id}/${images[0]}`;
   console.log("comments: ", comments)
   console.log("favorite: ", favorite)
@@ -116,6 +117,9 @@ const FarmstandCard = ({ item, favorite, getFavorites, setRunGet }) => {
             </IconButton>
             )}
             </Col>
+            </Row>
+            <Row>
+              <FarmTypeIconsMap farmType={farmstandType} />
             </Row>
           </CardFooter>
       </Card>    

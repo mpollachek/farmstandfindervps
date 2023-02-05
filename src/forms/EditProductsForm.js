@@ -17,21 +17,27 @@ import FoodBankIcon from '@mui/icons-material/FoodBank';
 
 /* Create duplicate NewFarmstand.js and CreateListingForm.js files and remove ability to use address.  Free geocoding has been inaccurate and finding locations on map is easier */
 
-const AddProductsForm = ({farmstandId}) => {  
+const EditProductsForm = ({farmstandId, prevProducts}) => {  
 
   const [modalOpen, setModalOpen] = useState(false);
 
   const initialValues = {
-    products: [""],
+    products: prevProducts,
   };
-  console.log("farmstandId add products form: ", farmstandId)
+  console.log("farmstandId edit products form: ", farmstandId)
 
   const handleSubmit = async (values) => {
-
+    const token = localStorage.getItem("token");
+    console.log("post: ", values);
     try {
       await Axios.put(
-        `http://localhost:8080/api/farms/${farmstandId}/addproducts`,
-        values
+        `http://localhost:8080/api/farms/${farmstandId}/editproducts`,
+        values,
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
       ).then((response) => {
         console.log("post: ", values);
         console.log("response: " + JSON.stringify(response));
@@ -48,11 +54,11 @@ const AddProductsForm = ({farmstandId}) => {
       className="my-3"
       color="primary"
     >
-      <FoodBankIcon /> Add Products
+      <FoodBankIcon /> Edit Products
     </Button>
     <Modal isOpen={modalOpen}>
       <ModalHeader toggle={() => setModalOpen(false)}>
-        Add Products or Services
+        Edit Products or Services
       </ModalHeader>
       <ModalBody>
     <Formik
@@ -104,11 +110,11 @@ const AddProductsForm = ({farmstandId}) => {
         <FormGroup row>
           <Col md={{ size: 10, offset: 2 }}>
             <Button type="submit" color="primary" className='me-4'>
-              Add Products/Services Offered
+              Edit Products/Services Offered
             </Button>
             <Button onClick={() => setModalOpen(false)} color="primary">
               Cancel
-            </Button>  
+            </Button>            
           </Col>
         </FormGroup>
       </Form>
@@ -119,4 +125,4 @@ const AddProductsForm = ({farmstandId}) => {
   );
 };
 
-export default AddProductsForm;
+export default EditProductsForm;

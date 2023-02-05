@@ -8,6 +8,9 @@ import { divIcon } from "leaflet";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { selectFavoriteFarmstandIds } from "../farmstands/farmstandFilter";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCow } from "@fortawesome/free-solid-svg-icons";
+
 
 const iconMarkup = renderToStaticMarkup(
   <AgricultureIcon
@@ -20,6 +23,7 @@ const iconMarkup = renderToStaticMarkup(
   >
     Booyah
   </AgricultureIcon>
+  //<FontAwesomeIcon icon={faCow} />
 );
 const farmIcon = divIcon({
   html: iconMarkup,

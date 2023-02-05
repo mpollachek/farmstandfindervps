@@ -12,7 +12,7 @@ import Loading from "../components/Loading";
 const FarmstandDetailPage = () => {
   const [runGetFarmstands, setRunGetFarmstands] = useState(false);
   const [runGetRating, setRunGetRating] = useState(false);
-  const [farmstand, setFarmstand] = useState({ products: [], images: [], comments: [], owner: [], location: {coordinates: []} });
+  const [farmstand, setFarmstand] = useState({ products: [], images: [], comments: [], owner: [], farmstandType: [], location: {coordinates: []} });
 
   // const [runGetOwnerComments, setRunGetOwnerComments] = useState(false)
   // const [ownerComments, setOwnerComments] = useState([
@@ -116,7 +116,7 @@ const FarmstandDetailPage = () => {
   return (
     /* will change to content once is loading and error setup */
     <Container>
-      <SubHeader current={farmstand.farmstandName} detail={true} avgRating={avgRating} />
+      <SubHeader current={farmstand.farmstandName} detail={true} avgRating={avgRating} farmType={farmstand.farmstandType} />
       <Row>
         <Col md={{ size: 5 }} className="my-2">
           <FarmstandDetail farmstand={farmstand}  />

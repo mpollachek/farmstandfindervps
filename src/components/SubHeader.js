@@ -22,8 +22,9 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import UserLoginForm from "../forms/UserLoginForm";
 import UserModal from "../user/UserModal";
 import ReactStars from "react-rating-stars-component";
+import FarmTypeIcons from "./FarmTypeIcons";
 
-const SubHeader = ({ current, detail, avgRating }) => {
+const SubHeader = ({ current, detail, avgRating, farmType }) => {
 
   const { userId, setUserId, userName, setUserName } = useContext(UserContext);
   const { mapCenter } = useContext(MapContext)
@@ -35,6 +36,7 @@ const SubHeader = ({ current, detail, avgRating }) => {
 
   // Need to bring map center into subheader so that when map view is clicked, center of map can remain the same
   console.log("avgRating: ", avgRating)
+  console.log("farmType in subheader component: ", farmType)
 
   const starsRating = {
     name: "rating",
@@ -122,6 +124,9 @@ const SubHeader = ({ current, detail, avgRating }) => {
         </div>
         ) : null}
         </Col>
+  </Row>
+  <Row>
+    <FarmTypeIcons farmType={farmType} />
   </Row>
   </Row>
   );

@@ -4,11 +4,15 @@ import { formatDate } from "../../utils/formatDate";
 import { UserContext } from "../../App";
 import axios from "axios";
 import EditCommentForm from "../../forms/EditCommentForm";
+import ReactStars from "react-rating-stars-component";
+import StarIcon from "@mui/icons-material/Star";
+import StarHalfIcon from "@mui/icons-material/StarHalf";
+import StarOutlineIcon from "@mui/icons-material/StarOutline";
 
 const Comment = ({ comment }) => {
-  const { commentId, text: commentText, rating, author, createdAt: date, updatedAt: updated, farmstandId, authorId } = comment;
+  const { commentId, text: commentText, rating, author, date, updated, farmstandId, authorId } = comment;
 
-  //console.log("comment: ", comment)
+  console.log("comment: ", comment)
 
   const { userId } = useContext(UserContext);
 
@@ -38,11 +42,26 @@ const Comment = ({ comment }) => {
     }
   }
 
+  const starsRating = {
+    name: "rating",
+    count: 5,
+    color: "black",
+    activeColor: "#f79707",
+    value: rating,
+    a11y: true,
+    isHalf: true,
+    emptyIcon: <StarOutlineIcon className="stars" />,
+    halfIcon: <StarHalfIcon className="stars" />,
+    filledIcon: <StarIcon className="stars" />,
+    edit: false,
+  };
+
   return (
     <div className="my-4">
       <h5>
         {author} <br />
-        {rating}/5 stars
+        {/* {rating}/5 stars */}
+        <ReactStars {...starsRating} className='stars' />
       </h5>
       <p>
         {commentText}
