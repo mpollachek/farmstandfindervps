@@ -5,12 +5,15 @@ import { UserContext } from "../../App";
 import axios from "axios";
 import EditIcon from "@mui/icons-material/Edit";
 import EditOwnerCommentForm from "../../forms/EditOwnerCommentForm";
+import { SingleFarmstandContext } from "../../App";
+import { selectFarmstandById } from "../../farmstands/farmstandFilter";
 
 const OwnerComment = ({ ownerComment, farmstandOwner }) => {
 
   const { _id: commentId, text: commentText, author, createdAt: date, updatedAt: updated, farmstandId } = ownerComment;
 
   const { userId } = useContext(UserContext);
+  const {farmstand, setFarmstand} = useContext(SingleFarmstandContext);
 
   const [modalOpen, setModalOpen] = useState(false);
   const [editCommentText, setEditCommentText] = useState("")
@@ -20,6 +23,12 @@ const OwnerComment = ({ ownerComment, farmstandOwner }) => {
   };
 
   //console.log("farmstandOwner: ", farmstandOwner)
+
+  const getFarmstand = async () => {
+      const farm = await selectFarmstandById(farmstandId);
+      setFarmstand(farm);
+  }
+    
 
   const deleteSubmit = async () => {
     const token = localStorage.getItem("token");
@@ -34,6 +43,7 @@ const OwnerComment = ({ ownerComment, farmstandOwner }) => {
     )
   console.log("deleteOwnerComment: ", deleteOwnerComment)
   setModalOpen(false)
+  getFarmstand()
   } catch (error) {
       console.error(error);
     }
@@ -50,7 +60,7 @@ const OwnerComment = ({ ownerComment, farmstandOwner }) => {
       </p>
       {farmstandOwner.includes(userId) ? (
         <div className="justify-content-between">
-          <EditOwnerCommentForm farmstandId={farmstandId} commentId={commentId} commentText={commentText} />
+          <EditOwnerCommentForm farmstandId={farmstandId} commentId={commentId} commentText={commentText} getFarmstand={getFarmstand} />
         <Button onClick={() => setModalOpen(true)} color="primary" >
           Delete
         </Button>

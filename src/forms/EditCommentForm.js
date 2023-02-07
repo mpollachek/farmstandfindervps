@@ -12,6 +12,8 @@ import {
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import axios from "axios";
 import { UserContext } from "../App";
+import { CommentsContext } from "../App";
+import { selectCommentsByFarmstandId } from "../features/comments/commentsFns";
 import ReactStars from "react-rating-stars-component";
 import EditIcon from "@mui/icons-material/Edit";
 import StarIcon from "@mui/icons-material/Star";
@@ -21,11 +23,12 @@ import Picker, {EmojiStyle} from "emoji-picker-react";
 //import { validateCommentForm } from "../../utils/validateCommentForm";
 //import { postComment } from "./commentsSlice";
 
-const EditCommentForm = ({ farmstandId, commentId, commentText, prevRating }) => {
+const EditCommentForm = ({ farmstandId, commentId, commentText, prevRating, getFarmstand }) => {
   const { userId, userName } = useContext(UserContext);
   const [modalOpen, setModalOpen] = useState(false);
   const [rating, setRating] = useState(prevRating);
   const [textAreaValue, setTextAreaValue] = useState(commentText)
+  //const { comments, setComments } = useContext(CommentsContext)
 
   function onEmojiClick(emojiObject, event) {
     console.log("emojiData: ", emojiObject)
@@ -53,12 +56,18 @@ const EditCommentForm = ({ farmstandId, commentId, commentText, prevRating }) =>
     },
   };
 
+  // const getComments = async () => {
+  //   const comments = await selectCommentsByFarmstandId(farmstandId);
+  //   console.log("comments:", comments);
+  //   setComments(comments);
+  // }
+
   const handleSubmit = async (values) => {
     const token = localStorage.getItem("token");
     try {
       console.log("rating: ", rating);
       console.log("post comment values: ", values);
-      axios.put(
+      await axios.put(
         `http://localhost:8080/api/farms/${farmstandId}/comments/${commentId}`,
         {
           text: textAreaValue,
@@ -73,6 +82,7 @@ const EditCommentForm = ({ farmstandId, commentId, commentText, prevRating }) =>
       );
       setTextAreaValue("")
       setModalOpen(false)
+      getFarmstand()
     } catch (error) {
       console.error(error);
     }

@@ -1,6 +1,6 @@
 import { Container, Row, Col } from "reactstrap";
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { selectFarmstandById } from "../farmstands/farmstandFilter";
 import { selectOwnerCommentsByFarmstandId } from "../features/comments/commentsFns";
 import FarmstandDetail from "../farmstands/FarmstandDetail";
@@ -8,11 +8,14 @@ import CommentsList from "../features/comments/CommentList";
 import SubHeader from "../components/SubHeader";
 import Error from "../components/Error";
 import Loading from "../components/Loading";
+import { SingleFarmstandContext } from "../App";
 
 const FarmstandDetailPage = () => {
+
   const [runGetFarmstands, setRunGetFarmstands] = useState(false);
   const [runGetRating, setRunGetRating] = useState(false);
-  const [farmstand, setFarmstand] = useState({ products: [], images: [], comments: [], owner: [], farmstandType: [], location: {coordinates: []} });
+  const {farmstand, setFarmstand} = useContext(SingleFarmstandContext)
+  //const [farmstand, setFarmstand] = useState({ products: [], images: [], comments: [], owner: [], farmstandType: [], location: {coordinates: []} });
 
   // const [runGetOwnerComments, setRunGetOwnerComments] = useState(false)
   // const [ownerComments, setOwnerComments] = useState([
@@ -107,8 +110,8 @@ const FarmstandDetailPage = () => {
   if (farmstand.farmstandName) {
     content = (
       <>
-        <FarmstandDetail farmstand={farmstand} setRunGetFarmstands={setRunGetFarmstands} />
-        <CommentsList farmstandId={farmstandId} />
+        <FarmstandDetail currentFarmstand={farmstand} />
+        <CommentsList currentFarmstand={farmstand} />
       </>
     );
   }
@@ -119,10 +122,10 @@ const FarmstandDetailPage = () => {
       <SubHeader current={farmstand.farmstandName} detail={true} avgRating={avgRating} farmType={farmstand.farmstandType} />
       <Row>
         <Col md={{ size: 5 }} className="my-2">
-          <FarmstandDetail farmstand={farmstand}  />
+          <FarmstandDetail currentFarmstand={farmstand} />
         </Col>
         <Col md={{ size: 6, offset: 1 }} className="my-2">
-          <CommentsList farmstandId={farmstandId} setRunGetFarmstands={setRunGetFarmstands} />
+          <CommentsList currentFarmstand={farmstand} />
         </Col>
       </Row>
     </Container>

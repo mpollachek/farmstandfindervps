@@ -12,6 +12,8 @@ import {
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import axios from "axios";
 import { UserContext } from "../App";
+import { SingleFarmstandContext } from "../App";
+import { selectFarmstandById } from "../farmstands/farmstandFilter";
 import ReactStars from "react-rating-stars-component";
 import EditIcon from "@mui/icons-material/Edit";
 import StarIcon from "@mui/icons-material/Star";
@@ -21,8 +23,9 @@ import Picker, {EmojiStyle} from "emoji-picker-react";
 //import { validateCommentForm } from "../../utils/validateCommentForm";
 //import { postComment } from "./commentsSlice";
 
-const CommentForm = ({ farmstandId }) => {
+const CommentForm = ({ farmstandId, setFarmstand }) => {
   const { userId, userName } = useContext(UserContext);
+  //const {farmstand, setFarmstand} = useContext(SingleFarmstandContext);
   const [modalOpen, setModalOpen] = useState(false);
   const [rating, setRating] = useState(0);
   const [textAreaValue, setTextAreaValue] = useState("")
@@ -53,12 +56,20 @@ const CommentForm = ({ farmstandId }) => {
     },
   };
 
+  const getFarmstand = async () => {
+    console.log("run getFarmstand ownercomment");
+      console.log("run getFarmstand2");
+      const farm = await selectFarmstandById(farmstandId);
+      console.log("farm:", farm);
+      setFarmstand(farm);
+  }
+
   const handleSubmit = async (values) => {
     const token = localStorage.getItem("token");
     try {
       console.log("rating: ", rating);
       console.log("post comment values: ", values);
-      axios.post(
+      await axios.post(
         `http://localhost:8080/api/farms/${farmstandId}/comments`,
         {
           author: userId,
@@ -74,6 +85,7 @@ const CommentForm = ({ farmstandId }) => {
       );
       setTextAreaValue("")
       setModalOpen(false)
+      getFarmstand()
     } catch (error) {
       console.error(error);
     }

@@ -17,6 +17,9 @@ const FarmTypeIconsMap = ({farmType}) => {
   return(
     <Row className='text-center' style={{display: 'inline'}}>
 
+  {farmType ? (
+    <div>
+
     {farmType.includes('produce') ? (
     <span style={{fontSize: '1.5em', color: 'red'}} >
       {" "}<FontAwesomeIcon icon={faPepperHot} />
@@ -56,6 +59,8 @@ const FarmTypeIconsMap = ({farmType}) => {
     <span style={{fontSize: '1.5em', color: '#800915'}} >
     {" "}<FontAwesomeIcon icon={faUserDoctor} />
     </span> ) : null }    
+    </div>
+) : null }
     </Row>
   )
 }

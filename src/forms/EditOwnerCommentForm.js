@@ -16,7 +16,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import Picker, {EmojiStyle} from "emoji-picker-react";
 //import { validateCommentForm } from "../../utils/validateCommentForm";
 
-const EditOwnerCommentForm = ({ farmstandId, commentId, commentText }) => {
+const EditOwnerCommentForm = ({ farmstandId, commentId, commentText, getFarmstand }) => {
   const { userId, userName } = useContext(UserContext);
   const [modalOpen, setModalOpen] = useState(false);
   const [textAreaValue, setTextAreaValue] = useState(commentText)
@@ -31,7 +31,7 @@ const EditOwnerCommentForm = ({ farmstandId, commentId, commentText }) => {
     try {
       console.log("post comment values: ", values);
       console.log("textareavalue", textAreaValue)
-      axios.put(
+      await axios.put(
         `http://localhost:8080/api/farms/${farmstandId}/ownercomments/${commentId}`,
         {
           text: textAreaValue,
@@ -45,6 +45,7 @@ const EditOwnerCommentForm = ({ farmstandId, commentId, commentText }) => {
       );
       setTextAreaValue("")
       setModalOpen(false)
+      getFarmstand()
     } catch (error) {
       console.error(error);
     }

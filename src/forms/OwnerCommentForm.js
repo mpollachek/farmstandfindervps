@@ -12,12 +12,15 @@ import {
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import axios from "axios";
 import { UserContext } from "../App";
+import { SingleFarmstandContext } from "../App";
+import { selectFarmstandById } from "../farmstands/farmstandFilter";
 import EditIcon from "@mui/icons-material/Edit";
 import Picker, {EmojiStyle} from "emoji-picker-react";
 //import { validateCommentForm } from "../../utils/validateCommentForm";
 
-const OwnerCommentForm = ({ farmstandId }) => {
+const OwnerCommentForm = ({ farmstandId, setFarmstand }) => {
   const { userId, userName } = useContext(UserContext);
+  //const {farmstand, setFarmstand} = useContext(SingleFarmstandContext);
   const [modalOpen, setModalOpen] = useState(false);
   const [textAreaValue, setTextAreaValue] = useState("")
 
@@ -26,12 +29,20 @@ const OwnerCommentForm = ({ farmstandId }) => {
     setTextAreaValue((prevText) => prevText + emojiObject.emoji);
   }
 
+  const getFarmstand = async () => {
+    console.log("run getFarmstand ownercomment");
+      console.log("run getFarmstand2");
+      const farm = await selectFarmstandById(farmstandId);
+      console.log("farm:", farm);
+      setFarmstand(farm);
+  }
+
   const handleSubmit = async (values) => {
     const token = await localStorage.getItem("token");
     try {
       console.log("post comment values: ", values);
       console.log("textareavalue", textAreaValue)
-      axios.post(
+      await axios.post(
         `http://localhost:8080/api/farms/${farmstandId}/ownercomments`,
         {
           author: userId,
@@ -46,6 +57,7 @@ const OwnerCommentForm = ({ farmstandId }) => {
       );
       setTextAreaValue("")
       setModalOpen(false)
+      getFarmstand()
     } catch (error) {
       console.error(error);
     }

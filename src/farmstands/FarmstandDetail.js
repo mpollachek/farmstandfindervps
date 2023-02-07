@@ -33,11 +33,15 @@ import { selectOwnerCommentsByFarmstandId } from "../features/comments/commentsF
 import OwnerCommentForm from "../forms/OwnerCommentForm";
 import AddProductsForm from "../forms/AddProductsForm";
 import EditProductsForm from "../forms/EditProductsForm";
+import { SingleFarmstandContext } from "../App";
+import { selectFarmstandById } from "./farmstandFilter";
 
-const FarmstandDetail = ({ farmstand }) => {
-  const { images, farmstandName, description, products, _id: farmstandId, location, owner: farmstandOwner, ownercomments: ownerComments, farmstandType } = farmstand;
+const FarmstandDetail = ({ currentFarmstand }) => {
+  const { images, farmstandName, description, products, _id: farmstandId, location, owner: farmstandOwner, ownercomments: ownerComments, farmstandType } = currentFarmstand;
 
   const { userId, userName, setUserId, setUserName, userOwned, setUserOwned } = useContext(UserContext);
+  const {farmstand, setFarmstand} = useContext(SingleFarmstandContext);
+
   console.log("farmstand: ", farmstand);
 
   const imageLink = `http://localhost:8080/images/${farmstandId}/`;
@@ -47,18 +51,20 @@ const FarmstandDetail = ({ farmstand }) => {
   const [isFavorite, setIsFavorite] = useState(false);
   const [runGet, setRunGet] = useState(false);
 
-  // const [ownerMsgSent, setOwnerMsgSent] = useState("")
-  // const handleOwnerMsgSent = (msg) => {
-  //   setOwnerMsgSent(msg)
-  // }
-
-  // const [isOwner, setIsOwner] = useState(false);
-  // const [runGetIsOwner, setRunGetIsOwner] = useState(false);
+  //const [ownerCommentsState, setOwnerCommentsState] = useState(ownerComments)
 
   const [files, setFiles] = useState([]);
   const [image, setImage] = useState([]);
 
-  // const [runGetOwnerComments, setRunGetOwnerComments] = useState(false)
+  const getFarmstand = async () => {
+    const farm = await selectFarmstandById(farmstandId);
+    setFarmstand(farm);
+}
+
+//const [runGetOwnerComments, setRunGetOwnerComments] = useState(false)
+
+  // Create getOwnerComments function.  pass function to ownercomment.js. run function when submitting new comment or deleting.  Do same with comment.js
+
   // const [ownerComments, setOwnerComments] = useState([
   //   {
   //     ownerCommentId: "",
@@ -109,14 +115,6 @@ const FarmstandDetail = ({ farmstand }) => {
     }
   };
 
-  // useEffect(() => {
-  //   let timer = setTimeout(() => {
-  //   console.log('setrunget true')
-  //   setRunGet(true)
-  // }, 0);
-  // return () => clearTimeout(timer);
-  // }, [_id])
-
   useEffect(() => {
     console.log("farmstandId: ", farmstandId);
     if (farmstandId) {
@@ -154,12 +152,10 @@ const FarmstandDetail = ({ farmstand }) => {
 
   /* Retrieve Owner Comments */
   // const getOwnerComments = async () => {
-  //   if (runGetOwnerComments) {
-  //     const ownerComments = await selectOwnerCommentsByFarmstandId(`${farmstandId}`);
-  //     console.log("comments:", ownerComments);
-  //     setOwnerComments(ownerComments);
+  //     const ownerMsgs = await selectOwnerCommentsByFarmstandId(farmstandId);
+  //     console.log("comments:", ownerMsgs);
+  //     setOwnerCommentsState(ownerMsgs);
   //     setRunGetOwnerComments(false);
-  //   }
   // };
 
   // useEffect(() => {
@@ -195,6 +191,7 @@ const FarmstandDetail = ({ farmstand }) => {
         console.log("post: ", values);
         console.log("response: " + JSON.stringify(response));
       });
+      getFarmstand()
     } catch (error) {
       console.error(error);
     }
@@ -221,7 +218,7 @@ const FarmstandDetail = ({ farmstand }) => {
       }
     )
   console.log("ownerToggle: ", ownerToggle)
-  // getIsOwner();
+  getFarmstand();
   };
 
   /* Carousel */
@@ -326,7 +323,7 @@ const FarmstandDetail = ({ farmstand }) => {
             href = {`https://www.google.com/maps/search/?api=1&query=${lat},${long}`}
             target="blank"
             >
-            <img src={GMapsIconOld} style={{width:'50px'}} className='mt-1' />
+            <img src={GMapsIconOld} style={{width:'50px'}} className='mt-1' alt='find location on Google Maps' />
             </a>
             {userId ? ( 
             <div style={{display: 'inline-block'}} >
@@ -396,8 +393,8 @@ const FarmstandDetail = ({ farmstand }) => {
                 </span>
               </span>
               {farmstandOwner.includes(userId) ? (
-        <EditProductsForm farmstandId={farmstandId} prevProducts={products} />
-      ) : <AddProductsForm farmstandId={farmstandId} /> }
+        <EditProductsForm farmstandId={farmstandId} prevProducts={products} setFarmstand={setFarmstand} />
+      ) : <AddProductsForm farmstandId={farmstandId} setFarmstand={setFarmstand} /> }
               
             </CardText>
           </CardBody>
@@ -411,7 +408,7 @@ const FarmstandDetail = ({ farmstand }) => {
 
       {/* If owner, post message button  */}
       {farmstandOwner.includes(userId) ? (
-        <OwnerCommentForm farmstandId={farmstandId} />
+        <OwnerCommentForm farmstandId={farmstandId} setFarmstand={setFarmstand} />
       ) : null}
 
       {/* {ownerMsgSent ? (
@@ -422,7 +419,6 @@ const FarmstandDetail = ({ farmstand }) => {
       <Row>
         {ownerComments && ownerComments.length > 0 ? (
           <Col className="ms-1">
-            <h4 className="mb-4">Updates from Owner</h4>
             {ownerComments.map((ownerComment) => {
               return <OwnerComment key={ownerComment.commentId} ownerComment={ownerComment} farmstandOwner={farmstandOwner} />;
             })}

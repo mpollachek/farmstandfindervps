@@ -8,20 +8,40 @@ import ReactStars from "react-rating-stars-component";
 import StarIcon from "@mui/icons-material/Star";
 import StarHalfIcon from "@mui/icons-material/StarHalf";
 import StarOutlineIcon from "@mui/icons-material/StarOutline";
+import { selectCommentsByFarmstandId } from "./commentsFns";
+import { CommentsContext } from "../../App";
+import { SingleFarmstandContext } from "../../App";
+import { selectFarmstandById } from "../../farmstands/farmstandFilter";
 
 const Comment = ({ comment }) => {
-  const { commentId, text: commentText, rating, author, date, updated, farmstandId, authorId } = comment;
+  const { _id: commentId, text: commentText, rating, author, createdAt: date, updatedAt: updated, farmstandId } = comment;
 
   console.log("comment: ", comment)
 
   const { userId } = useContext(UserContext);
+  const {farmstand, setFarmstand} = useContext(SingleFarmstandContext);
+  //const { comments, setComments} = useContext(CommentsContext)
 
   const [modalOpen, setModalOpen] = useState(false);
-  const [editCommentText, setEditCommentText] = useState("")
+  //const [editCommentText, setEditCommentText] = useState("")
 
   const TextEdited = () => {
     return <p>Updated: {formatDate(updated)}</p>;
   };
+
+  const getFarmstand = async () => {
+    console.log("run getFarmstand ownercomment");
+      console.log("run getFarmstand2");
+      const farm = await selectFarmstandById(farmstandId);
+      console.log("farm:", farm);
+      setFarmstand(farm);
+  }
+
+  // const getComments = async () => {
+  //     const comments = await selectCommentsByFarmstandId(farmstandId);
+  //     console.log("comments:", comments);
+  //     setComments(comments);
+  //   }
 
   const deleteSubmit = async () => {
     const token = localStorage.getItem("token");
@@ -35,6 +55,7 @@ const Comment = ({ comment }) => {
         }
     )
     setModalOpen(false)
+    getFarmstand()
     console.log("delete comment: ", deleteComment)
   } catch (error) {
       
@@ -59,9 +80,10 @@ const Comment = ({ comment }) => {
   return (
     <div className="my-4">
       <h5>
-        {author} <br />
+        {author.username} <br />
         {/* {rating}/5 stars */}
         <ReactStars {...starsRating} className='stars' />
+        {console.log("Rating: ", rating)}
       </h5>
       <p>
         {commentText}
@@ -69,9 +91,9 @@ const Comment = ({ comment }) => {
         Posted: {formatDate(date)} <br />
         <div>{updated && date !== updated ? <TextEdited /> : null}</div>
       </p>
-      {authorId === userId ? (
+      {author._id === userId ? (
         <div className="justify-content-between">
-        <EditCommentForm farmstandId={farmstandId} commentId={commentId} prevRating={rating} commentText={commentText} />
+        <EditCommentForm farmstandId={farmstandId} commentId={commentId} prevRating={rating} commentText={commentText} getFarmstand={getFarmstand} />
         <Button onClick={() => setModalOpen(true)} color="primary">
           Delete
         </Button>

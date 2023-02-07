@@ -6,74 +6,88 @@ import CommentForm from "../../forms/CommentForm";
 import Error from "../../components/Error";
 import Loading from "../../components/Loading";
 import { UserContext } from "../../App";
+import { CommentsContext } from "../../App";
+import { SingleFarmstandContext } from "../../App";
+import { selectFarmstandById } from "../../farmstands/farmstandFilter";
 
 import "../../css/CommentList.css";
 
-const CommentsList = ({ farmstandId }) => {
+const CommentsList = ({ currentFarmstand }) => {
+  const { _id: farmstandId } = currentFarmstand
+
   const { userId, userName } = useContext(UserContext);
+  const {farmstand, setFarmstand} = useContext(SingleFarmstandContext);
+  //const { comments, setComments } = useContext(CommentsContext)
 
   const [runGet, setRunGet] = useState(false);
-  const [comments, setComments] = useState([
-    {
-      commentId: "",
-      rating: "",
-      text: "",
-      author: "",
-      date: "2000-08-04T20:11Z",
-      updated: "",
-    },
-  ]);
 
-  const getComments = async () => {
-    if (runGet) {
-      const comments = await selectCommentsByFarmstandId(farmstandId);
-      console.log("comments:", comments);
-      setComments(comments);
-      setRunGet(false);
-    }
-  };
-
-  useEffect(() => {
-    let timer = setTimeout(() => {
-      console.log("setrunget true");
-      setRunGet(true);
-    }, 0);
-    return () => clearTimeout(timer);
-  }, []);
-
-  useEffect(() => {
-    getComments();
-  }, [runGet]);
-
-  //   const isLoading = useSelector((state) => state.comments.isLoading);
-  //   const errMsg = useSelector((state) => state.comments.errMsg);
-  //   if (isLoading) {
-  //     return (
-  //       <Loading />
-  //     );
+  //   const getFarmstand = async () => {
+  //   console.log("run getFarmstand ownercomment");
+  //     console.log("run getFarmstand2");
+  //     const farm = await selectFarmstandById(farmstandId);
+  //     console.log("farm:", farm);
+  //     setFarmstand(farm);
   // }
 
-  // if (errMsg) {
-  //     return (
-  //             <Error errMsg={errMsg} />
-  //     );
-  // }
+  const emptyArray = []
+
+  // const [comments, setComments] = useState([
+  //   {
+  //     commentId: "",
+  //     rating: "",
+  //     text: "",
+  //     author: "",
+  //     date: "2000-08-04T20:11Z",
+  //     updated: "",
+  //   },
+  // ]);
+
+  // const getComments = async () => {
+  //   if (runGet) {
+  //     const comments = await selectCommentsByFarmstandId(farmstandId);
+  //     console.log("comments:", comments);
+  //     setComments(comments);
+  //     setRunGet(false);
+  //   }
+  // };
+
+  
+
+  // useEffect(() => {
+  //   let timer = setTimeout(() => {
+  //     console.log("setrunget true");
+  //     setRunGet(true);
+  //   }, 0);
+  //   return () => clearTimeout(timer);
+  // }, []);
+
+  // useEffect(() => {
+  //   getComments();
+  // }, [runGet]);
+
   return (
     <Container>
       <Row>
-        {comments && comments.length > 0 ? (
+        {farmstand.comments && farmstand.comments.length > 0 ? (
           <Col className="ms-1">
             <h4>Comments</h4>
-            {userId ? <CommentForm farmstandId={farmstandId} /> : null}
-            {comments.map((comment) => {
-              return <Comment key={comment.commentId} comment={comment} />;
+            {userId ? 
+            <div>
+            <CommentForm farmstandId={farmstandId} setFarmstand={setFarmstand} /> 
+            {farmstand.comments.map((comment) => {
+              console.log("comment with rating: ", comment)
+              return <Comment key={comment._id} comment={comment} />;
+            })}
+            
+            </div> : farmstand.comments.map((comment) => {
+              return <Comment key={comment._id} comment={comment} />;
             })}
           </Col>
         ) : (
           <Col className="ms-1 ">
             {userId ? 
             <div>
-            <CommentForm farmstandId={farmstandId} /> 
+            <CommentForm farmstandId={farmstandId} setFarmstand={setFarmstand} /> 
             {"\n"} </div>
             : null}
             There are no comments for this farmstand yet.

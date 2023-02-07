@@ -11,6 +11,8 @@ import TestPage2 from "./pages/TestPage2";
 export const UserContext = createContext();
 export const FarmstandsContext = createContext();
 export const MapContext = createContext();
+export const SingleFarmstandContext = createContext();
+export const CommentsContext = createContext();
 
 const App = () => {
 
@@ -20,7 +22,20 @@ const App = () => {
   const [userName, setUserName] = useState('');
   const [userOwned, setUserOwned] = useState([])
 
-  const [farmstands, setFarmstands] = useState([]);
+  const [farmstands, setFarmstands] = useState([]); //all farmstands in view
+
+  const [farmstand, setFarmstand] = useState({ products: [], images: [], comments: [], owner: [], farmstandType: [], location: {coordinates: []} });  // 1 farmstand by farmstand id
+
+  const [comments, setComments] = useState([
+    {
+      commentId: "",
+      rating: "",
+      text: "",
+      author: "",
+      date: "2000-08-04T20:11Z",
+      updated: "",
+    },
+  ]);
 
   const [mapCenter, setMapCenter] = useState([51.505, -0.09]);
   const { centerParam } = useParams()
@@ -29,6 +44,8 @@ const App = () => {
     <div className="App">
       <UserContext.Provider value={{userId, setUserId, userName, setUserName, userOwned, setUserOwned}}> 
       <FarmstandsContext.Provider value={{farmstands, setFarmstands}}>
+      <SingleFarmstandContext.Provider value={{farmstand, setFarmstand}}>
+      <CommentsContext.Provider value={{comments, setComments}}>
       <MapContext.Provider value={{mapCenter, setMapCenter, centerParam}}>
       <Routes>             
         <Route path="/" element={<MapsPage />} />
@@ -43,6 +60,8 @@ const App = () => {
         <Route path="test2" element={<TestPage2 />} />        
       </Routes>
       </MapContext.Provider>
+      </CommentsContext.Provider>
+      </SingleFarmstandContext.Provider>
       </FarmstandsContext.Provider>
       </UserContext.Provider>
     </div>

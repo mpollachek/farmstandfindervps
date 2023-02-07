@@ -14,10 +14,11 @@ import { Formik, Field, Form, ErrorMessage, FieldArray } from "formik";
 import { useState, useEffect } from "react";
 import Axios from "axios";
 import FoodBankIcon from '@mui/icons-material/FoodBank';
+import { selectFarmstandById } from "../farmstands/farmstandFilter";
 
 /* Create duplicate NewFarmstand.js and CreateListingForm.js files and remove ability to use address.  Free geocoding has been inaccurate and finding locations on map is easier */
 
-const EditProductsForm = ({farmstandId, prevProducts}) => {  
+const EditProductsForm = ({farmstandId, prevProducts, setFarmstand}) => {  
 
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -25,6 +26,11 @@ const EditProductsForm = ({farmstandId, prevProducts}) => {
     products: prevProducts,
   };
   console.log("farmstandId edit products form: ", farmstandId)
+
+  const getFarmstand = async () => {
+    const farm = await selectFarmstandById(farmstandId);
+    setFarmstand(farm);
+}
 
   const handleSubmit = async (values) => {
     const token = localStorage.getItem("token");
@@ -42,6 +48,7 @@ const EditProductsForm = ({farmstandId, prevProducts}) => {
         console.log("post: ", values);
         console.log("response: " + JSON.stringify(response));
         setModalOpen(false)
+        getFarmstand()
       });
     } catch (error) {
       console.error(error);
