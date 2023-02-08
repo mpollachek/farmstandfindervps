@@ -7,6 +7,7 @@ import FavoritesPage from "./pages/FavoritesPage";
 import TestPage from "./pages/TestPage";
 import Header from "./components/Header";
 import TestPage2 from "./pages/TestPage2";
+import RemoveImages from "./components/RemoveImages";
 
 export const UserContext = createContext();
 export const FarmstandsContext = createContext();
@@ -24,7 +25,7 @@ const App = () => {
 
   const [farmstands, setFarmstands] = useState([]); //all farmstands in view
 
-  const [farmstand, setFarmstand] = useState({ products: [], images: [], comments: [], owner: [], farmstandType: [], location: {coordinates: []} });  // 1 farmstand by farmstand id
+  const [farmstand, setFarmstand] = useState({ products: [], images: [], comments: [], owner: [], ownercomments: [], farmstandType: [], location: {coordinates: []} });  // 1 farmstand by farmstand id
 
   const [comments, setComments] = useState([
     {
@@ -55,6 +56,10 @@ const App = () => {
             path="farmstands/:farmstandId"
             element={<FarmstandDetailPage />}
           />
+            <Route
+              path="farmstands/:farmstandId/removeImages"
+              element={<RemoveImages />}
+            />
           <Route path='favorites' element={<FavoritesPage />} />
         <Route path="test" element={<TestPage />} />
         <Route path="test2" element={<TestPage2 />} />        

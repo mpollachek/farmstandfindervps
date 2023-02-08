@@ -26,10 +26,12 @@ import { faTents } from "@fortawesome/free-solid-svg-icons"; // farmers market
 import { faChildren } from "@fortawesome/free-solid-svg-icons"; // Play Area
 import { faUserDoctor } from "@fortawesome/free-solid-svg-icons"; // therapy
 import { faSeedling } from "@fortawesome/free-solid-svg-icons"; // garden center
+import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
+import { selectAllFarmstands } from "../farmstands/farmstandFilter";
 
 
 
-const CreateListingFormNoAddress = ({lat, long}) => {  
+const CreateListingFormNoAddress = ({ lat, long, toggle2, setFarmstands, refreshLat, refreshLong, boundsDistance, sidebarProducts, sidebarSeasons, setFarmIds }) => {  
 
   const [files, setFiles] = useState([]);
 
@@ -127,6 +129,8 @@ const CreateListingFormNoAddress = ({lat, long}) => {
         formData,
         config
       ).then((response) => {
+        toggle2()
+        getFarmstands()
         console.log("post: ", values);
         console.log("response: " + JSON.stringify(response));
       });
@@ -135,9 +139,31 @@ const CreateListingFormNoAddress = ({lat, long}) => {
     }
   };
 
-  useEffect(() => {
-    console.log("images: " + JSON.stringify(image));
-  }, [image]);
+  const getFarmstands = async () => {
+      const allFarms = await selectAllFarmstands(
+        refreshLat,
+        refreshLong,
+        boundsDistance,
+        sidebarProducts,
+        sidebarSeasons
+      );
+      setFarmstands(allFarms);
+      console.log("allFarms: ", allFarms );
+      console.log("object.values allfarms[0].id: ", Object.values(allFarms)[0]._id)
+      let farmIdList = [];
+      allFarms.forEach((f) => {
+        // console.log('f: ', f)
+        farmIdList.push(f._id);
+        // console.log('farmIdList', farmIdList)
+      });
+      setFarmIds(farmIdList);
+      // console.log("farmIds: ", farmIds)
+      if (!allFarms) {
+        setFarmstands([]);
+        setFarmIds([]);
+      }
+    }
+
 
   return (
     <Formik
@@ -377,6 +403,7 @@ const CreateListingFormNoAddress = ({lat, long}) => {
 
           <label htmlFor="image" >
             <h5 style={{fontWeight: 'bold'}}>
+            <InsertPhotoIcon color="success" /> {` `}
               Upload Farmstand Images
             </h5>
           </label>

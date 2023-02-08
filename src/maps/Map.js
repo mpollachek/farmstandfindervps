@@ -383,7 +383,18 @@ function Map() {
             <Modal isOpen={modal2} toggle={toggle2} size="lg">
               <ModalHeader>Please do not post large commercial chains. Family owned stores OK</ModalHeader>
               <ModalBody>
-                <CreateListingFormNoAddress lat={lat} long={long} />
+                <CreateListingFormNoAddress 
+                lat={lat} 
+                long={long} 
+                toggle2={toggle2} 
+                setFarmstands={setFarmstands} 
+                refreshLat={mapCenter[0]}
+                refreshLong={mapCenter[1]}
+                boundsDistance={boundsDistance}
+                sidebarProducts={sidebarProducts}
+                sidebarSeasons={sidebarSeasons}
+                setFarmIds={setFarmIds}
+                />
               </ModalBody>
               <ModalFooter className="justify-content-center">
                 Thanks for sharing!
@@ -399,7 +410,7 @@ function Map() {
                 onClick={toggleOffcanvas}
                 className="mt-3"
               >
-                Open
+                Filters
               </RSButton>
               <Offcanvas isOpen={offcanvas} toggle={toggleOffcanvas}>
                 <OffcanvasHeader toggle={toggleOffcanvas}>

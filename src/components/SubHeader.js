@@ -24,7 +24,7 @@ import UserModal from "../user/UserModal";
 import ReactStars from "react-rating-stars-component";
 import FarmTypeIcons from "./FarmTypeIcons";
 
-const SubHeader = ({ current, detail, avgRating, farmType }) => {
+const SubHeader = ({ current, detail, avgRating, farmType, remove, farmstandId }) => {
 
   const { userId, setUserId, userName, setUserName } = useContext(UserContext);
   const { mapCenter } = useContext(MapContext)
@@ -65,7 +65,19 @@ const SubHeader = ({ current, detail, avgRating, farmType }) => {
               <Link to="/farmstands">Farmstands</Link>
             </BreadcrumbItem>
           )}
-          <BreadcrumbItem active>{current}</BreadcrumbItem>
+          { remove ? (
+            <BreadcrumbItem>
+            <Link to={`/farmstands/${farmstandId}`}>{current}</Link>
+            </BreadcrumbItem> ) : (
+            <BreadcrumbItem active >
+            {current}
+            </BreadcrumbItem>
+            )
+          }
+          
+          {remove && (
+            <BreadcrumbItem active>removeimages</BreadcrumbItem>
+          )}
         </Breadcrumb>
       </Col>
       <Col md={4} className="text-center">

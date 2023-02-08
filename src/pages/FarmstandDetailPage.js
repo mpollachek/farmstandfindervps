@@ -9,6 +9,7 @@ import SubHeader from "../components/SubHeader";
 import Error from "../components/Error";
 import Loading from "../components/Loading";
 import { SingleFarmstandContext } from "../App";
+import OwnerComment from "../features/comments/OwnerComment";
 
 const FarmstandDetailPage = () => {
 
@@ -98,6 +99,10 @@ const FarmstandDetailPage = () => {
     ratingsSum();
   }, [runGetRating])
 
+  const firstOwnerComment = farmstand.ownercomments[0]
+  console.log("ownercomments: ", farmstand.ownercomments)
+  console.log("firstOwnerComment: ", firstOwnerComment)
+
   // const isLoading = useSelector((state) => state.farmstands.isLoading);
   // const errMsg = useSelector((state) => state.farmstands.errMsg);
   let content = null;
@@ -119,7 +124,13 @@ const FarmstandDetailPage = () => {
   return (
     /* will change to content once is loading and error setup */
     <Container>
-      <SubHeader current={farmstand.farmstandName} detail={true} avgRating={avgRating} farmType={farmstand.farmstandType} />
+      <Row className="text-center">
+      <SubHeader current={farmstand.farmstandName} detail={true} avgRating={avgRating} farmType={farmstand.farmstandType} remove={false}  />
+      <h5 className="mt-3">Most Recent Owner Update</h5>
+      {firstOwnerComment ? (      
+      <OwnerComment ownerComment={firstOwnerComment} farmstandOwner={farmstand.owner} />
+      ) : null }
+      </Row>
       <Row>
         <Col md={{ size: 5 }} className="my-2">
           <FarmstandDetail currentFarmstand={farmstand} />

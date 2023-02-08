@@ -1,53 +1,69 @@
 import { useState, useContext, useEffect } from "react";
 import {
   Container,
-  Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  FormGroup,
-  Label,
   Col,
   Row,
 } from "reactstrap";
-import { Formik, Field, Form, ErrorMessage } from "formik";
-import axios from "axios";
+import { useParams } from "react-router-dom";
+import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
+import { selectFarmstandById } from "../farmstands/farmstandFilter";
+import { SingleFarmstandContext } from "../App";
+import RemoveImageCard from "./RemoveImageCard";
+import SubHeader from "./SubHeader";
 
 
-const RemoveImages = ({farmstandId, images}) => {
+const RemoveImages = () => {
 
-  const [files, setFiles] = useState(images)
-  const [modalOpen, setModalOpen] = useState(false);
+  const {farmstand, setFarmstand} = useContext(SingleFarmstandContext)
 
-  const handleSubmit = async (values) => {
-    const token = await localStorage.getItem("token");
-    try {
-      console.log("post comment values: ", values);
-      axios.put(
-        `http://localhost:8080/api/farms/${farmstandId}/removeImages`,
-        {
-          images: files,
-        },
-        {
-          headers: {
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
-      setModalOpen(false)
-    } catch (error) {
-      console.error(error);
+  const [images, setImages] = useState(farmstand.images)
+  const [runGetFarmstands, setRunGetFarmstands] = useState(false);
+
+  const { farmstandId } = useParams();
+
+  const getFarmstand = async () => {
+    console.log("run getFarmstand");
+    if (runGetFarmstands) {
+      console.log("run getFarmstand2");
+      const farm = await selectFarmstandById(farmstandId);
+      console.log("farm:", farm);
+      setFarmstand(farm);
+      setImages(farm.images);
+      setRunGetFarmstands(false);
+      console.log("images: ", images)
     }
-  } 
+  };
+
+  useEffect(() => {
+    let timer = setTimeout(() => {
+      console.log("setrunget true");
+      setRunGetFarmstands(true);
+    }, 0);
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    getFarmstand();
+  }, [runGetFarmstands]);
+
+  console.log("images: ", images)
 
   return(
     <Container>
       <Row>
-        <Col>
-        
-        </Col>
+      <SubHeader current={farmstand.farmstandName} detail={true} remove={true} farmstandId={farmstandId} />
       </Row>
-    </Container>
+    <Row className="ms-auto">
+    {images.map((image) => {
+      console.log("1 image: ", image);
+      return (
+        <Col md="4" className="p-4" key={image}>
+          <RemoveImageCard farmstandId={farmstandId} image={image} setFarmstand={setFarmstand} setImages={setImages} />
+        </Col>
+      );
+    })}
+  </Row>
+  </Container>
   )
 }
 

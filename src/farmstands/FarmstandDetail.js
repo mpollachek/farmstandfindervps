@@ -16,9 +16,13 @@ import {
   Row,
   Input,
   FormGroup,
-  FormText
+  FormText,
+  Modal,
+  ModalHeader,
+  ModalBody,
 } from "reactstrap";
 import { useState, useContext, useEffect } from "react";
+import { Link } from "react-router-dom";
 import axios, {Axios} from "axios";
 import { Formik, Field, Form, } from "formik";
 import { Divider, IconButton } from "@mui/material";
@@ -35,6 +39,8 @@ import AddProductsForm from "../forms/AddProductsForm";
 import EditProductsForm from "../forms/EditProductsForm";
 import { SingleFarmstandContext } from "../App";
 import { selectFarmstandById } from "./farmstandFilter";
+import RemoveImages from "../components/RemoveImages";
+import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 
 const FarmstandDetail = ({ currentFarmstand }) => {
   const { images, farmstandName, description, products, _id: farmstandId, location, owner: farmstandOwner, ownercomments: ownerComments, farmstandType } = currentFarmstand;
@@ -42,7 +48,7 @@ const FarmstandDetail = ({ currentFarmstand }) => {
   const { userId, userName, setUserId, setUserName, userOwned, setUserOwned } = useContext(UserContext);
   const {farmstand, setFarmstand} = useContext(SingleFarmstandContext);
 
-  console.log("farmstand: ", farmstand);
+  //console.log("farmstand: ", farmstand);
 
   const imageLink = `http://localhost:8080/images/${farmstandId}/`;
   const lat = location.coordinates[1]
@@ -55,6 +61,10 @@ const FarmstandDetail = ({ currentFarmstand }) => {
 
   const [files, setFiles] = useState([]);
   const [image, setImage] = useState([]);
+
+  useEffect(() => {
+    console.log("image changed: ", image)
+  }, [image])
 
   const getFarmstand = async () => {
     const farm = await selectFarmstandById(farmstandId);
@@ -172,12 +182,20 @@ const FarmstandDetail = ({ currentFarmstand }) => {
   /* End Retrieve Owner Comments */
 
   /* Add images to farmstand */
-  const handleSubmit = async(values) => {
+  const initialValuesAddImages = {
+    image: image
+  }
+
+  const handleSubmit = async (values) => {
+    console.log("add images values: ", values)
+    console.log("image: ", image)
     const formData = new FormData();
     for (const i of image) {
+      console.log("image i: ", i)
       formData.append("image", i);
     }
     try {
+      console.log("form data: ", formData)
       const config = {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -220,6 +238,9 @@ const FarmstandDetail = ({ currentFarmstand }) => {
   console.log("ownerToggle: ", ownerToggle)
   getFarmstand();
   };
+
+  // slice for owner comments 2 - end
+  const ownerCommentsOlder = ownerComments.slice(1, ownerComments.length)
 
   /* Carousel */
 
@@ -341,7 +362,7 @@ const FarmstandDetail = ({ currentFarmstand }) => {
         </Row>
         <Row>
         <Formik
-          initialValues={image}
+          initialValues={initialValuesAddImages}
           onSubmit={handleSubmit}
         >
           <Form>
@@ -361,14 +382,30 @@ const FarmstandDetail = ({ currentFarmstand }) => {
               value={undefined}
               onChange={(e) => setImage(e.target.files)}
             />
-            <FormText color="muted">              
-              <Button type="submit" color="primary" className="me-2">
-              Add images
-            </Button>
+            <FormText color="muted">               
             Select 1 or multiple images
-            </FormText>
+            </FormText>            
           </Col>
         </FormGroup>
+        <FormGroup>
+        <Button type="submit" color="primary" className="me-2">
+              <InsertPhotoIcon /> Add images
+            </Button>
+            {farmstandOwner.includes(userId) ? (
+              <div>
+                {'\n'}
+            <Link to={`../farmstands/${farmstandId}/removeimages`}>
+            <Button
+            // onClick={() => setModalOpen(true)}      
+            className="my-2"
+            color="danger"
+          >
+            <InsertPhotoIcon /> Remove Images
+          </Button>
+          </Link>
+          </div>
+          ) : null }
+          </FormGroup>
           </Form>
         </Formik>          
         </Row>
@@ -406,20 +443,24 @@ const FarmstandDetail = ({ currentFarmstand }) => {
 
       {/* Can remove owner from usercontext in app.js   */}
 
-      {/* If owner, post message button  */}
-      {farmstandOwner.includes(userId) ? (
+      <div className="text-center mt-4">
+      <h4>Updates from Owner</h4>
+      {/* If owner, post message button  */}      
+        {farmstandOwner.includes(userId) ? (
         <OwnerCommentForm farmstandId={farmstandId} setFarmstand={setFarmstand} />
       ) : null}
+      </div>
 
       {/* {ownerMsgSent ? (
         <p>{ownerMsgSent}</p> 
       ) : null} */}
 
       {/* If owner messages, display messages  */}
-      <Row>
-        {ownerComments && ownerComments.length > 0 ? (
+      <Row >
+        
+        {ownerCommentsOlder && ownerCommentsOlder.length > 0 ? (
           <Col className="ms-1">
-            {ownerComments.map((ownerComment) => {
+            {ownerCommentsOlder.map((ownerComment) => {
               return <OwnerComment key={ownerComment.commentId} ownerComment={ownerComment} farmstandOwner={farmstandOwner} />;
             })}
           </Col>

@@ -19,28 +19,28 @@ const UserModal = () => {
 
   console.log("userId: ", userId);
 
-  /* Owner functions */
-  const getIsOwner = async () => {
-    console.log("runGetOwner: ", runGetOwner);
-    if (runGetOwner) {
-      let ownedArray = await selectUserOwned();
-      console.log("owner response: ", ownedArray.data);
-      console.log("ownedArray:", ownedArray);
-      setUserOwned(ownedArray.data);
-      setRunGetOwner(false);
-      console.log("userOwned: ", userOwned);
-    }
-  };
+  /* Owner functions - replaced by farmstandOwner.includes(userId)  */
+  // const getIsOwner = async () => {
+  //   console.log("runGetOwner: ", runGetOwner);
+  //   if (runGetOwner) {
+  //     let ownedArray = await selectUserOwned();
+  //     console.log("owner response: ", ownedArray.data);
+  //     console.log("ownedArray:", ownedArray);
+  //     setUserOwned(ownedArray.data);
+  //     setRunGetOwner(false);
+  //     console.log("userOwned: ", userOwned);
+  //   }
+  // };
       
-    useEffect(() => {
-      if (userName) {
-        setRunGetOwner(true);
-      }
-    }, [userName]);
+  //   useEffect(() => {
+  //     if (userName) {
+  //       setRunGetOwner(true);
+  //     }
+  //   }, [userName]);
   
-    useEffect(() => {
-      getIsOwner();
-    }, [runGetOwner]);
+  //   useEffect(() => {
+  //     getIsOwner();
+  //   }, [runGetOwner]);
     /* End Owner Functions */
 
   const Protected = () => {

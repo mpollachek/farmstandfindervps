@@ -50,7 +50,7 @@ const OwnerComment = ({ ownerComment, farmstandOwner }) => {
   }
 
   return (
-    <div className="my-4" >
+    <div className="mb-5" >
       <h6>
         {commentText}
       </h6>
