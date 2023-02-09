@@ -41,9 +41,10 @@ import { SingleFarmstandContext } from "../App";
 import { selectFarmstandById } from "./farmstandFilter";
 import RemoveImages from "../components/RemoveImages";
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
+import EditDescriptionType from "../forms/EditDescriptionType";
 
 const FarmstandDetail = ({ currentFarmstand }) => {
-  const { images, farmstandName, description, products, _id: farmstandId, location, owner: farmstandOwner, ownercomments: ownerComments, farmstandType } = currentFarmstand;
+  const { images, farmstandName, description, products, _id: farmstandId, location, owner: farmstandOwner, ownercomments: ownerComments, farmstandType, seasons } = currentFarmstand;
 
   const { userId, userName, setUserId, setUserName, userOwned, setUserOwned } = useContext(UserContext);
   const {farmstand, setFarmstand} = useContext(SingleFarmstandContext);
@@ -336,7 +337,11 @@ const FarmstandDetail = ({ currentFarmstand }) => {
         <Row className="my-2" >
           <Col md="8">
             <CardTitle className="ms-3 mt-2" tag="h4">
-              {farmstandName}
+              {seasons.includes("harvest") ? (
+                <h4>Open Seasonally</h4> ) : (
+                <h4>Open Year Round</h4>                
+              )}
+
             </CardTitle>
           </Col>
           <Col md="4" style={{whiteSpace: 'nowrap'}}  >
@@ -411,6 +416,16 @@ const FarmstandDetail = ({ currentFarmstand }) => {
         </Row>
 
         <ListGroup>
+          {farmstandOwner.includes(userId) || !farmstandOwner ? (
+            <EditDescriptionType 
+            farmstandId={farmstandId} 
+            prevName={farmstandName} 
+            prevDescription={description}
+            prevFarmstandType={farmstandType}
+            prevSeasons={seasons}
+            setFarmstand={setFarmstand}
+            />
+          ) : null}
           <CardSubtitle className="ms-3 my-2">{description}</CardSubtitle>
         </ListGroup>
         <ListGroup>

@@ -28,10 +28,12 @@ const FavoritesList = () => {
     <Row className="ms-auto">
       {console.log("favorite farmstands: ", favoriteFarmstands)}
       {favoriteFarmstands.map((farmstand) => {
+        let favorite = true
         console.log("1 farmstand: ", farmstand);
+        console.log("1 id: ", farmstand._id)
         return (
           <Col md="4" className="p-4" key={farmstand._id}>
-            <FarmstandCard item={farmstand} />
+            <FarmstandCard item={farmstand} favorite={favorite} getFavorites={getFavorites} setRunGet={setRunGet} />
           </Col>
         );
       })}

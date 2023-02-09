@@ -74,27 +74,27 @@ const CreateListingFormNoAddress = ({ lat, long, toggle2, setFarmstands, refresh
     longitude: long.toString(),
   };
 
-  const handleSubmitFile = async (e) => {
-    //const file = e.target.files[0]
-    const formData = new FormData();
-    formData.append("image", image);
-    try {
-      const config = {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      };
+  // const handleSubmitFile = async (e) => {
+  //   //const file = e.target.files[0]
+  //   const formData = new FormData();
+  //   formData.append("image", image);
+  //   try {
+  //     const config = {
+  //       headers: {
+  //         "Content-Type": "multipart/form-data",
+  //       },
+  //     };
 
-      const { response } = await Axios.post(
-        "http://localhost:8080/api/farms",
-        formData,
-        config
-      );
-      setImage(response);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  //     const { response } = await Axios.post(
+  //       "http://localhost:8080/api/farms",
+  //       formData,
+  //       config
+  //     );
+  //     setImage(response);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   const handleSubmit = async (values) => {
     console.log("files: " + JSON.stringify(files));
@@ -148,8 +148,8 @@ const CreateListingFormNoAddress = ({ lat, long, toggle2, setFarmstands, refresh
         sidebarSeasons
       );
       setFarmstands(allFarms);
-      console.log("allFarms: ", allFarms );
-      console.log("object.values allfarms[0].id: ", Object.values(allFarms)[0]._id)
+      //console.log("allFarms: ", allFarms );
+      //console.log("object.values allfarms[0].id: ", Object.values(allFarms)[0]._id)
       let farmIdList = [];
       allFarms.forEach((f) => {
         // console.log('f: ', f)
