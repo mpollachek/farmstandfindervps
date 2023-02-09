@@ -60,7 +60,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import UserLoginForm from "../forms/UserLoginForm";
 import UserModal from "../user/UserModal";
 import axios from "axios";
-import { UserContext, MapContext, FarmstandsContext } from "../App";
+import { UserContext, MapContext, FarmstandsContext, SidebarContext } from "../App";
 import { Navigation } from "@mui/icons-material";
 
 /* Add a List view button that will display all farmstands on mapview current boundaries */
@@ -71,6 +71,7 @@ function Map() {
   const { userId, setUserId, userName, setUserName } = useContext(UserContext);
   const { farmstands, setFarmstands } = useContext(FarmstandsContext);
   const { mapCenter, setMapCenter } = useContext(MapContext)
+  const {sidebarProducts, setSidebarProducts, sidebarSeasons, setSidebarSeasons, sidebarSearch, setSidebarSearch, sidebarTypes, setSidebarTypes, sidebarProductSearch, setSidebarProductSearch } = useContext(SidebarContext)
 
   //const [myLocation, setMyLocation] = useState({lat: 51.505, lng: -0.09});
   const [myLocation, setMyLocation] = useState([51.505, -0.09]);
@@ -99,9 +100,11 @@ function Map() {
   const [farmIds, setFarmIds] = useState([]);
 
   // sidebar states:
-  const [sidebarProducts, setSidebarProducts] = useState([]);
-  const [sidebarSeasons, setSidebarSeasons] = useState("yearRound");
-  const [sidebarSearch, setSidebarSearch] = useState("");
+  // const [sidebarProducts, setSidebarProducts] = useState([]);
+  // const [sidebarSeasons, setSidebarSeasons] = useState("yearRound");
+  // const [sidebarSearch, setSidebarSearch] = useState("");
+  // const [sidebarTypes, setSidebarTypes] = useState([]);
+  // const [sidebarProductSearch, setSidebarProductSearch] = useState("all")
   // console.log("intial sidebarProducts: ", sidebarProducts);
   // console.log("type sidebarProducts: ", typeof(sidebarProducts) );
   // console.log("intial sidebarSeasons: ", sidebarSeasons);
@@ -111,12 +114,15 @@ function Map() {
 
   const getFarmstands = async () => {
     if (runGet) {
+      console.log("sidebarTypes: ", sidebarTypes)
       const allFarms = await selectAllFarmstands(
         mapCenter[0],
         mapCenter[1],
         boundsDistance,
         sidebarProducts,
-        sidebarSeasons
+        sidebarProductSearch,
+        sidebarSeasons,
+        sidebarTypes
       );
       setFarmstands(allFarms);
       // console.log("allFarms: ", allFarms );
@@ -414,10 +420,9 @@ function Map() {
               </RSButton>
               <Offcanvas isOpen={offcanvas} toggle={toggleOffcanvas}>
                 <OffcanvasHeader toggle={toggleOffcanvas}>
-                  Offcanvas
+                  Location Filters
                 </OffcanvasHeader>
                 <OffcanvasBody>
-                  <strong>This is the Offcanvas body.</strong>
                   <Sidebar
                     sidebarProducts={sidebarProducts}
                     setSidebarProducts={setSidebarProducts}
@@ -425,6 +430,10 @@ function Map() {
                     setSidebarSeasons={setSidebarSeasons}
                     sidebarSearch={sidebarSearch}
                     setSidebarSearch={setSidebarSearch}
+                    sidebarTypes={sidebarTypes}
+                    setSidebarTypes={setSidebarTypes}
+                    sidebarProductSearch={sidebarProductSearch}
+                    setSidebarProductSearch={setSidebarProductSearch}
                     setRunGet={setRunGet}
                     runGet={runGet}
                     toggleOffcanvas={toggleOffcanvas}

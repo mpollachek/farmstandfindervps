@@ -14,6 +14,7 @@ export const FarmstandsContext = createContext();
 export const MapContext = createContext();
 export const SingleFarmstandContext = createContext();
 export const CommentsContext = createContext();
+export const SidebarContext = createContext();
 
 const App = () => {
 
@@ -25,7 +26,14 @@ const App = () => {
 
   const [farmstands, setFarmstands] = useState([]); //all farmstands in view
 
-  const [farmstand, setFarmstand] = useState({ products: [], images: [], comments: [], owner: [], ownercomments: [], farmstandType: [], location: {coordinates: []} });  // 1 farmstand by farmstand id
+  const [farmstand, setFarmstand] = useState({ products: [], images: [], comments: [], owner: [], ownercomments: [], farmstandType: [], seasons: [], location: {coordinates: []} });  // 1 farmstand by farmstand id
+
+    // sidebar states:
+    const [sidebarProducts, setSidebarProducts] = useState([]);
+    const [sidebarSeasons, setSidebarSeasons] = useState("yearRound");
+    const [sidebarSearch, setSidebarSearch] = useState("");
+    const [sidebarTypes, setSidebarTypes] = useState([]);
+    const [sidebarProductSearch, setSidebarProductSearch] = useState("all")
 
   const [comments, setComments] = useState([
     {
@@ -47,6 +55,7 @@ const App = () => {
       <FarmstandsContext.Provider value={{farmstands, setFarmstands}}>
       <SingleFarmstandContext.Provider value={{farmstand, setFarmstand}}>
       <CommentsContext.Provider value={{comments, setComments}}>
+      <SidebarContext.Provider value={{sidebarProducts, setSidebarProducts, sidebarSeasons, setSidebarSeasons, sidebarSearch, setSidebarSearch, sidebarTypes, setSidebarTypes, sidebarProductSearch, setSidebarProductSearch }}>
       <MapContext.Provider value={{mapCenter, setMapCenter, centerParam}}>
       <Routes>             
         <Route path="/" element={<MapsPage />} />
@@ -65,6 +74,7 @@ const App = () => {
         <Route path="test2" element={<TestPage2 />} />        
       </Routes>
       </MapContext.Provider>
+      </SidebarContext.Provider>
       </CommentsContext.Provider>
       </SingleFarmstandContext.Provider>
       </FarmstandsContext.Provider>

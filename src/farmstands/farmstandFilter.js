@@ -22,18 +22,23 @@ export const selectAllFarmstands = async (
   long,
   distance,
   products,
-  seasons
+  productSearchType,
+  seasons,
+  farmstandType
 ) => {
   // console.log("filter get lat: ", lat);
   // console.log("filter get long: ", long);
   // console.log("filter get distance: ", distance);
+  console.log("farmstandType: ", farmstandType)
   let allFarms = await axios.get(`http://localhost:8080/api/farms`, {
     params: {
       longitude: long,
       latitude: lat,
       distance: distance,
       products: products,
+      productSearchType: productSearchType,
       seasons: seasons,
+      farmstandType: farmstandType,
     },
     headers: {
       "Content-Type": "application/json",
