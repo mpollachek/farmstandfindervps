@@ -305,30 +305,32 @@ function Map() {
               <ChangeMapView coords={mapCenter} />
               <LocationSearchingIcon
                 style={{ backgroundColor: "white", fontSize: "40" }}
+                className='mb-5 me-4'
               />
             </Button>
           </Control>
 
+          <div>
+            { moved ? (
+              <div>
           {/* Search map Area for farmstands */}
           <Control prepend position="topright">
             {/* <MapBoundsFilter getFarmstands={getFarmstands} /> */}
-            {moved && (
               <RSButton
                 color="info"
                 onClick={() => setRunGet(true)}
-                className="mt-3 me-3"
+                className="mt-5 me-4"
               >
                 Search this Area
                 {/* filter farmstands to current bounds */}
               </RSButton>
-            )}
           </Control>
 
           {/* Modal for opening login/register profile */}
           <Control append position="topright">
             <IconButton onClick={profileToggle}>
               <AccountCircleIcon
-                className="me-5"
+                className="me-4 mt-1"
                 color="primary"
                 fontSize="large"
               />
@@ -342,6 +344,7 @@ function Map() {
               ) : (
                 <ModalHeader toggle={profileToggle}>Welcome!</ModalHeader>
               )}
+              
 
               <ModalBody>
                 {/* Put everything in this modal into 1 imported component-change name from protected  */}
@@ -354,6 +357,43 @@ function Map() {
               <ModalFooter className="text-center"></ModalFooter>
             </Modal>
           </Control>
+          </div>
+            ) : (
+              <div>
+              {/* Modal for opening login/register profile */}
+          <Control append position="topright">
+          <IconButton onClick={profileToggle}>
+            <AccountCircleIcon
+              className="me-4 mt-5"
+              color="primary"
+              fontSize="large"
+            />
+          </IconButton>
+          <Divider />
+          <Modal isOpen={profileModal} toggle={profileToggle}>
+            {userName ? (
+              <ModalHeader toggle={profileToggle}>
+                Hi {`${userName}`}!
+              </ModalHeader>
+            ) : (
+              <ModalHeader toggle={profileToggle}>Welcome!</ModalHeader>
+            )}
+            
+
+            <ModalBody>
+              {/* Put everything in this modal into 1 imported component-change name from protected  */}
+
+              {/* { userId ? <Protected /> : <UserLoginForm /> } */}
+              <UserModal />
+
+              {/* <UserLoginForm /> */}
+            </ModalBody>
+            <ModalFooter className="text-center"></ModalFooter>
+          </Modal>
+        </Control>
+        </div>
+            )}
+          </div>
 
           <Control prepend position="bottomleft">
             {/* List View */}
@@ -366,7 +406,7 @@ function Map() {
           <Control append position="bottomleft">
             {/* Button/Modal for share a farmstand */}
 
-            <RSButton color="primary" onClick={toggle}>
+            <RSButton color="primary" onClick={toggle} className="mb-5">
               share a farmstand
             </RSButton>
             <Modal isOpen={modal} toggle={toggle} size="lg">
@@ -414,7 +454,7 @@ function Map() {
               <RSButton
                 color="primary"
                 onClick={toggleOffcanvas}
-                className="mt-3"
+                className="mt-5"
               >
                 Filters
               </RSButton>
