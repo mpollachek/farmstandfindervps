@@ -66,7 +66,7 @@ const CreateListingFormNoAddress = ({ lat, long, toggle2, setFarmstands, refresh
   const initialValues = {
     farmstandName: "",
     farmstandType: [],
-    seasons: "",
+    seasons: "yearRound",
     image: image,
     description: "",
     products: [""],

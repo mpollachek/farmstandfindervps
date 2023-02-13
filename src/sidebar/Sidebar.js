@@ -107,6 +107,16 @@ const Sidebar = ({
     }
   }, []);
 
+  const resetFiltersSubmit = () => {
+    setSidebarProducts([]);
+    setTempArray([]);
+    setSidebarSeasons("yearRound")
+    setSidebarTypes([])
+    setSidebarSearch("")
+    setAllProductsSearch(true);
+    setOrProductsSearch(false);
+  }
+
 
   return (
     /* 
@@ -334,8 +344,11 @@ const Sidebar = ({
         <Row className="my-3">
         <FormGroup row>
           <Col className="text-center">
-            <RSButton type="submit" color="primary">
+            <RSButton type="submit" color="primary" className="mx-2">
               Search with Filters
+            </RSButton>
+            <RSButton onClick={() => resetFiltersSubmit()} color="danger" className="mx-2">
+              Reset Filters
             </RSButton>
           </Col>
         </FormGroup>

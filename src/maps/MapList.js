@@ -10,20 +10,31 @@ import axios from "axios";
 import { selectFavoriteFarmstandIds } from "../farmstands/farmstandFilter";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCow } from "@fortawesome/free-solid-svg-icons";
+import { faTractor } from "@fortawesome/free-solid-svg-icons";
 
 
 const iconMarkup = renderToStaticMarkup(
-  <AgricultureIcon
+  // <AgricultureIcon
+  //   style={{
+  //     color: "green",
+  //     background: "rgba(220, 220, 220, .6)",
+  //     fontSize: 40,
+  //   }}
+  //   variant="contained"
+  // >
+  //  Booyah
+  // </AgricultureIcon>
+  //<FontAwesomeIcon icon={faCow} />
+  <FontAwesomeIcon icon={faTractor}
     style={{
       color: "green",
-      background: "rgba(220, 220, 220, .6)",
-      fontSize: 40,
-    }}
+      background: "rgba(220, 220, 220, 0)",
+      fontSize: 20,
+    }} 
     variant="contained"
   >
     Booyah
-  </AgricultureIcon>
-  //<FontAwesomeIcon icon={faCow} />
+  </FontAwesomeIcon>
 );
 const farmIcon = divIcon({
   html: iconMarkup,
@@ -79,7 +90,7 @@ const MapList = ({ farmstands }) => {
             ]}
             icon={farmIcon}
           >
-            <Popup minWidth="250">
+            <Popup minWidth="250" >
               <Col className="mx-2 mt-3">
                 <FarmstandCard item={farmstand} favorite={favorite} getFavorites={getFavorites} setRunGet={setRunGet} />
                 {/* <Row className="mx-1 mt-3" style={{ fontSize: 20 }}>{farmstand.description}</Row> */}
