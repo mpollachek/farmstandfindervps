@@ -1,5 +1,6 @@
 {
   "name": "farmstand_frontend_revamp",
+  "homepage": "https://www.allfarmstands.com",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

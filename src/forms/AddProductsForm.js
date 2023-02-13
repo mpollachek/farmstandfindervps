@@ -51,7 +51,7 @@ const AddProductsForm = ({farmstandId, setFarmstand}) => {
     <>
     <Button
       onClick={() => setModalOpen(true)}      
-      className="my-3"
+      className="mt-1 mb-3"
       color="primary"
     >
       <FoodBankIcon /> Add Products

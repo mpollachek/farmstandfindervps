@@ -429,8 +429,8 @@ const FarmstandDetail = ({ currentFarmstand }) => {
           <CardSubtitle className="ms-3 my-2">{description}</CardSubtitle>
         </ListGroup>
         <ListGroup>
-          <CardBody className="ms-3 my-2">
-            <CardText>
+          <CardBody>
+            <CardText className="ms-3 my-2">
               <span className="products-list" style={{ fontWeight: "700" }}>
                 Products and Services:
                 <span style={{ fontWeight: "400" }}>
@@ -443,13 +443,14 @@ const FarmstandDetail = ({ currentFarmstand }) => {
                     })}
                   </ul>
                 </span>
-              </span>
-              {farmstandOwner.includes(userId) ? (
+              </span>              
+            </CardText>            
+          </CardBody>
+          <div>
+          {farmstandOwner.includes(userId) ? (
         <EditProductsForm farmstandId={farmstandId} prevProducts={products} setFarmstand={setFarmstand} />
       ) : <AddProductsForm farmstandId={farmstandId} setFarmstand={setFarmstand} /> }
-              
-            </CardText>
-          </CardBody>
+        </div>
         </ListGroup>
       </Card>
 

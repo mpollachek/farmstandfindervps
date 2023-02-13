@@ -6,7 +6,7 @@ import "../css/MapsPage.css";
 
 const MapsPage = () => {
   return (
-    <Container className="full-width">
+    <Container className="full-width" style={{marginLeft: '0'}}>
       {/* <SubHeader current='Maps' /> */}
       <Row className="full-width">
         <Map />
