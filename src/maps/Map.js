@@ -304,8 +304,8 @@ function Map() {
             >
               <ChangeMapView coords={mapCenter} />
               <LocationSearchingIcon
-                style={{ backgroundColor: "white", fontSize: "40" }}
-                className='mb-5 me-4'
+                style={{ backgroundColor: "white", fontSize: "40", marginBottom: '70px'}}
+                className='me-4' 
               />
             </Button>
           </Control>
@@ -406,7 +406,7 @@ function Map() {
           <Control append position="bottomleft">
             {/* Button/Modal for share a farmstand */}
 
-            <RSButton color="primary" onClick={toggle} className="mb-5">
+            <RSButton color="primary" onClick={toggle} style={{marginBottom: '70px'}}>
               share a farmstand
             </RSButton>
             <Modal isOpen={modal} toggle={toggle} size="lg">
@@ -426,8 +426,8 @@ function Map() {
             </Modal>
 
             {/* Modal for createListingForm */}
-            <Modal isOpen={modal2} toggle={toggle2} size="lg">
-              <ModalHeader>Please do not post large commercial chains. Family owned stores OK</ModalHeader>
+            <Modal isOpen={modal2} toggle={toggle2} size="lg" scrollable={true}>
+              <ModalHeader toggle={toggle2}>Please do not post large commercial chains. Family owned stores OK</ModalHeader>
               <ModalBody>
                 <CreateListingFormNoAddress 
                 lat={lat} 

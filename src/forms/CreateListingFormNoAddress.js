@@ -10,7 +10,7 @@ import {
   ModalBody,
   FormText,
 } from "reactstrap";
-
+import axios from "axios";
 import { Formik, Field, Form, ErrorMessage, FieldArray } from "formik";
 import { useState, useEffect } from "react";
 //import { validateCreateListingForm } from "../utils/validateCreateListingForm";
@@ -37,8 +37,27 @@ const CreateListingFormNoAddress = ({ lat, long, toggle2, setFarmstands, refresh
 
   const [image, setImage] = useState([]);
 
+  const [allProducts, setAllProducts] = useState([]);
+  const [runGetProducts, setRunGetProducts] = useState(true);
+
   console.log("lat: " + lat);
   console.log("long: " + long);
+
+  const getAllProducts = async () => {
+    if (runGetProducts) {
+    let allPostedProducts = await axios.get(`http://localhost:8080/api/farms/getallproducts`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+    console.log("allPostedProducts: ", allPostedProducts)
+    setAllProducts(allPostedProducts.data);
+    setRunGetProducts(false);
+  }}
+
+  useEffect(() => {
+    getAllProducts();
+  }, [])
 
   // For Dropzone:
   // const fd = new FormData
@@ -101,7 +120,16 @@ const CreateListingFormNoAddress = ({ lat, long, toggle2, setFarmstands, refresh
     console.log("form values:", values);
     console.log("in JSON format:", JSON.stringify(values));
     console.log("farmstandType: ", values.farmstandType)
-    const productsString = values.products.toString();
+    const allProductsArray = values.products.concat(values.productsCheckbox)
+    const uniqueProductsArray = [];
+    for (const i of allProductsArray) {
+      if (uniqueProductsArray.includes(i)) {
+        continue;
+      } else {
+        uniqueProductsArray.push(i)
+      }
+    }
+    const productsString = allProductsArray.toString();
     const productsArray = productsString.split(',')
     console.log("productsString: ", productsString)
     console.log("productsArray: ", productsArray)
@@ -116,7 +144,7 @@ const CreateListingFormNoAddress = ({ lat, long, toggle2, setFarmstands, refresh
     formData.append("description", values.description);
     formData.append("latitude", values.latitude);
     formData.append("longitude", values.longitude);
-    formData.append("products", JSON.stringify(values.products));
+    formData.append("products", JSON.stringify(uniqueProductsArray));
 
     try {
       const config = {
@@ -326,6 +354,14 @@ const CreateListingFormNoAddress = ({ lat, long, toggle2, setFarmstands, refresh
             </h5>  
           </label>
           <Col>
+          {allProducts.map((item, index) => {
+              return(
+              <Label check md={4} sm={6}>
+              <Field type='checkbox' name="productsCheckbox" value={item} key={index} />
+              {" "} {item} {" "}
+            </Label>
+              )})            
+            }
             <FieldArray name="products" type="file">
               {(fieldArrayProps) => {
                 const { push, remove, form } = fieldArrayProps;
@@ -423,9 +459,12 @@ const CreateListingFormNoAddress = ({ lat, long, toggle2, setFarmstands, refresh
         </FormGroup>
 
         <FormGroup row>
-          <Col md={{ size: 10, offset: 2 }}>
-            <Button type="submit" color="primary">
+          <Col className="text-center">
+            <Button type="submit" color="primary" className="mx-3">
               Post Farmstand
+            </Button>
+            <Button onClick={() => toggle2()} color="danger" className="mx-3">
+              Cancel
             </Button>
           </Col>
         </FormGroup>
