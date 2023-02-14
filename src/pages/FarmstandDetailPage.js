@@ -126,12 +126,12 @@ const FarmstandDetailPage = () => {
     <Container className="container-fluid" >
       <Row className="text-center" >
       <SubHeader current={farmstand.farmstandName} detail={true} avgRating={avgRating} farmType={farmstand.farmstandType} remove={false}  />
+      {firstOwnerComment ? (   
       <div className="mt-1 pt-3" style={{backgroundColor: '#ebd28f'}} >
-      <h5 >Most Recent Owner Update</h5>
-      {firstOwnerComment ? (      
-      <OwnerComment ownerComment={firstOwnerComment} farmstandOwner={farmstand.owner} />
-      ) : null }
+      <h5 >Most Recent Owner Update</h5>         
+      <OwnerComment ownerComment={firstOwnerComment} farmstandOwner={farmstand.owner} />      
       </div>
+      ) : null }
       </Row>
       <Row>
         <Col md={{ size: 5 }} className="my-2">

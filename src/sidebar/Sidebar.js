@@ -1,6 +1,10 @@
 import {
   Button as RSButton,
   Container,
+  Collapse,
+  Card,
+  CardBody,
+  CardHeader,
   Row,
   Col,
   FormGroup,
@@ -10,6 +14,7 @@ import {
 } from "reactstrap";
 import { Formik, Field, Form, ErrorMessage, FieldArray } from "formik";
 import { useState, useEffect, useMemo } from "react";
+import axios from "axios";
 import "../css/Sidebar.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCow } from "@fortawesome/free-solid-svg-icons"; // dairy
@@ -20,6 +25,7 @@ import { faTents } from "@fortawesome/free-solid-svg-icons"; // farmers market
 import { faChildren } from "@fortawesome/free-solid-svg-icons"; // Play Area
 import { faUserDoctor } from "@fortawesome/free-solid-svg-icons"; // therapy
 import { faSeedling } from "@fortawesome/free-solid-svg-icons"; // garden center
+import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 
 /* NOTE TO SELF: NEXT STEP IS ENSURING FILTER STATE IS PASSED TO SERVER AND NOT SELECTING ANY PRODUCTS MEANS ALL PRODUCTS.  ALSO CLEAR INPUT FIELD WHEN ADDING PRODUCT. NEED TO CHECK IF STATE STAYS WHEN CLOSING AND REOPENING SIDEBAR. */
 
@@ -57,16 +63,42 @@ const Sidebar = ({
   const [orProductsSearch, setOrProductsSearch] = useState(false)
   const [productsInput, setProductsInput] = useState("");
   const [farmstandType, setFarmstandType] = useState(sidebarTypes)
+  const [allProducts, setAllProducts] = useState([]);
+  const [runGetProducts, setRunGetProducts] = useState(true);
+
+  //collapse states
+  const [typesIsOpen, setTypesIsOpen] = useState(false);
+  const [seasonsIsOpen, setSeasonsIsOpen] = useState(false);
+  const [productsIsOpen, setProductsIsOpen] = useState(false);
+  const toggleTypes = () => setTypesIsOpen(!typesIsOpen);
+  const toggleSeasons = () => setSeasonsIsOpen(!seasonsIsOpen);
+  const toggleProducts = () => setProductsIsOpen(!productsIsOpen);
 
   const initialValues = {
     search: "",
-    tempArray: sidebarProducts,
+    productsCheckbox: sidebarProducts,
     farmstandType: sidebarTypes
   };
 
   console.log("initialValues: ", initialValues);
   console.log("initialValues sidebarProducts: ", sidebarProducts);
   console.log("initialValues sidebarProducts: ", typeof sidebarProducts);
+
+  const getAllProducts = async () => {
+    if (runGetProducts) {
+    let allPostedProducts = await axios.get(`http://localhost:8080/api/farms/getallproducts`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+    console.log("allPostedProducts: ", allPostedProducts)
+    setAllProducts(allPostedProducts.data);
+    setRunGetProducts(false);
+  }}
+
+  useEffect(() => {
+    getAllProducts();
+  }, [])
 
   const handleSubmit = (values) => {
     if (!yearRoundSeasonsState) {
@@ -79,14 +111,12 @@ const Sidebar = ({
     } else {
       setSidebarProductSearch("all");
     }
-    setSidebarProducts(tempArray);
+    setSidebarProducts(values.productsCheckbox);
     setSidebarTypes(values.farmstandType)    
     console.log("for submit, values: ", values)
     console.log("for submit, sidebarSeasons: ", sidebarSeasons);
     console.log("for submit, sidebarProducts: ", sidebarProducts);
     console.log("for submit, sidebarProducts: ", typeof sidebarProducts);
-    console.log("for submit, tempArray: ", tempArray);
-    console.log("for submit, tempArray: ", typeof tempArray);
     console.log("for submit, sidebarTypes: ", sidebarTypes)
     setRunGet(true);
     console.log("runget: ", runGet);
@@ -131,12 +161,19 @@ const Sidebar = ({
       //validate={validateCreateListingForm}
     >
       <Form>
-
       <Row className="my-3">
+        <RSButton color="primary" onClick={toggleTypes} style={{ marginBottom: '1rem' }}>
+        Farmstand Types{"  "}<FontAwesomeIcon icon={faCaretDown} color='white'/>
+      </RSButton>
+      <Collapse isOpen={typesIsOpen}>
+        <Card>        
       <FormGroup row check >
+      <CardHeader>
         <h6 style={{fontWeight: 'bold'}} className='text-center'>
         Farmstand Types/Services
         </h6>
+        </CardHeader>
+        <CardBody>
           <Col > 
             <Label check xs={6}>
               <Field type='checkbox' name="farmstandType" value='produce' />
@@ -191,14 +228,25 @@ const Sidebar = ({
               </span>
             </Label>
           </Col>
+          </CardBody>
         </FormGroup>
+        </Card>
+        </Collapse>
       </Row>
 
         <Row className="my-3">
+        <RSButton color="primary" onClick={toggleSeasons} style={{ marginBottom: '1rem' }}>
+        Seasons Open{"  "}<FontAwesomeIcon icon={faCaretDown} color='white'/>
+      </RSButton>
+      <Collapse isOpen={seasonsIsOpen}>
+        <Card>
+          <CardHeader>
+          <h6><strong>Selecting "open seasonally" includes locations open year round</strong></h6>
+          </CardHeader>
+          <CardBody>
         <FormGroup tag="fieldset">
           <FormGroup row check>
-            <Col>
-              <h6><strong>Selecting "open seasonally" includes locations open year round</strong></h6>
+            <Col>              
               <Input
                 name="seasonsRadio"
                 type="radio"
@@ -225,17 +273,28 @@ const Sidebar = ({
                 }}
               />
               <Label check>Open Year Round</Label>
-            </Col>
-          </FormGroup>
-        </FormGroup>
+            </Col>            
+          </FormGroup>          
+        </FormGroup>       
+        </CardBody>
+        </Card>
+        </Collapse> 
         </Row>
 
         
         <Row className="my-3">
+        <RSButton color="primary" onClick={toggleProducts} style={{ marginBottom: '1rem' }}>
+        Products{"  "}<FontAwesomeIcon icon={faCaretDown} color='white'/>
+      </RSButton>
+      <Collapse isOpen={productsIsOpen}>
+        <Card>   
+          <CardHeader>
+          <h6><strong>Filter farmstand by products For Sale</strong></h6>
+          </CardHeader>
+          <CardBody>
         <FormGroup tag="fieldset">
           <FormGroup row check>
-            <Col>
-              <h6><strong>Filter farmstand by products For Sale</strong></h6>
+            <Col>              
               <Input
                 name="searchProductsRadio"
                 type="radio"
@@ -268,77 +327,23 @@ const Sidebar = ({
 
         <FormGroup row className="form-control">
           <Col>
-            <FieldArray name="tempArray">
-              {(fieldArrayProps) => {
-                const { push, remove, form } = fieldArrayProps;
-                console.log("form: ", form);
-                const { values } = form;
-                const { tempArray } = values;
-                return (
-                  <div>
-                    <Field name="newProduct" placeholder="product for sale" />
+            {/* Map checkboxes of all products */}
+            {allProducts.map((item, index) => {
+              return(
+              <Label check xs={12}>
+              <Field type='checkbox' name="productsCheckbox" value={item} key={index} />
+              {" "} {item} {" "}
+            </Label>
+              )})            
+            }
 
-                    <button
-                      type="button"
-                      onClick={() => {
-                        console.log("values: ", values);
-                        if (values.newProduct) {
-                          tempArray.push(values.newProduct);
-                          setTempArray([...tempArray]);
-                          setSidebarProducts(tempArray);
-                          console.log("tempArray: ", tempArray);
-                          console.log("values: ", values);
-                          form.setFieldValue("newProduct", "");
-                        }
-                      }}
-                    >
-                      {" "}
-                      Add Product{" "}
-                    </button>
 
-                    {tempArray.map((product, index) => {
-                      return (
-                        <div key={index} value={product}>
-                          {console.log("return tempArray product: ", product)}
 
-                          <List type="unstyled">
-                            {/* {`${products[index]}`}      */}
-                            <p>
-                              {product}{" "}
-                              {index >= 0 && (
-                                <button
-                                  type="button"
-                                  onClick={() => {
-                                    console.log(
-                                      "remove item: ",
-                                      tempArray[index]
-                                    );
-                                    //remove(index);
-                                    tempArray.splice(index, 1);
-                                    setTempArray([...tempArray]);
-                                    console.log(
-                                      "tempArray before setSidebarProducts: ",
-                                      tempArray
-                                    );
-                                    console.log("index to remove: ", index);
-                                    setSidebarProducts(tempArray);
-                                  }}
-                                >
-                                  {" "}
-                                  <strong>X</strong>{" "}
-                                </button>
-                              )}
-                            </p>
-                          </List>
-                        </div>
-                      );
-                    })}
-                  </div>
-                );
-              }}
-            </FieldArray>
           </Col>
         </FormGroup>
+        </CardBody>
+        </Card>
+        </Collapse>
         </Row>
 
         <Row className="my-3">
