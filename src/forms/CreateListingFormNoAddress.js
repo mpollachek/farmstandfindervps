@@ -123,16 +123,19 @@ const CreateListingFormNoAddress = ({ lat, long, toggle2, setFarmstands, refresh
     const allProductsArray = values.products.concat(values.productsCheckbox)
     const uniqueProductsArray = [];
     for (const i of allProductsArray) {
+      console.log("i", i)
+      if (i) {
       if (uniqueProductsArray.includes(i)) {
         continue;
       } else {
         uniqueProductsArray.push(i)
       }
-    }
-    const productsString = allProductsArray.toString();
-    const productsArray = productsString.split(',')
-    console.log("productsString: ", productsString)
-    console.log("productsArray: ", productsArray)
+    }}
+    console.log("uniqueProductsArray: ", uniqueProductsArray)
+    // const productsString = allProductsArray.toString();
+    // const productsArray = productsString.split(',')
+    // console.log("productsString: ", productsString)
+    // console.log("productsArray: ", productsArray)
     //const file = values.target.files[0]
     const formData = new FormData();
     for (const i of image) {

@@ -54,6 +54,13 @@ const UserModal = () => {
             </Link>
           </Col>
         </Row>
+        <Row className="my-3">
+          <Col>
+            <Link to={`/mycomments`}>
+              <h3>My Comments</h3>
+            </Link>
+          </Col>
+        </Row>
         <Row className="justify-content-center my-3">
           <Col md="4">
             <RSButton type="submit" onClick={logout} color="primary">

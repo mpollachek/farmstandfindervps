@@ -447,9 +447,10 @@ const FarmstandDetail = ({ currentFarmstand }) => {
             </CardText>            
           </CardBody>
           <div>
-          {farmstandOwner.includes(userId) ? (
+          {/* {farmstandOwner.includes(userId) ? (
         <EditProductsForm farmstandId={farmstandId} prevProducts={products} setFarmstand={setFarmstand} />
-      ) : <AddProductsForm farmstandId={farmstandId} setFarmstand={setFarmstand} /> }
+      ) : <AddProductsForm farmstandId={farmstandId} setFarmstand={setFarmstand} /> } */}
+      <EditProductsForm farmstandId={farmstandId} prevProducts={products} setFarmstand={setFarmstand} />
         </div>
         </ListGroup>
       </Card>

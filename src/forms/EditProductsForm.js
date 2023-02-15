@@ -12,7 +12,7 @@ import {
 } from "reactstrap";
 import { Formik, Field, Form, ErrorMessage, FieldArray } from "formik";
 import { useState, useEffect } from "react";
-import Axios from "axios";
+import axios, {Axios} from "axios";
 import FoodBankIcon from '@mui/icons-material/FoodBank';
 import { selectFarmstandById } from "../farmstands/farmstandFilter";
 
@@ -22,8 +22,28 @@ const EditProductsForm = ({farmstandId, prevProducts, setFarmstand}) => {
 
   const [modalOpen, setModalOpen] = useState(false);
 
+  const [allProducts, setAllProducts] = useState([]);
+  const [runGetProducts, setRunGetProducts] = useState(true);
+
+  const getAllProducts = async () => {
+    if (runGetProducts) {
+    let allPostedProducts = await axios.get(`http://localhost:8080/api/farms/getallproducts`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+    console.log("allPostedProducts: ", allPostedProducts)
+    setAllProducts(allPostedProducts.data);
+    setRunGetProducts(false);
+  }}
+
+  useEffect(() => {
+    getAllProducts();
+  }, [])
+
   const initialValues = {
     products: prevProducts,
+    newProducts: [''],
   };
   console.log("farmstandId edit products form: ", farmstandId)
 
@@ -36,7 +56,7 @@ const EditProductsForm = ({farmstandId, prevProducts, setFarmstand}) => {
     const token = localStorage.getItem("token");
     console.log("post: ", values);
     try {
-      await Axios.put(
+      await axios.put(
         `http://localhost:8080/api/farms/${farmstandId}/editproducts`,
         values,
         {
@@ -63,7 +83,7 @@ const EditProductsForm = ({farmstandId, prevProducts, setFarmstand}) => {
     >
       <FoodBankIcon /> Edit Products
     </Button>
-    <Modal isOpen={modalOpen}>
+    <Modal isOpen={modalOpen}size='lg' >
       <ModalHeader toggle={() => setModalOpen(false)}>
         Edit Products or Services
       </ModalHeader>
@@ -83,23 +103,31 @@ const EditProductsForm = ({farmstandId, prevProducts, setFarmstand}) => {
             </h5>  
           </label>
           <Col>
-            <FieldArray name="products" type="file">
+          {allProducts.map((item, index) => {
+              return(
+              <Label check md={4} sm={6}>
+              <Field type='checkbox' name="products" value={item} key={index} />
+              {" "} {item} {" "}
+            </Label>
+              )})            
+            }
+            <FieldArray name="newProducts" type="file">
               {(fieldArrayProps) => {
                 const { push, remove, form } = fieldArrayProps;
                 const { values } = form;
-                const { products } = values;
+                const { newProducts } = values;
                 return (
                   <div>
-                    {products.map((product, index) => (
+                    {newProducts.map((product, index) => (
                       <div key={index}>
-                        <Field name={`products[${index}]`} />
+                        <Field name={`newProducts[${index}]`} />
                         {index > 0 && (
                           <button type="button" onClick={() => remove(index)}>
                             {" "}
                             Remove Product{" "}
                           </button>
                         )}
-                        {products.length - 1 === index && (
+                        {newProducts.length - 1 === index && (
                           <button type="button" onClick={() => push("")}>
                             {" "}
                             Add Product{" "}

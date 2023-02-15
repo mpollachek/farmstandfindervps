@@ -4,6 +4,7 @@ import FarmstandsPage from "./pages/FarmstandsPage";
 import FarmstandDetailPage from "./pages/FarmstandDetailPage";
 import MapsPage from "./pages/MapsPage";
 import FavoritesPage from "./pages/FavoritesPage";
+import MyCommentsPage from "./pages/MyCommentsPage";
 import TestPage from "./pages/TestPage";
 import Header from "./components/Header";
 import TestPage2 from "./pages/TestPage2";
@@ -69,7 +70,8 @@ const App = () => {
               path="farmstands/:farmstandId/removeImages"
               element={<RemoveImages />}
             />
-          <Route path='favorites' element={<FavoritesPage />} />
+        <Route path='favorites' element={<FavoritesPage />} />
+        <Route path='mycomments' element={<MyCommentsPage />} /> 
         <Route path="test" element={<TestPage />} />
         <Route path="test2" element={<TestPage2 />} />        
       </Routes>

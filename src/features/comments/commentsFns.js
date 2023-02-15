@@ -27,3 +27,19 @@ export const selectOwnerCommentsByFarmstandId = async (farmstandId) => {
   console.log("Comments response: ", allComments.data);
   return allComments.data;
 };
+
+export const selectMyComments = async () => {
+  const token = await localStorage.getItem("token");
+  let userComments = await axios.get(
+    `http://localhost:8080/api/users/mycomments`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  console.log("user comments response: ", userComments);
+  return userComments.data;
+};
+

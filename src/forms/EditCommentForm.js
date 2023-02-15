@@ -94,7 +94,7 @@ const EditCommentForm = ({ farmstandId, commentId, commentText, prevRating, getF
         outline
         onClick={() => setModalOpen(true)}
         style={{ fontWeight: "bold", color: "black" }}
-        className="me-3" 
+        block
       >
         <EditIcon /> Edit Comment
       </Button>

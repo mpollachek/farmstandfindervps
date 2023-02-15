@@ -1,4 +1,4 @@
-import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
+import { Button, Col, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 import { useContext, useState } from "react";
 import { formatDate } from "../../utils/formatDate";
 import { UserContext } from "../../App";
@@ -91,12 +91,17 @@ const Comment = ({ comment }) => {
         Posted: {formatDate(date)} <br />
         <div>{updated && date !== updated ? <TextEdited /> : null}</div>
       </p>
+      
       {author._id === userId ? (
         <div className="justify-content-between">
+          <Col md={6} style={{display: 'inline-block'}}>
         <EditCommentForm farmstandId={farmstandId} commentId={commentId} prevRating={rating} commentText={commentText} getFarmstand={getFarmstand} />
-        <Button onClick={() => setModalOpen(true)} color="primary">
+        </Col>
+        <Col md ={6} style={{display: 'inline-block'}}>
+        <Button onClick={() => setModalOpen(true)} color="primary" block >
           Delete
         </Button>
+        </Col>
         </div>
       ) : null}
       <Modal isOpen={modalOpen} size='lg'>
