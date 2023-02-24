@@ -76,8 +76,11 @@ const CommentsList = ({ currentFarmstand }) => {
             <CommentForm farmstandId={farmstandId} setFarmstand={setFarmstand} /> 
             {farmstand.comments.map((comment) => {
               console.log("comment with rating: ", comment)
-              return <Comment key={comment._id} comment={comment} />;
-            })}
+              return (
+              <div className='my-4' >
+              <Comment key={comment._id} comment={comment} />
+              </div>
+            )})}
             
             </div> : farmstand.comments.map((comment) => {
               return <Comment key={comment._id} comment={comment} />;

@@ -10,6 +10,7 @@ import Error from "../components/Error";
 import Loading from "../components/Loading";
 import { SingleFarmstandContext } from "../App";
 import OwnerComment from "../features/comments/OwnerComment";
+import HoursDisplay from "../components/HoursDisplay";
 
 const FarmstandDetailPage = () => {
 
@@ -132,6 +133,7 @@ const FarmstandDetailPage = () => {
       <OwnerComment ownerComment={firstOwnerComment} farmstandOwner={farmstand.owner} />      
       </div>
       ) : null }
+      { farmstand.useHrs ? <HoursDisplay /> : null }
       </Row>
       <Row>
         <Col md={{ size: 5 }} className="my-2">

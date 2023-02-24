@@ -2,6 +2,7 @@ import {
   Button,
   Label,
   Col,
+  Collapse,
   FormGroup,
   Input,
   Row,
@@ -12,10 +13,11 @@ import {
 } from "reactstrap";
 import axios from "axios";
 import { Formik, Field, Form, ErrorMessage, FieldArray } from "formik";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 //import { validateCreateListingForm } from "../utils/validateCreateListingForm";
 import MultipleFileUpload from "../utils/MultipleFileUpload";
 import Axios from "axios";
+import HoursOpen from "../components/HoursOpen";
 import { Dropzone, FileItem, FullScreenPreview } from "@dropzone-ui/react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCow } from "@fortawesome/free-solid-svg-icons"; // dairy
@@ -26,6 +28,7 @@ import { faTents } from "@fortawesome/free-solid-svg-icons"; // farmers market
 import { faChildren } from "@fortawesome/free-solid-svg-icons"; // Play Area
 import { faUserDoctor } from "@fortawesome/free-solid-svg-icons"; // therapy
 import { faSeedling } from "@fortawesome/free-solid-svg-icons"; // garden center
+import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import { selectAllFarmstands } from "../farmstands/farmstandFilter";
 
@@ -39,6 +42,43 @@ const CreateListingFormNoAddress = ({ lat, long, toggle2, setFarmstands, refresh
 
   const [allProducts, setAllProducts] = useState([]);
   const [runGetProducts, setRunGetProducts] = useState(true);
+
+  const [useHrsSwitch, setUseHrsSwitch] = useState(false)
+
+  const [hrsOpen, setHrsOpen] = useState({
+    hours: {
+      open: {
+        sun: {hour: "", min: "", ampm: "" },        
+        mon: {hour: "", min: "", ampm: "" },
+        tue: {hour: "", min: "", ampm: "" },        
+        wed: {hour: "", min: "", ampm: "" },
+        thur: {hour: "", min: "", ampm: "" },        
+        fri: {hour: "", min: "", ampm: "" },
+        sat: {hour: "", min: "", ampm: "" },        
+      },
+      close: {
+        sun: {hour: "", min: "", ampm: "" },        
+        mon: {hour: "", min: "", ampm: "" },
+        tue: {hour: "", min: "", ampm: "" },        
+        wed: {hour: "", min: "", ampm: "" },
+        thur: {hour: "", min: "", ampm: "" },        
+        fri: {hour: "", min: "", ampm: "" },
+        sat: {hour: "", min: "", ampm: "" },
+        },
+      }
+    })
+
+    //collapse states
+    const [typesIsOpen, setTypesIsOpen] = useState(false);
+    const [seasonsIsOpen, setSeasonsIsOpen] = useState(false);
+    const [descriptionIsOpen, setDescriptionIsOpen] = useState(false);
+    const [hoursIsOpen, setHoursIsOpen] = useState(false);
+    const [productsIsOpen, setProductsIsOpen] = useState(false);
+    const toggleTypes = () => setTypesIsOpen(!typesIsOpen);
+    const toggleSeasons = () => setSeasonsIsOpen(!seasonsIsOpen);
+    const toggleDescription = () => setDescriptionIsOpen(!descriptionIsOpen);
+    const toggleHours = () => setHoursIsOpen(!hoursIsOpen);
+    const toggleProducts = () => setProductsIsOpen(!productsIsOpen);
 
   console.log("lat: " + lat);
   console.log("long: " + long);
@@ -148,6 +188,8 @@ const CreateListingFormNoAddress = ({ lat, long, toggle2, setFarmstands, refresh
     formData.append("latitude", values.latitude);
     formData.append("longitude", values.longitude);
     formData.append("products", JSON.stringify(uniqueProductsArray));
+    formData.append("hours", JSON.stringify(hrsOpen));
+    formData.append("useHours", useHrsSwitch)
 
     try {
       const config = {
@@ -163,6 +205,8 @@ const CreateListingFormNoAddress = ({ lat, long, toggle2, setFarmstands, refresh
         toggle2()
         getFarmstands()
         console.log("post: ", values);
+        console.log("formdata: ", formData)
+        console.log("hrsOpen", hrsOpen)
         console.log("response: " + JSON.stringify(response));
       });
     } catch (error) {
@@ -226,10 +270,17 @@ const CreateListingFormNoAddress = ({ lat, long, toggle2, setFarmstands, refresh
           </Col>
         </FormGroup>
 
+        <Row className="my-3">
+        <div className="text-center">
+        <Button color="primary" onClick={toggleTypes} style={{ marginBottom: '1rem', width: '75%' }}>
+        Farmstand Types (check all that apply){"  "}<FontAwesomeIcon icon={faCaretDown} color='white'/>
+      </Button>
+      </div>
+      <Collapse isOpen={typesIsOpen}>
         <FormGroup row check >
-        <h5 style={{fontWeight: 'bold'}}>
+        {/* <h5 style={{fontWeight: 'bold'}}>
         Farmstand Type/Services (check all that apply)
-        </h5>
+        </h5> */}
           <Col > 
             <Label check md={3} sm={6} xs={12}>
               <Field type='checkbox' name="farmstandType" value='produce' />
@@ -285,11 +336,20 @@ const CreateListingFormNoAddress = ({ lat, long, toggle2, setFarmstands, refresh
             </Label>
           </Col>
         </FormGroup>
+        </Collapse>
+        </Row>
 
+        <Row className="my-3">
+        <div className="text-center">
+        <Button color="primary" onClick={toggleSeasons} style={{ marginBottom: '1rem', width: '75%' }}>
+        Seasons Open (seasonal during harvest time or year round){"  "}<FontAwesomeIcon icon={faCaretDown} color='white'/>
+      </Button>
+      </div>
+      <Collapse isOpen={seasonsIsOpen}>
         <FormGroup row check >
-        <h5 style={{fontWeight: 'bold'}}>
+        {/* <h5 style={{fontWeight: 'bold'}}>
         Seasons Open (seasonal during harvest time or year round)
-        </h5>
+        </h5> */}
           <Col > 
             <Label check md={3} sm={6} xs={12}>
               <Field type='radio' name="seasons" value='yearRound' />
@@ -301,9 +361,11 @@ const CreateListingFormNoAddress = ({ lat, long, toggle2, setFarmstands, refresh
             </Label>
           </Col>
         </FormGroup>
+        </Collapse>
+        </Row>
 
 
-        <FormGroup row>
+        {/* <FormGroup row>
           <Col md="6">
             <Label htmlFor="latitude">Latitude</Label>
             <br />
@@ -332,14 +394,21 @@ const CreateListingFormNoAddress = ({ lat, long, toggle2, setFarmstands, refresh
               {(msg) => <p className="text-danger">{msg}</p>}
             </ErrorMessage>
           </Col>
-        </FormGroup>
+        </FormGroup> */}
 
+        <Row className="my-3">
+        <div className="text-center">
+        <Button color="primary" onClick={toggleDescription} style={{ marginBottom: '1rem', width: '75%' }}>
+        Description{"  "}<FontAwesomeIcon icon={faCaretDown} color='white'/>
+      </Button>
+      </div>
+      <Collapse isOpen={descriptionIsOpen}>
         <FormGroup row>
-          <Label htmlFor="description">
+          {/* <Label htmlFor="description">
             <h5 style={{fontWeight: 'bold'}}>
               Description
             </h5>  
-          </Label>
+          </Label> */}
           <Col>
             <Field
               className="form-control"
@@ -349,13 +418,35 @@ const CreateListingFormNoAddress = ({ lat, long, toggle2, setFarmstands, refresh
             />
           </Col>
         </FormGroup>
+      </Collapse>
+      </Row>
 
+      <Row className="my-3">
+        <div className="text-center">
+        <Button color="primary" onClick={toggleHours} style={{ marginBottom: '1rem', width: '75%' }}>
+        Hours of Operation (If Applicable){"  "}<FontAwesomeIcon icon={faCaretDown} color='white'/>
+      </Button>
+      </div>
+      <Collapse isOpen={hoursIsOpen}>
+        <FormGroup row>
+          <HoursOpen setHrsOpen={setHrsOpen} hrsOpen={hrsOpen} useHrsSwitch={useHrsSwitch} setUseHrsSwitch={setUseHrsSwitch} />
+        </FormGroup>
+      </Collapse>
+      </Row>
+
+      <Row className="my-3">
+        <div className="text-center">
+        <Button color="primary" onClick={toggleProducts} style={{ marginBottom: '1rem', width: '75%' }}>
+        Products For Sale{"  "}<FontAwesomeIcon icon={faCaretDown} color='white'/>
+      </Button>
+      </div>
+      <Collapse isOpen={productsIsOpen}>
         <FormGroup row className="form-control">
-          <label htmlFor="products">
+          {/* <label htmlFor="products">
             <h5 style={{fontWeight: 'bold'}}>
             Products For Sale
             </h5>  
-          </label>
+          </label> */}
           <Col>
           {allProducts.map((item, index) => {
               return(
@@ -395,7 +486,11 @@ const CreateListingFormNoAddress = ({ lat, long, toggle2, setFarmstands, refresh
             </FieldArray>
           </Col>
         </FormGroup>
+        </Collapse>
+      </Row>
+
         <FormGroup row>
+      
           {/* <Dropzone
       style={{ minWidth: "200px" }}
       //view={"list"}

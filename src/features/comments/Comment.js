@@ -78,9 +78,13 @@ const Comment = ({ comment }) => {
   };
 
   return (
-    <div className="my-4">
+    <div>
+      {author.username ? 
       <h5>
         {author.username} <br />
+      </h5>
+      : null }
+      <h5>
         {/* {rating}/5 stars */}
         <ReactStars {...starsRating} className='stars' />
         {console.log("Rating: ", rating)}
