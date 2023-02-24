@@ -2,6 +2,7 @@ import {
   Button,
   Label,
   Col,
+  Collapse,
   FormGroup,
   Input,
   Row,
@@ -13,6 +14,8 @@ import {
 import { Formik, Field, Form, ErrorMessage, FieldArray } from "formik";
 import { useState, useEffect } from "react";
 import Axios from "axios";
+import HoursOpen from "../components/HoursOpen";
+import HoursOpenEdit from "../components/HoursOpenEdit";
 import DescriptionIcon from '@mui/icons-material/Description';
 import { selectFarmstandById } from "../farmstands/farmstandFilter";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -24,24 +27,41 @@ import { faTents } from "@fortawesome/free-solid-svg-icons"; // farmers market
 import { faChildren } from "@fortawesome/free-solid-svg-icons"; // Play Area
 import { faUserDoctor } from "@fortawesome/free-solid-svg-icons"; // therapy
 import { faSeedling } from "@fortawesome/free-solid-svg-icons"; // garden center
+import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 
 /* Create duplicate NewFarmstand.js and CreateListingForm.js files and remove ability to use address.  Free geocoding has been inaccurate and finding locations on map is easier */
 
-const EditDescriptionType = ({farmstandId, prevName, prevDescription, prevFarmstandType, prevSeasons, setFarmstand}) => {  
+const EditDescriptionType = ({farmstandId, prevName, prevDescription, prevFarmstandType, prevSeasons, setFarmstand, prevHours, prevUseHours}) => {  
 
   const [modalOpen, setModalOpen] = useState(false);
   const [description, setDescription] = useState(prevDescription)
   const [farmstandType, setFarmstandType] = useState(prevFarmstandType)
   const [farmstandName, setFarmstandName] = useState(prevName)
   const [seasons, setSeasons] = useState(prevSeasons[0])
+  const [useHrsSwitch, setUseHrsSwitch] = useState(prevUseHours)
+  const [hrsOpen, setHrsOpen] = useState(prevHours)
+
+  //collapse states
+  const [typesIsOpen, setTypesIsOpen] = useState(false);
+  const [seasonsIsOpen, setSeasonsIsOpen] = useState(false);
+  const [descriptionIsOpen, setDescriptionIsOpen] = useState(false);
+  const [hoursIsOpen, setHoursIsOpen] = useState(false);
+  const toggleTypes = () => setTypesIsOpen(!typesIsOpen);
+  const toggleSeasons = () => setSeasonsIsOpen(!seasonsIsOpen);
+  const toggleDescription = () => setDescriptionIsOpen(!descriptionIsOpen);
+  const toggleHours = () => setHoursIsOpen(!hoursIsOpen);
 
   console.log("prevSeasons: ", prevSeasons)
+  console.log("previous hrs", prevHours)
+  console.log("hrsOpen", hrsOpen)
 
   const initialValues = {
     description: description,
     farmstandType: farmstandType,
     farmstandName: farmstandName,
-    seasons: seasons
+    seasons: seasons,
+    useHours: useHrsSwitch,
+    hours: hrsOpen,
   };
   console.log("farmstandId edit products form: ", farmstandId)
 
@@ -59,6 +79,7 @@ const EditDescriptionType = ({farmstandId, prevName, prevDescription, prevFarmst
         {
         description: description,
         farmstandName: farmstandName,
+        hours: hrsOpen,
         values,
         },
         {
@@ -118,10 +139,14 @@ const EditDescriptionType = ({farmstandId, prevName, prevDescription, prevFarmst
           </Col>
         </FormGroup>
 
+        <Row className="my-3">
+        <div className="text-center">
+        <Button color="primary" onClick={toggleTypes} style={{ marginBottom: '1rem', width: '75%' }}>
+        Farmstand Types (check all that apply){"  "}<FontAwesomeIcon icon={faCaretDown} color='white'/>
+      </Button>
+      </div>
+      <Collapse isOpen={typesIsOpen}>
         <FormGroup row check >
-        <h5 style={{fontWeight: 'bold'}}>
-        Farmstand Type/Services (check all that apply)
-        </h5>
           <Col > 
             <Label check md={3} sm={6} xs={12}>
               <Field type='checkbox' name="farmstandType" value='produce' />
@@ -177,11 +202,17 @@ const EditDescriptionType = ({farmstandId, prevName, prevDescription, prevFarmst
             </Label>
           </Col>
         </FormGroup>
+        </Collapse>
+        </Row>
 
+        <Row className="my-3">
+        <div className="text-center">
+        <Button color="primary" onClick={toggleSeasons} style={{ marginBottom: '1rem', width: '75%' }}>
+        Seasons Open (seasonal during harvest time or year round){"  "}<FontAwesomeIcon icon={faCaretDown} color='white'/>
+      </Button>
+      </div>
+      <Collapse isOpen={seasonsIsOpen}>
         <FormGroup row check >
-        <h5 style={{fontWeight: 'bold'}}>
-        Seasons Open (seasonal during harvest time or year round)
-        </h5>
           <Col > 
             <Label check md={3} sm={6} xs={12}>
               <Field type='radio' name="seasons" value='yearRound' />
@@ -193,12 +224,18 @@ const EditDescriptionType = ({farmstandId, prevName, prevDescription, prevFarmst
             </Label>
           </Col>
         </FormGroup>
+        </Collapse>
+        </Row>
 
+        <Row className="my-3">
+        <div className="text-center">
+        <Button color="primary" onClick={toggleDescription} style={{ marginBottom: '1rem', width: '75%' }}>
+        Description{"  "}<FontAwesomeIcon icon={faCaretDown} color='white'/>
+      </Button>
+      </div>
+      <Collapse isOpen={descriptionIsOpen}>
         <FormGroup row>
           <Label htmlFor="description">
-            <h5 style={{fontWeight: 'bold'}}>
-              Description
-            </h5>  
           </Label>
           <Col>
             <Field
@@ -215,6 +252,23 @@ const EditDescriptionType = ({farmstandId, prevName, prevDescription, prevFarmst
             />
           </Col>
         </FormGroup>
+        </Collapse>
+        </Row>
+
+        <Row className="my-3">
+        <div className="text-center">
+        <Button color="primary" onClick={toggleHours} style={{ marginBottom: '1rem', width: '75%' }}>
+        Hours of Operation (If Applicable){"  "}<FontAwesomeIcon icon={faCaretDown} color='white'/>
+      </Button>
+      </div>
+      <Collapse isOpen={hoursIsOpen}>
+        <FormGroup row>
+        <Label htmlFor="description">
+          </Label>        
+          <HoursOpenEdit setHrsOpen={setHrsOpen} hrsOpen={hrsOpen} useHrsSwitch={useHrsSwitch} setUseHrsSwitch={setUseHrsSwitch} />
+        </FormGroup>
+        </Collapse>
+        </Row>
 
         <FormGroup row>
           <Col  className='text-center'>

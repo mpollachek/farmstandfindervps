@@ -31,12 +31,12 @@ const FarmstandDetailPage = () => {
   // ]);
 
   const { farmstandId } = useParams();
-  console.log("farmstandId: ", farmstandId);
+  // console.log("farmstandId: ", farmstandId);
 
   const getFarmstand = async () => {
-    console.log("run getFarmstand");
+    // console.log("run getFarmstand");
     if (runGetFarmstands) {
-      console.log("run getFarmstand2");
+      // console.log("run getFarmstand2");
       const farm = await selectFarmstandById(farmstandId);
       console.log("farm:", farm);
       setFarmstand(farm);
@@ -46,7 +46,7 @@ const FarmstandDetailPage = () => {
 
   useEffect(() => {
     let timer = setTimeout(() => {
-      console.log("setrunget true");
+      // console.log("setrunget true");
       setRunGetFarmstands(true);
     }, 0);
     return () => clearTimeout(timer);
@@ -133,7 +133,7 @@ const FarmstandDetailPage = () => {
       <OwnerComment ownerComment={firstOwnerComment} farmstandOwner={farmstand.owner} />      
       </div>
       ) : null }
-      { farmstand.useHrs ? <HoursDisplay /> : null }
+      { farmstand.useHours ? <HoursDisplay hours={farmstand.hours} /> : null }
       </Row>
       <Row>
         <Col md={{ size: 5 }} className="my-2">

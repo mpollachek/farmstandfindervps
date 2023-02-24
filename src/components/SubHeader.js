@@ -35,8 +35,8 @@ const SubHeader = ({ current, detail, avgRating, farmType, remove, farmstandId }
   //const mapCenter = useContext(MapCenterContext);
 
   // Need to bring map center into subheader so that when map view is clicked, center of map can remain the same
-  console.log("avgRating: ", avgRating)
-  console.log("farmType in subheader component: ", farmType)
+  // console.log("avgRating: ", avgRating)
+  // console.log("farmType in subheader component: ", farmType)
 
   const starsRating = {
     name: "rating",

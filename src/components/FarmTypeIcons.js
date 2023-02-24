@@ -12,7 +12,7 @@ import { faSeedling } from "@fortawesome/free-solid-svg-icons"; // garden center
 
 const FarmTypeIcons = ({farmType}) => {
 
-  console.log("farmType in icons component: ", farmType)
+  // console.log("farmType in icons component: ", farmType)
 
   return(
     <Row className='text-center' style={{display: 'inline'}}>

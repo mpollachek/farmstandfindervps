@@ -44,7 +44,7 @@ import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import EditDescriptionType from "../forms/EditDescriptionType";
 
 const FarmstandDetail = ({ currentFarmstand }) => {
-  const { images, farmstandName, description, products, _id: farmstandId, location, owner: farmstandOwner, ownercomments: ownerComments, farmstandType, seasons } = currentFarmstand;
+  const { images, farmstandName, description, products, _id: farmstandId, location, owner: farmstandOwner, ownercomments: ownerComments, farmstandType, seasons, hours, useHours } = currentFarmstand;
 
   const { userId, userName, setUserId, setUserName, userOwned, setUserOwned } = useContext(UserContext);
   const {farmstand, setFarmstand} = useContext(SingleFarmstandContext);
@@ -64,7 +64,7 @@ const FarmstandDetail = ({ currentFarmstand }) => {
   const [image, setImage] = useState([]);
 
   useEffect(() => {
-    console.log("image changed: ", image)
+    //cons("image changed: ", image)
   }, [image])
 
   const getFarmstand = async () => {
@@ -100,13 +100,13 @@ const FarmstandDetail = ({ currentFarmstand }) => {
       }
     );
     setRunGet(true);
-    console.log("favToggle: ", favToggle);
+    // console.log("favToggle: ", favToggle);
     getIsFavorite();
   };
 
   const getIsFavorite = async () => {
-    console.log("_id: ", farmstandId);
-    console.log("runGet: ", runGet);
+    // console.log("_id: ", farmstandId);
+    // console.log("runGet: ", runGet);
     const token = await localStorage.getItem("token");
     if (runGet && farmstandId) {
       let fav = await axios.get(
@@ -118,32 +118,32 @@ const FarmstandDetail = ({ currentFarmstand }) => {
           },
         }
       );
-      console.log("fav response: ", fav.data);
-      console.log("fav:", fav);
+      // console.log("fav response: ", fav.data);
+      // console.log("fav:", fav);
       setIsFavorite(fav.data);
       setRunGet(false);
-      console.log("isfavorite: ", isFavorite);
+      // console.log("isfavorite: ", isFavorite);
     }
   };
 
   useEffect(() => {
-    console.log("farmstandId: ", farmstandId);
+    // console.log("farmstandId: ", farmstandId);
     if (farmstandId) {
       setRunGet(true);
-      console.log("setrunget farmstanddetail");
+      // console.log("setrunget farmstanddetail");
     }
   }, [farmstandId]);
 
   useEffect(() => {
     getIsFavorite();
-    console.log("farmstanddetail getisfavorite");
+    // console.log("farmstanddetail getisfavorite");
   }, [runGet]);
   /* End Favorite Functions */
 
   /* useEffect to check and set logged in status */
   useEffect(() => {
     const token = localStorage.getItem("token");
-    console.log("token: ", token);
+    // console.log("token: ", token);
     axios
       .get("http://localhost:8080/api/users/protected", {
         headers: {
@@ -151,12 +151,12 @@ const FarmstandDetail = ({ currentFarmstand }) => {
         },
       })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         setUserId(res.data._id);
         setUserName(res.data.username);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   }, []);
   /* end useEffect to check and set logged in status */
@@ -188,15 +188,15 @@ const FarmstandDetail = ({ currentFarmstand }) => {
   }
 
   const handleSubmit = async (values) => {
-    console.log("add images values: ", values)
-    console.log("image: ", image)
+    // console.log("add images values: ", values)
+    // console.log("image: ", image)
     const formData = new FormData();
     for (const i of image) {
-      console.log("image i: ", i)
+      // console.log("image i: ", i)
       formData.append("image", i);
     }
     try {
-      console.log("form data: ", formData)
+      // console.log("form data: ", formData)
       const config = {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -207,8 +207,8 @@ const FarmstandDetail = ({ currentFarmstand }) => {
         formData,
         config
       ).then((response) => {
-        console.log("post: ", values);
-        console.log("response: " + JSON.stringify(response));
+        // console.log("post: ", values);
+        // console.log("response: " + JSON.stringify(response));
       });
       getFarmstand()
     } catch (error) {
@@ -236,7 +236,7 @@ const FarmstandDetail = ({ currentFarmstand }) => {
         },
       }
     )
-  console.log("ownerToggle: ", ownerToggle)
+  // console.log("ownerToggle: ", ownerToggle)
   getFarmstand();
   };
 
@@ -268,8 +268,8 @@ const FarmstandDetail = ({ currentFarmstand }) => {
   //   key: 3,
   // },
 
-  console.log("images: ", images);
-  console.log("items: ", items);
+  // console.log("images: ", images);
+  // console.log("items: ", items);
   const [activeIndex, setActiveIndex] = useState(0);
   const [animating, setAnimating] = useState(false);
 
@@ -424,6 +424,8 @@ const FarmstandDetail = ({ currentFarmstand }) => {
             prevFarmstandType={farmstandType}
             prevSeasons={seasons}
             setFarmstand={setFarmstand}
+            prevHours={hours}
+            prevUseHours={useHours}
             />
           ) : null}
           <CardSubtitle className="ms-3 my-2">{description}</CardSubtitle>

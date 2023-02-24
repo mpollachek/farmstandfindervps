@@ -14,6 +14,9 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 
 const HoursOpen = ({setHrsOpen, hrsOpen, useHrsSwitch, setUseHrsSwitch}) => {
 
+  console.log("hrsOpen", hrsOpen)
+  console.log("useHrsSwitch", useHrsSwitch)
+
   const [isOpenSun, setIsOpenSun] = useState(false);
   const [isOpenMon, setIsOpenMon] = useState(false);
   const [isOpenTues, setIsOpenTues] = useState(false);
@@ -246,15 +249,22 @@ const HoursOpen = ({setHrsOpen, hrsOpen, useHrsSwitch, setUseHrsSwitch}) => {
             <h6>Closing Time</h6>
           </Col>
         </Row>
+        </FormGroup>
 
         <FormGroup row inline >
             <Row >
               <Col xs={2} >
-            <Label style={{whiteSpace: 'nowrap'}}> 
-            <Field type='checkbox' name="isOpen" value={isOpenSun} 
-            onClick={() => setIsOpenSun(!isOpenSun)} />
-              <h6 style={{fontWeight: 'bold', display: 'inline-block'}} className='ms-2' >{" "} Sunday {" "} </h6> 
-            </Label>  
+              <Label check style={{whiteSpace: 'nowrap'}}>
+              <Field type='checkbox' name="isOpen" value='openSunday' 
+              onClick={() => {
+                setIsOpenSun(!isOpenSun)
+              }}
+              />
+              {isOpenSun ? 
+              <h6 style={{fontWeight: 'bold', display: 'inline-block'}} className='ms-2' >{" "} Sunday {" "} </h6> :
+              <h6 style={{fontWeight: 'bold', display: 'inline-block'}} className='ms-2 text-muted' >{" "} Sunday {" "} </h6> 
+              }
+            </Label>
             </Col>
             <Col xs={5} className='text-center' >
             <Dropdown isOpen={sunHourDropOpen} toggle={toggleSunHourOpen} style={{display: 'inline-block'}} >
@@ -332,15 +342,22 @@ const HoursOpen = ({setHrsOpen, hrsOpen, useHrsSwitch, setUseHrsSwitch}) => {
           <FormGroup row inline >
             <Row >
               <Col xs={2} >
-              <Label style={{whiteSpace: 'nowrap'}}>              
-              <Field type='checkbox' name="isOpen" value='monday' />
-              <h6 style={{fontWeight: 'bold', display: 'inline-block'}} className='ms-2' >{" "} Monday {" "} </h6> 
+              <Label check style={{whiteSpace: 'nowrap'}}>
+              <Field type='checkbox' name="isOpen" value='openMonday' 
+              onClick={() => {
+                setIsOpenMon(!isOpenMon)
+              }}
+              />
+              {isOpenMon ? 
+              <h6 style={{fontWeight: 'bold', display: 'inline-block'}} className='ms-2' >{" "} Monday {" "} </h6> :
+              <h6 style={{fontWeight: 'bold', display: 'inline-block'}} className='ms-2 text-muted' >{" "} Monday {" "} </h6> 
+              }
             </Label>   
             </Col>
             <Col xs={5} className='text-center' >
             <Dropdown isOpen={monHourDropOpen} toggle={toggleMonHourOpen} style={{display: 'inline-block'}} >
-        <DropdownToggle caret color='primary'>{monOpenHr}</DropdownToggle>
-        <DropdownMenu>
+        <DropdownToggle caret color='primary' >{monOpenHr}</DropdownToggle>
+        <DropdownMenu >
           <DropdownItem onClick={() => setMonOpenHr('1')}>1</DropdownItem>
           <DropdownItem onClick={() => setMonOpenHr('2')}>2</DropdownItem>
           <DropdownItem onClick={() => setMonOpenHr('3')}>3</DropdownItem>
@@ -413,10 +430,17 @@ const HoursOpen = ({setHrsOpen, hrsOpen, useHrsSwitch, setUseHrsSwitch}) => {
             <FormGroup row inline >
             <Row >
               <Col xs={2} >
-              <Label style={{whiteSpace: 'nowrap'}}>  
-              <Field type='checkbox' name="isOpen" value='tuesday' />
-              <h6 style={{fontWeight: 'bold', display: 'inline-block'}} className='ms-2' >{" "} Tuesday {" "} </h6> 
-            </Label>   
+              <Label check style={{whiteSpace: 'nowrap'}}>
+              <Field type='checkbox' name="isOpen" value='openTuesday' 
+              onClick={() => {
+                setIsOpenTues(!isOpenTues)
+              }}
+              />
+              {isOpenTues ? 
+              <h6 style={{fontWeight: 'bold', display: 'inline-block'}} className='ms-2' >{" "} Tuesday {" "} </h6> :
+              <h6 style={{fontWeight: 'bold', display: 'inline-block'}} className='ms-2 text-muted' >{" "} Tuesday {" "} </h6> 
+              }
+            </Label> 
             </Col>
       <Col xs={5} className='text-center' >
             <Dropdown isOpen={tueHourDropOpen} toggle={toggleTueHourOpen} style={{display: 'inline-block'}} >
@@ -494,10 +518,17 @@ const HoursOpen = ({setHrsOpen, hrsOpen, useHrsSwitch, setUseHrsSwitch}) => {
     <FormGroup row inline >
             <Row >
               <Col xs={2} >
-              <Label style={{whiteSpace: 'nowrap'}} > 
-              <Field type='checkbox' name="isOpen" value='wednesday' />
-              <h6 style={{fontWeight: 'bold', display: 'inline-block'}} className='ms-2' >{" "} Wednesday {" "} </h6> 
-            </Label>  
+              <Label check style={{whiteSpace: 'nowrap'}}>
+              <Field type='checkbox' name="isOpen" value='openWednesday' 
+              onClick={() => {
+                setIsOpenWed(!isOpenWed)
+              }}
+              />
+              {isOpenWed ? 
+              <h6 style={{fontWeight: 'bold', display: 'inline-block'}} className='ms-2' >{" "} Wednesday {" "} </h6> :
+              <h6 style={{fontWeight: 'bold', display: 'inline-block'}} className='ms-2 text-muted' >{" "} Wednesday {" "} </h6> 
+              }
+            </Label>
             </Col>
             <Col xs={5} className='text-center' >
             <Dropdown isOpen={wedHourDropOpen} toggle={toggleWedHourOpen} style={{display: 'inline-block'}} >
@@ -575,10 +606,17 @@ const HoursOpen = ({setHrsOpen, hrsOpen, useHrsSwitch, setUseHrsSwitch}) => {
     <FormGroup row inline >
             <Row >
               <Col xs={2} >
-            <Label style={{whiteSpace: 'nowrap'}}> 
-            <Field type='checkbox' name="isOpen" value='thursday' />
-              <h6 style={{fontWeight: 'bold', display: 'inline-block'}} className='ms-2' >{" "} Thursday {" "} </h6> 
-            </Label>  
+              <Label check style={{whiteSpace: 'nowrap'}}>
+              <Field type='checkbox' name="isOpen" value='openThursday' 
+              onClick={() => {
+                setIsOpenThur(!isOpenThur)
+              }}
+              />
+              {isOpenThur ? 
+              <h6 style={{fontWeight: 'bold', display: 'inline-block'}} className='ms-2' >{" "} Thursday {" "} </h6> :
+              <h6 style={{fontWeight: 'bold', display: 'inline-block'}} className='ms-2 text-muted' >{" "} Thursday {" "} </h6> 
+              }
+            </Label>
             </Col>
             <Col xs={5} className='text-center' >
             <Dropdown isOpen={thurHourDropOpen} toggle={toggleThurHourOpen} style={{display: 'inline-block'}} >
@@ -656,10 +694,17 @@ const HoursOpen = ({setHrsOpen, hrsOpen, useHrsSwitch, setUseHrsSwitch}) => {
     <FormGroup row inline >
             <Row >
               <Col xs={2} >
-            <Label style={{whiteSpace: 'nowrap'}}> 
-            <Field type='checkbox' name="isOpen" value='friday' />
-              <h6 style={{fontWeight: 'bold', display: 'inline-block'}} className='ms-2' >{" "} Friday {" "} </h6> 
-            </Label>   
+              <Label check style={{whiteSpace: 'nowrap'}}>
+              <Field type='checkbox' name="isOpen" value='openFriday' 
+              onClick={() => {
+                setIsOpenFri(!isOpenFri)
+              }}
+              />
+              {isOpenFri ? 
+              <h6 style={{fontWeight: 'bold', display: 'inline-block'}} className='ms-2' >{" "} Friday {" "} </h6> :
+              <h6 style={{fontWeight: 'bold', display: 'inline-block'}} className='ms-2 text-muted' >{" "} Friday {" "} </h6> 
+              }
+            </Label>  
             </Col>
             <Col xs={5} className='text-center' >
             <Dropdown isOpen={friHourDropOpen} toggle={toggleFriHourOpen} style={{display: 'inline-block'}} >
@@ -737,10 +782,17 @@ const HoursOpen = ({setHrsOpen, hrsOpen, useHrsSwitch, setUseHrsSwitch}) => {
     <FormGroup row inline >
             <Row >
               <Col xs={2} >
-              <Label style={{whiteSpace: 'nowrap'}}>  
-              <Field type='checkbox' name="isOpen" value='saturday' />
-              <h6 style={{fontWeight: 'bold', display: 'inline-block'}} className='ms-2' >{" "} Saturday {" "} </h6> 
-            </Label>  
+              <Label check style={{whiteSpace: 'nowrap'}}>
+              <Field type='checkbox' name="isOpen" value='openSaturday' 
+              onClick={() => {
+                setIsOpenSat(!isOpenSat)
+              }}
+              />
+              {isOpenSat ? 
+              <h6 style={{fontWeight: 'bold', display: 'inline-block'}} className='ms-2' >{" "} Saturday {" "} </h6> :
+              <h6 style={{fontWeight: 'bold', display: 'inline-block'}} className='ms-2 text-muted' >{" "} Saturday {" "} </h6> 
+              }
+            </Label>
             </Col>
             <Col xs={5} className='text-center' >
             <Dropdown isOpen={satHourDropOpen} toggle={toggleSatHourOpen} style={{display: 'inline-block'}} >
@@ -817,7 +869,7 @@ const HoursOpen = ({setHrsOpen, hrsOpen, useHrsSwitch, setUseHrsSwitch}) => {
 
 
 
-            </FormGroup>
+            
           </Col>
         </Row>
       </Form>
