@@ -80,6 +80,7 @@ const EditDescriptionType = ({farmstandId, prevName, prevDescription, prevFarmst
         description: description,
         farmstandName: farmstandName,
         hours: hrsOpen,
+        useHours: useHrsSwitch,
         values,
         },
         {

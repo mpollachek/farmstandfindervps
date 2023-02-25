@@ -213,7 +213,7 @@ const HoursOpenEdit = ({setHrsOpen, hrsOpen, useHrsSwitch, setUseHrsSwitch}) => 
       })
       console.log("hrs open", hrsOpen)
       setAllowHrsChange(false)
-      }}, [sunOpenHr, sunOpenMin, sunOpenAmPm, sunCloseHr, sunCloseMin, sunCloseAmPm, monOpenHr, monOpenMin, monOpenAmPm, monCloseHr, monCloseMin, monCloseAmPm, tuesOpenHr, tuesOpenMin, tuesOpenAmPm, tuesCloseHr, tuesCloseMin, tuesCloseAmPm, wedOpenHr, wedOpenMin, wedOpenAmPm, wedCloseHr, wedCloseMin, wedCloseAmPm, thurOpenHr, thurOpenMin, thurOpenAmPm, thurCloseHr, thurCloseMin, thurCloseAmPm, friOpenHr, friOpenMin, friOpenAmPm, friCloseHr, friCloseMin, friCloseAmPm, satOpenHr, satOpenMin, satOpenAmPm, satCloseHr, satCloseMin, satCloseAmPm])
+      }}, [sunOpenHr, sunOpenMin, sunOpenAmPm, sunCloseHr, sunCloseMin, sunCloseAmPm, monOpenHr, monOpenMin, monOpenAmPm, monCloseHr, monCloseMin, monCloseAmPm, tuesOpenHr, tuesOpenMin, tuesOpenAmPm, tuesCloseHr, tuesCloseMin, tuesCloseAmPm, wedOpenHr, wedOpenMin, wedOpenAmPm, wedCloseHr, wedCloseMin, wedCloseAmPm, thurOpenHr, thurOpenMin, thurOpenAmPm, thurCloseHr, thurCloseMin, thurCloseAmPm, friOpenHr, friOpenMin, friOpenAmPm, friCloseHr, friCloseMin, friCloseAmPm, satOpenHr, satOpenMin, satOpenAmPm, satCloseHr, satCloseMin, satCloseAmPm, isOpenSun, isOpenMon, isOpenTues, isOpenWed, isOpenThur, isOpenFri, isOpenSat])
 
   console.log("monOpenHr", monOpenHr)
 
@@ -231,9 +231,9 @@ const HoursOpenEdit = ({setHrsOpen, hrsOpen, useHrsSwitch, setUseHrsSwitch}) => 
         <Input
           type="switch"
           checked={useHrsSwitch}
-          onClick={() => {
+          onChange={() => {
             setUseHrsSwitch(!useHrsSwitch);
-            setAllowHrsChange(true)
+            console.log("useHrsSwitch", useHrsSwitch)
           }}
         />
         { useHrsSwitch ? 
@@ -266,7 +266,7 @@ const HoursOpenEdit = ({setHrsOpen, hrsOpen, useHrsSwitch, setUseHrsSwitch}) => 
             <Row >
               <Col xs={2} >
               <Label check style={{whiteSpace: 'nowrap'}}>
-              <Field type='checkbox' name="isOpen" value='openSunday' 
+              <Field type='checkbox' name="isOpen" value='isOpenSun' checked={isOpenSun} 
               onClick={() => {
                 setIsOpenSun(!isOpenSun)
                 setAllowHrsChange(true)
@@ -355,7 +355,7 @@ const HoursOpenEdit = ({setHrsOpen, hrsOpen, useHrsSwitch, setUseHrsSwitch}) => 
             <Row >
               <Col xs={2} >
               <Label check style={{whiteSpace: 'nowrap'}}>
-              <Field type='checkbox' name="isOpen" value='openMonday' 
+              <Field type='checkbox' name="isOpen" value='isOpenMon' checked={isOpenMon}
               onClick={() => {
                 setIsOpenMon(!isOpenMon)
                 setAllowHrsChange(true)
@@ -444,7 +444,7 @@ const HoursOpenEdit = ({setHrsOpen, hrsOpen, useHrsSwitch, setUseHrsSwitch}) => 
             <Row >
               <Col xs={2} >
               <Label check style={{whiteSpace: 'nowrap'}}>
-              <Field type='checkbox' name="isOpen" value='openTuesday' 
+              <Field type='checkbox' name="isOpen" value='isOpenTues' checked={isOpenTues}
               onClick={() => {
                 setIsOpenTues(!isOpenTues)
                 setAllowHrsChange(true)
@@ -533,7 +533,7 @@ const HoursOpenEdit = ({setHrsOpen, hrsOpen, useHrsSwitch, setUseHrsSwitch}) => 
             <Row >
               <Col xs={2} >
               <Label check style={{whiteSpace: 'nowrap'}}>
-              <Field type='checkbox' name="isOpen" value='openWednesday' 
+              <Field type='checkbox' name="isOpen" value='isOpenWed' checked={isOpenWed}
               onClick={() => {
                 setIsOpenWed(!isOpenWed)
                 setAllowHrsChange(true)
@@ -622,7 +622,7 @@ const HoursOpenEdit = ({setHrsOpen, hrsOpen, useHrsSwitch, setUseHrsSwitch}) => 
             <Row >
               <Col xs={2} >
               <Label check style={{whiteSpace: 'nowrap'}}>
-              <Field type='checkbox' name="isOpen" value='openThursday' 
+              <Field type='checkbox' name="isOpen" value='isOpenThur' checked={isOpenThur}
               onClick={() => {
                 setIsOpenThur(!isOpenThur)
                 setAllowHrsChange(true)
@@ -711,7 +711,7 @@ const HoursOpenEdit = ({setHrsOpen, hrsOpen, useHrsSwitch, setUseHrsSwitch}) => 
             <Row >
               <Col xs={2} >
               <Label check style={{whiteSpace: 'nowrap'}}>
-              <Field type='checkbox' name="isOpen" value='openFriday' 
+              <Field type='checkbox' name="isOpen" value='isOpenFri' checked={isOpenFri}
               onClick={() => {
                 setIsOpenFri(!isOpenFri)
                 setAllowHrsChange(true)
@@ -800,7 +800,7 @@ const HoursOpenEdit = ({setHrsOpen, hrsOpen, useHrsSwitch, setUseHrsSwitch}) => 
             <Row >
               <Col xs={2} >
               <Label check style={{whiteSpace: 'nowrap'}}>
-              <Field type='checkbox' name="isOpen" value='openSaturday' 
+              <Field type='checkbox' name="isOpen" value='isOpenSat' checked={isOpenSat}
               onClick={() => {
                 setIsOpenSat(!isOpenSat)
                 setAllowHrsChange(true)
