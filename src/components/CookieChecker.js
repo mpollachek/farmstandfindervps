@@ -23,9 +23,9 @@ const CookieChecker = () => {
     let singleCookieArray = item.split('=');
     console.log("singleCookieArray", singleCookieArray)
     if (singleCookieArray[0] === 'google') {
-      localStorage.setItem("google", singleCookieArray[1]);
+      localStorage.setItem("token", singleCookieArray[1]);
     } else if (singleCookieArray[0] === 'facebook') {
-      localStorage.setItem("google", singleCookieArray[1]);
+      localStorage.setItem("token", singleCookieArray[1]);
     } else if (singleCookieArray[0] === 'userId') {
       localStorage.setItem("userId", singleCookieArray[1]);
       setUserId(singleCookieArray[1])
