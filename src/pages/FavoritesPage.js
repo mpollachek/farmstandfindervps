@@ -3,6 +3,7 @@ import FavoritesList from "../favorites/FavoritesList";
 import SubHeader from "../components/SubHeader";
 
 const FavoritesPage = () => {
+
   return (
     <Container>
       <SubHeader current="Favorites" detail={false} />

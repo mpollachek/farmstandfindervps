@@ -18,6 +18,7 @@ import HoursOpen from "../components/HoursOpen";
 import HoursOpenEdit from "../components/HoursOpenEdit";
 import DescriptionIcon from '@mui/icons-material/Description';
 import { selectFarmstandById } from "../farmstands/farmstandFilter";
+import { createListingSchema } from "./validations";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCow } from "@fortawesome/free-solid-svg-icons"; // dairy
 import { faPepperHot } from "@fortawesome/free-solid-svg-icons"; // produce
@@ -71,7 +72,15 @@ const EditDescriptionType = ({farmstandId, prevName, prevDescription, prevFarmst
 }
 
   const handleSubmit = async (values) => {
-    const token = localStorage.getItem("token");
+    let token = ""
+  if (localStorage.getItem("token")) {
+    token = await localStorage.getItem("token");
+  } else if (localStorage.getItem("google")) {
+    token = await localStorage.getItem("google");
+  } else if (localStorage.getItem("facebook")) {
+    token = await localStorage.getItem("facebook");
+  }
+  
     console.log("post: ", values);
     try {
       await Axios.put(
@@ -115,6 +124,7 @@ const EditDescriptionType = ({farmstandId, prevName, prevDescription, prevFarmst
     <Formik
       initialValues={initialValues}
       onSubmit={handleSubmit}
+      validationSchema={createListingSchema}
       //validate={validateCreateListingForm}
     >
       <Form>

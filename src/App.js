@@ -9,6 +9,8 @@ import TestPage from "./pages/TestPage";
 import Header from "./components/Header";
 import TestPage2 from "./pages/TestPage2";
 import RemoveImages from "./components/RemoveImages";
+import CookieChecker from "./components/CookieChecker";
+import RedirectPage from "./pages/RedirectPage";
 
 export const UserContext = createContext();
 export const FarmstandsContext = createContext();
@@ -58,6 +60,7 @@ const App = () => {
       <CommentsContext.Provider value={{comments, setComments}}>
       <SidebarContext.Provider value={{sidebarProducts, setSidebarProducts, sidebarSeasons, setSidebarSeasons, sidebarSearch, setSidebarSearch, sidebarTypes, setSidebarTypes, sidebarProductSearch, setSidebarProductSearch }}>
       <MapContext.Provider value={{mapCenter, setMapCenter, centerParam}}>
+      <CookieChecker />
       <Routes>             
         <Route path="/" element={<MapsPage />} />
         {/* <Route path="/:mapCenter" element={<MapsPage mapCenter={mapCenter} />}/> */}
@@ -72,6 +75,7 @@ const App = () => {
             />
         <Route path='favorites' element={<FavoritesPage />} />
         <Route path='mycomments' element={<MyCommentsPage />} /> 
+        <Route path='redirect' element={<RedirectPage/>} />
         <Route path="test" element={<TestPage />} />
         <Route path="test2" element={<TestPage2 />} />        
       </Routes>

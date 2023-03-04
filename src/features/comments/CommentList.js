@@ -19,7 +19,17 @@ const CommentsList = ({ currentFarmstand }) => {
   const {farmstand, setFarmstand} = useContext(SingleFarmstandContext);
   //const { comments, setComments } = useContext(CommentsContext)
 
-  const [runGet, setRunGet] = useState(false);
+  console.log("commentList currentFarmstand: ", currentFarmstand)
+
+  const authorArray = [];
+
+  if (farmstand.comments) {
+    farmstand.comments.forEach((comment) => {
+      authorArray.push(comment.author._id)
+    })
+  }
+
+  // const [runGet, setRunGet] = useState(false);
 
   //   const getFarmstand = async () => {
   //   console.log("run getFarmstand ownercomment");
@@ -29,7 +39,7 @@ const CommentsList = ({ currentFarmstand }) => {
   //     setFarmstand(farm);
   // }
 
-  const emptyArray = []
+  // const emptyArray = []
 
   // const [comments, setComments] = useState([
   //   {
@@ -71,7 +81,7 @@ const CommentsList = ({ currentFarmstand }) => {
         {farmstand.comments && farmstand.comments.length > 0 ? (
           <Col className="ms-1">
             <h4>Comments</h4>
-            {userId ? 
+            {userId && !authorArray.includes(userId) ? 
             <div>
             <CommentForm farmstandId={farmstandId} setFarmstand={setFarmstand} /> 
             {farmstand.comments.map((comment) => {

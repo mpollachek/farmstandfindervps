@@ -27,7 +27,15 @@ const EditOwnerCommentForm = ({ farmstandId, commentId, commentText, getFarmstan
   }
 
   const handleSubmit = async (values) => {
-    const token = await localStorage.getItem("token");
+    let token = ""
+  if (localStorage.getItem("token")) {
+    token = await localStorage.getItem("token");
+  } else if (localStorage.getItem("google")) {
+    token = await localStorage.getItem("google");
+  } else if (localStorage.getItem("facebook")) {
+    token = await localStorage.getItem("facebook");
+  }
+  
     try {
       console.log("post comment values: ", values);
       console.log("textareavalue", textAreaValue)

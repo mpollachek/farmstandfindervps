@@ -7,7 +7,15 @@ const DeleteComment = ({getMyComments, farmstandId, commentId, setRunGetMyCommen
   const [modalOpen, setModalOpen] = useState(false);
 
   const deleteSubmit = async () => {
-    const token = localStorage.getItem("token");
+    let token = ""
+  if (localStorage.getItem("token")) {
+    token = await localStorage.getItem("token");
+  } else if (localStorage.getItem("google")) {
+    token = await localStorage.getItem("google");
+  } else if (localStorage.getItem("facebook")) {
+    token = await localStorage.getItem("facebook");
+  }
+  
     try {
       const deleteComment = await axios.delete(
         `http://localhost:8080/api/farms/${farmstandId}/comments/${commentId}`,

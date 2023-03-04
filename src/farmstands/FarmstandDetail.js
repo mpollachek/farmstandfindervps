@@ -24,7 +24,7 @@ import {
 import { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios, {Axios} from "axios";
-import { Formik, Field, Form, } from "formik";
+import { Formik, Field, Form, ErrorMessage, } from "formik";
 import { Divider, IconButton } from "@mui/material";
 import "../css/FarmstandDetail.css";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -42,6 +42,7 @@ import { selectFarmstandById } from "./farmstandFilter";
 import RemoveImages from "../components/RemoveImages";
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import EditDescriptionType from "../forms/EditDescriptionType";
+import { addImagesSchema } from "../forms/validations";
 
 const FarmstandDetail = ({ currentFarmstand }) => {
   const { images, farmstandName, description, products, _id: farmstandId, location, owner: farmstandOwner, ownercomments: ownerComments, farmstandType, seasons, hours, useHours } = currentFarmstand;
@@ -88,7 +89,15 @@ const FarmstandDetail = ({ currentFarmstand }) => {
 
   /* Favorite Functions */
   const favoriteToggle = async () => {
-    const token = await localStorage.getItem("token");
+    let token = ""
+  if (localStorage.getItem("token")) {
+    token = await localStorage.getItem("token");
+  } else if (localStorage.getItem("google")) {
+    token = await localStorage.getItem("google");
+  } else if (localStorage.getItem("facebook")) {
+    token = await localStorage.getItem("facebook");
+  }
+  
     let favToggle = await axios.put(
       `http://localhost:8080/api/users/isfavorite/${farmstandId}`,
       {},
@@ -107,7 +116,15 @@ const FarmstandDetail = ({ currentFarmstand }) => {
   const getIsFavorite = async () => {
     // console.log("_id: ", farmstandId);
     // console.log("runGet: ", runGet);
-    const token = await localStorage.getItem("token");
+    let token = ""
+  if (localStorage.getItem("token")) {
+    token = await localStorage.getItem("token");
+  } else if (localStorage.getItem("google")) {
+    token = await localStorage.getItem("google");
+  } else if (localStorage.getItem("facebook")) {
+    token = await localStorage.getItem("facebook");
+  }
+  
     if (runGet && farmstandId) {
       let fav = await axios.get(
         `http://localhost:8080/api/users/isfavorite/${farmstandId}`,
@@ -142,6 +159,14 @@ const FarmstandDetail = ({ currentFarmstand }) => {
 
   /* useEffect to check and set logged in status */
   useEffect(() => {
+  //   let token = ""
+  // if (localStorage.getItem("token")) {
+  //   token = localStorage.getItem("token");
+  // } else if (localStorage.getItem("google")) {
+  //   token = localStorage.getItem("google");
+  // } else if (localStorage.getItem("facebook")) {
+  //   token = localStorage.getItem("facebook");
+  // }
     const token = localStorage.getItem("token");
     // console.log("token: ", token);
     axios
@@ -151,7 +176,7 @@ const FarmstandDetail = ({ currentFarmstand }) => {
         },
       })
       .then((res) => {
-        // console.log(res);
+        console.log(res);
         setUserId(res.data._id);
         setUserName(res.data.username);
       })
@@ -226,7 +251,15 @@ const FarmstandDetail = ({ currentFarmstand }) => {
   // };
 
   const ownerSubmit = async (values) => {
-    const token = await localStorage.getItem("token");
+    let token = ""
+  if (localStorage.getItem("token")) {
+    token = await localStorage.getItem("token");
+  } else if (localStorage.getItem("google")) {
+    token = await localStorage.getItem("google");
+  } else if (localStorage.getItem("facebook")) {
+    token = await localStorage.getItem("facebook");
+  }
+  
       let ownerToggle = await axios.put(`http://localhost:8080/api/users/owned/${farmstandId}`,
       {},
       {
@@ -369,6 +402,7 @@ const FarmstandDetail = ({ currentFarmstand }) => {
         <Formik
           initialValues={initialValuesAddImages}
           onSubmit={handleSubmit}
+          validationSchema={addImagesSchema}
         >
           <Form>
             <FormGroup row>
@@ -388,14 +422,17 @@ const FarmstandDetail = ({ currentFarmstand }) => {
               onChange={(e) => setImage(e.target.files)}
             />
             <FormText color="muted">               
-            Select 1 or multiple images
-            </FormText>            
+            Select 1 or multiple images. jpg, jpeg, gif and png images under 3mb
+            </FormText>   
           </Col>
         </FormGroup>
         <FormGroup>
         <Button type="submit" color="primary" className="me-2">
-              <InsertPhotoIcon /> Add images
-            </Button>
+          <InsertPhotoIcon /> Add images
+        </Button>
+        {/* <ErrorMessage name="image">
+          {(msg) => <p className="text-danger">{msg}</p>}
+        </ErrorMessage> */}
             {farmstandOwner.includes(userId) ? (
               <div>
                 {'\n'}

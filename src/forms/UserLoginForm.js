@@ -1,16 +1,27 @@
 import { useState, useContext } from "react";
 import { FormGroup, Label, Button, Col, Row, Container } from "reactstrap";
 import { Formik, Field, Form, ErrorMessage } from "formik";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Divider } from "@mui/material";
 import axios, { Axios } from "axios";
 import { UserContext } from "../App";
+import { loginSchema, registerSchema } from "./validations";
 //import defaultAvatar from '../../app/assets/img/unicorn.png';
 //import { validateUserLoginForm } from '../../utils/validateUserLoginForm';
 
 const UserLoginForm = () => {
   const { userId, setUserId, userName, setUserName } = useContext(UserContext);
 
+  const location = useLocation();
+  const navigate = useNavigate();
+  console.log("location", location)
+
+  const siteUrl = 'http://localhost:3000'
+
+  const [currentUrl, setCurrentUrl] = useState(location.pathname)
+
   const initialValuesLogin = {
+
     username: "",
     password: "",
   };
@@ -31,6 +42,8 @@ const UserLoginForm = () => {
           localStorage.setItem("token", user.data.token);
           setUserName(user.data.userName);
           setUserId(user.data.userId);
+          navigate(currentUrl);
+          console.log("login username: ", userName)
         });
     } catch (error) {
       console.error(error);
@@ -53,11 +66,41 @@ const UserLoginForm = () => {
     }
   };
 
+  const facebookLogin = async () => {
+    let facebook = await axios.get(`http://localhost:8080/api/users/login/facebook`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+    return facebook;
+    }
+
+    const googleLogin = async () => {
+      await axios.get(`http://localhost:8080/api/users/login/google`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((googleUser) => {
+      localStorage.setItem("token", googleUser.data.token);
+      setUserName(googleUser.data.userName);
+      setUserId(googleUser.data.userId);
+      navigate(siteUrl + currentUrl)
+    })
+      }
+
+  const googLogin = async () => {
+    await window.open("http://localhost:8080/api/users/login/google","_self")
+    console.log("test")
+  };
+  
+
   return (
     <Container>
       <Formik
         initialValues={initialValuesLogin}
         onSubmit={handleLoginSubmit}
+        validationSchema={loginSchema}
         //validate={validateLoginForm}
       >
         <Form>
@@ -95,7 +138,14 @@ const UserLoginForm = () => {
                 </Button>
               </Col>
             </FormGroup>
-            <h1>OAUTH</h1>
+            <FormGroup>
+              <Button onClick={facebookLogin} >
+                Facebook
+              </Button>
+              <Button onClick={googLogin} >
+                Google
+              </Button>
+            </FormGroup>
           </div>
         </Form>
       </Formik>
@@ -107,6 +157,7 @@ const UserLoginForm = () => {
       <Formik
         initialValues={initialValuesRegister}
         onSubmit={handleRegisterSubmit}
+        validationSchema={registerSchema}
         //validate={validateRegisterForm}
       >
         <Form>
@@ -144,7 +195,20 @@ const UserLoginForm = () => {
                 name="password"
                 placeholder="password"
               />
-              <ErrorMessage name="password">
+              <ErrorMessage name="confirmPassword">
+                {(msg) => <p className="text-danger">{msg}</p>}
+              </ErrorMessage>
+            </Col>
+          </FormGroup>
+          <FormGroup row>
+            <Col>
+              <Label htmlFor="confirmPassword">Confirm Password</Label>
+              <Field
+                className="form-control"
+                name="confirmPassword"
+                placeholder="confirm password"
+              />
+              <ErrorMessage name="confirmPassword">
                 {(msg) => <p className="text-danger">{msg}</p>}
               </ErrorMessage>
             </Col>

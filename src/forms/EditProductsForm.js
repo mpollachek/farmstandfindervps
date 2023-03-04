@@ -53,7 +53,15 @@ const EditProductsForm = ({farmstandId, prevProducts, setFarmstand}) => {
 }
 
   const handleSubmit = async (values) => {
-    const token = localStorage.getItem("token");
+    let token = ""
+  if (localStorage.getItem("token")) {
+    token = await localStorage.getItem("token");
+  } else if (localStorage.getItem("google")) {
+    token = await localStorage.getItem("google");
+  } else if (localStorage.getItem("facebook")) {
+    token = await localStorage.getItem("facebook");
+  }
+  
     console.log("post: ", values);
     try {
       await axios.put(

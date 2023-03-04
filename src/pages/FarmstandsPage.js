@@ -3,6 +3,7 @@ import FarmstandList from "../farmstands/FarmstandsList";
 import SubHeader from "../components/SubHeader";
 
 const FarmstandsPage = () => {
+
   return (
     <Container>
       <SubHeader current="Farmstands" />

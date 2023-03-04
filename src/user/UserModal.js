@@ -12,7 +12,14 @@ const UserModal = () => {
   const [runGetOwner, setRunGetOwner] = useState(false);
 
   const logout = () => {
-    localStorage.removeItem("token");
+    //localStorage.removeItem("token");
+    let keysToRemove = ["token", "google", "facebook", "userId", "userName"]
+    for (const key of keysToRemove) {
+      localStorage.removeItem(key)
+    }
+    for (const key of keysToRemove) {
+      document.cookie = `${key}=; path=/; Expires=Sun, 20 Apr 1969 00:00:00 UTC;`;
+    }
     setUserId("");
     setUserName("");
   };

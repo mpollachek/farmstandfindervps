@@ -18,6 +18,7 @@ import { useState, useEffect, useRef } from "react";
 import MultipleFileUpload from "../utils/MultipleFileUpload";
 import Axios from "axios";
 import HoursOpen from "../components/HoursOpen";
+import { createListingSchema } from "./validations";
 import { Dropzone, FileItem, FullScreenPreview } from "@dropzone-ui/react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCow } from "@fortawesome/free-solid-svg-icons"; // dairy
@@ -244,6 +245,7 @@ const CreateListingFormNoAddress = ({ lat, long, toggle2, setFarmstands, refresh
     <Formik
       initialValues={initialValues}
       onSubmit={handleSubmit}
+      validationSchema={createListingSchema}
       //validate={validateCreateListingForm}
     >
       <Form
@@ -551,7 +553,7 @@ const CreateListingFormNoAddress = ({ lat, long, toggle2, setFarmstands, refresh
               onChange={(e) => setImage(e.target.files)}
             />
             <FormText color="muted">
-              Select 1 or multiple images
+              Select 1 or multiple images. jpg, jpeg, gif and png images under 3mb
             </FormText>
           </Col>
         </FormGroup>

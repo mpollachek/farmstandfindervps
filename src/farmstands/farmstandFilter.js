@@ -111,13 +111,33 @@ export const selectFarmstandById = async (farmstandId) => {
 };
 
 export const selectFavoriteFarmstands = async () => {
-  const token = await localStorage.getItem("token");
+  let token = ""
+  let googleToken = "";
+  let facebookToken = "";  
+  let authType = "";
+  const userIdStorage = await localStorage.getItem("userId");
+  if (localStorage.getItem("token")) {
+    token = await localStorage.getItem("token");
+    authType = 'jwt'
+  } else if (localStorage.getItem("google")) {
+    googleToken = await localStorage.getItem("google");
+    authType = 'google'
+  } else if (localStorage.getItem("facebook")) {
+    facebookToken = await localStorage.getItem("facebook");
+    authType = 'facebook'
+  }
+  //const token = await localStorage.getItem("token");
+  
   let userFavorites = await axios.get(
     `http://localhost:8080/api/users/favorites`,
     {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
+        "googleToken": googleToken,
+        "facebookToken": facebookToken,
+        "authType": authType,
+        "userId": userIdStorage,
       },
     }
   );
@@ -126,16 +146,43 @@ export const selectFavoriteFarmstands = async () => {
 };
 
 export const selectFavoriteFarmstandIds = async () => {
-  const token = await localStorage.getItem("token");
+  let token = ""
+  let googleToken = "";
+  let facebookToken = "";
+  let authType = "";
+  const userIdStorage = await localStorage.getItem("userId");
+  if (localStorage.getItem("token")) {
+    token = await localStorage.getItem("token");
+    authType = 'jwt'
+  } else if (localStorage.getItem("google")) {
+    googleToken = await localStorage.getItem("google");
+    authType = 'google'
+  } else if (localStorage.getItem("facebook")) {
+    facebookToken = await localStorage.getItem("facebook");
+    authType = 'facebook'
+  }
+  
   let userFavorites = await axios.get(
     `http://localhost:8080/api/users/favoritesIdList`,
     {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
+        "googleToken": googleToken,
+        "facebookToken": facebookToken,
+        "authType": authType,
+        "userId": userIdStorage,
       },
     }
   );
   console.log("favorites response: ", userFavorites);
   return userFavorites.data;
 };
+
+/* if not jwt token send googleToken or facebookToken 
+in usermodel save authtype as google, facebook or jwt
+in verify user middleware, if jwt do passport.authenticate.
+if facebook or google make sure token exists
+
+have cookie checker remove local storage if cookies have expired
+*/

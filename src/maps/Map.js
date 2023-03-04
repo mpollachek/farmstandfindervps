@@ -254,7 +254,7 @@ function Map() {
     const token = localStorage.getItem("token");
     console.log("token: ", token);
     axios
-      .get("https://localhost:8443/api/users/protected", {
+      .get("http://localhost:8080/api/users/protected", {
         headers: {
           Authorization: "Bearer " + token,
         },

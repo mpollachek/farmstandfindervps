@@ -34,12 +34,13 @@ const MyCommentsList = () => {
       {console.log("myComments: ", myComments)}
       {myComments.map((comment) => {
         console.log("comment: ", comment)
+        // if farmstand is deleted code breaks due to null comment.farmstandId
+        if (comment.farmstandId) {
         const farmId = comment.farmstandId._id
         const farmName = comment.farmstandId.farmstandName
         const commentId = comment._id
         const images = comment.farmstandId.images
         const imageLink = `http://localhost:8080/images/${farmId}/${images[0]}`
-
         return (
           <Col md="4" className="p-4" key={commentId}>
             <Card>
@@ -67,7 +68,8 @@ const MyCommentsList = () => {
             </Card>
           </Col>
         );
-      })}
+    }
+    })}
     </Row>
   )
 }
