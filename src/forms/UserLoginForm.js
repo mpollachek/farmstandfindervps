@@ -66,30 +66,21 @@ const UserLoginForm = () => {
     }
   };
 
-  const facebookLogin = async () => {
-    let facebook = await axios.get(`http://localhost:8080/api/users/login/facebook`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-    return facebook;
-    }
+  // const facebookLogin = async () => {
+  //   let facebook = await axios.get(`http://localhost:8080/api/users/login/facebook`, {
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //   })
+  //   return facebook;
+  //   }
 
-    const googleLogin = async () => {
-      await axios.get(`http://localhost:8080/api/users/login/google`, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      .then((googleUser) => {
-      localStorage.setItem("token", googleUser.data.token);
-      setUserName(googleUser.data.userName);
-      setUserId(googleUser.data.userId);
-      navigate(siteUrl + currentUrl)
-    })
-      }
+    const facebookLogin = async () => {
+      await window.open(`http://localhost:8080/api/users/login/facebook`,"_self")
+      console.log("test")
+    };
 
-  const googLogin = async () => {
+  const googleLogin = async () => {
     await window.open("http://localhost:8080/api/users/login/google","_self")
     console.log("test")
   };
@@ -142,7 +133,7 @@ const UserLoginForm = () => {
               <Button onClick={facebookLogin} >
                 Facebook
               </Button>
-              <Button onClick={googLogin} >
+              <Button onClick={googleLogin} >
                 Google
               </Button>
             </FormGroup>

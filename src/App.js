@@ -11,6 +11,7 @@ import TestPage2 from "./pages/TestPage2";
 import RemoveImages from "./components/RemoveImages";
 import CookieChecker from "./components/CookieChecker";
 import RedirectPage from "./pages/RedirectPage";
+import SelectCoverImage from "./components/SelectCoverImage";
 
 export const UserContext = createContext();
 export const FarmstandsContext = createContext();
@@ -72,6 +73,10 @@ const App = () => {
             <Route
               path="farmstands/:farmstandId/removeImages"
               element={<RemoveImages />}
+            />
+            <Route
+              path="farmstands/:farmstandId/selectcoverimage"
+              element={<SelectCoverImage />}
             />
         <Route path='favorites' element={<FavoritesPage />} />
         <Route path='mycomments' element={<MyCommentsPage />} /> 

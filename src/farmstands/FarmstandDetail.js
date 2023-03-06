@@ -433,9 +433,18 @@ const FarmstandDetail = ({ currentFarmstand }) => {
         {/* <ErrorMessage name="image">
           {(msg) => <p className="text-danger">{msg}</p>}
         </ErrorMessage> */}
-            {farmstandOwner.includes(userId) ? (
+            {farmstandOwner.includes(userId) && images ? (
               <div>
                 {'\n'}
+                <Link to={`../farmstands/${farmstandId}/selectcoverimage`}>
+            <Button
+            // onClick={() => setModalOpen(true)}      
+            className="my-2 me-2"
+            color="success"
+          >
+            <InsertPhotoIcon /> select cover image
+          </Button>
+          </Link>
             <Link to={`../farmstands/${farmstandId}/removeimages`}>
             <Button
             // onClick={() => setModalOpen(true)}      
