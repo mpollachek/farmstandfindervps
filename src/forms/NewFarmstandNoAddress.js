@@ -56,17 +56,17 @@ const NewFarmstandNoAddress = ({ toggle, toggle2, lat, long, setLat, setLong }) 
   return (
     <Container>
       <Row className="text-center">
-        <Col md="6">
+        <Col md="6" className="my-3">
           <h3>Choose Location on Map</h3>
-          <br />
-          <Button onClick={chooseLocation} color="primary">
+
+          <Button onClick={chooseLocation} color="primary" className="mt-2">
             Choose Location
           </Button>
         </Col>
-        <Col md="6">
+        <Col md="6" className="my-3">
           <h3>Use Current Location</h3>
-          <br />
-          <Button onClick={currentLocation} color="primary">
+
+          <Button onClick={currentLocation} color="primary" className="mt-2">
             Current Location
           </Button>
         </Col>

@@ -6,6 +6,8 @@ import { Divider } from "@mui/material";
 import axios, { Axios } from "axios";
 import { UserContext } from "../App";
 import { loginSchema, registerSchema } from "./validations";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faBrands, faFacebook, faGoogle } from "@fortawesome/free-brands-svg-icons";
 //import defaultAvatar from '../../app/assets/img/unicorn.png';
 //import { validateUserLoginForm } from '../../utils/validateUserLoginForm';
 
@@ -129,19 +131,19 @@ const UserLoginForm = () => {
                 </Button>
               </Col>
             </FormGroup>
-            <FormGroup>
-              <Button onClick={facebookLogin} >
-                Facebook
+            <FormGroup className="d-flex justify-content-around">
+              <Button onClick={facebookLogin} color="primary" className="col-5" size="lg">
+              <FontAwesomeIcon icon={faFacebook} className='me-2 text-nowrap' /> Facebook 
               </Button>
-              <Button onClick={googleLogin} >
-                Google
+              <Button onClick={googleLogin} color="primary" className="col-5" size="lg">
+              <FontAwesomeIcon icon={faGoogle} className='me-2 text-nowrap'  /> Google
               </Button>
             </FormGroup>
           </div>
         </Form>
       </Formik>
 
-      <Row className="text-center">
+      <Row className="text-center mt-4">
         <h3>Not Registered?</h3>
       </Row>
 
@@ -212,7 +214,17 @@ const UserLoginForm = () => {
                 </Button>
               </Col>
             </FormGroup>
-            <h1>OAUTH</h1>
+            <FormGroup className="d-flex justify-content-around">
+              <Button onClick={facebookLogin} color="primary" className="col-5" size="lg">
+              <FontAwesomeIcon icon={faFacebook} className='me-2 text-nowrap' /> Facebook 
+              </Button>
+              <Button onClick={googleLogin} color="primary" className="col-5" size="lg">
+              <FontAwesomeIcon icon={faGoogle} className='me-2 text-nowrap'  /> Google
+              </Button>      
+            </FormGroup>
+            <div>
+            <h5>Google and Facebook Oauth currently for test users only</h5>    
+            </div>
           </div>
         </Form>
       </Formik>

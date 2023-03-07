@@ -5,6 +5,7 @@ import FarmstandDetailPage from "./pages/FarmstandDetailPage";
 import MapsPage from "./pages/MapsPage";
 import FavoritesPage from "./pages/FavoritesPage";
 import MyCommentsPage from "./pages/MyCommentsPage";
+import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
 import TestPage from "./pages/TestPage";
 import Header from "./components/Header";
 import TestPage2 from "./pages/TestPage2";
@@ -81,6 +82,7 @@ const App = () => {
         <Route path='favorites' element={<FavoritesPage />} />
         <Route path='mycomments' element={<MyCommentsPage />} /> 
         <Route path='redirect' element={<RedirectPage/>} />
+        <Route path='privacy' element={<PrivacyPolicyPage/>} />
         <Route path="test" element={<TestPage />} />
         <Route path="test2" element={<TestPage2 />} />        
       </Routes>
