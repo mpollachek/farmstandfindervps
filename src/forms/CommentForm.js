@@ -22,6 +22,7 @@ import StarOutlineIcon from "@mui/icons-material/StarOutline";
 import Picker, {EmojiStyle} from "emoji-picker-react";
 //import { validateCommentForm } from "../../utils/validateCommentForm";
 //import { postComment } from "./commentsSlice";
+import { backendUrl } from "../config";
 
 const CommentForm = ({ farmstandId, setFarmstand }) => {
   const { userId, userName } = useContext(UserContext);
@@ -70,7 +71,7 @@ const CommentForm = ({ farmstandId, setFarmstand }) => {
       console.log("rating: ", rating);
       console.log("post comment values: ", values);
       await axios.post(
-        `http://localhost:8080/api/farms/${farmstandId}/comments`,
+        `${backendUrl}/api/farms/${farmstandId}/comments`,
         {
           author: userId,
           text: textAreaValue,

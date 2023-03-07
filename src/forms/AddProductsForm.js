@@ -15,6 +15,7 @@ import { useState, useEffect } from "react";
 import Axios from "axios";
 import FoodBankIcon from '@mui/icons-material/FoodBank';
 import { selectFarmstandById } from "../farmstands/farmstandFilter";
+import { backendUrl } from "../config";
 
 /* Create duplicate NewFarmstand.js and CreateListingForm.js files and remove ability to use address.  Free geocoding has been inaccurate and finding locations on map is easier */
 
@@ -35,7 +36,7 @@ const AddProductsForm = ({farmstandId, setFarmstand}) => {
   const handleSubmit = async (values) => {
     try {
       await Axios.put(
-        `http://localhost:8080/api/farms/${farmstandId}/addproducts`,
+        `${backendUrl}/api/farms/${farmstandId}/addproducts`,
         values
       ).then((response) => {
         console.log("post: ", values);

@@ -7,6 +7,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import EditOwnerCommentForm from "../../forms/EditOwnerCommentForm";
 import { SingleFarmstandContext } from "../../App";
 import { selectFarmstandById } from "../../farmstands/farmstandFilter";
+import { backendUrl } from "../../config";
 
 const OwnerComment = ({ ownerComment, farmstandOwner }) => {
 
@@ -34,7 +35,7 @@ const OwnerComment = ({ ownerComment, farmstandOwner }) => {
     const token = localStorage.getItem("token");
     try {
       const deleteOwnerComment = await axios.delete(
-        `http://localhost:8080/api/farms/${farmstandId}/ownercomments/${commentId}`,
+        `${backendUrl}/api/farms/${farmstandId}/ownercomments/${commentId}`,
         {
           headers: {
             Authorization: "Bearer " + token,

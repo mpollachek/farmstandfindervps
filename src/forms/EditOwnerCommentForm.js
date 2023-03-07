@@ -15,6 +15,7 @@ import { UserContext } from "../App";
 import EditIcon from "@mui/icons-material/Edit";
 import Picker, {EmojiStyle} from "emoji-picker-react";
 //import { validateCommentForm } from "../../utils/validateCommentForm";
+import { backendUrl } from "../config";
 
 const EditOwnerCommentForm = ({ farmstandId, commentId, commentText, getFarmstand }) => {
   const { userId, userName } = useContext(UserContext);
@@ -40,7 +41,7 @@ const EditOwnerCommentForm = ({ farmstandId, commentId, commentText, getFarmstan
       console.log("post comment values: ", values);
       console.log("textareavalue", textAreaValue)
       await axios.put(
-        `http://localhost:8080/api/farms/${farmstandId}/ownercomments/${commentId}`,
+        `${backendUrl}/api/farms/${farmstandId}/ownercomments/${commentId}`,
         {
           text: textAreaValue,
           updatedAt: new Date(Date.now()).toISOString(),
@@ -61,7 +62,7 @@ const EditOwnerCommentForm = ({ farmstandId, commentId, commentText, getFarmstan
 
   // const getCommentText = () => {
   //   const getComment = axios.get(
-  //     `http://localhost:8080/api/farms/${farmstandId}/ownercomments/${commentId}`,
+  //     `${backendUrl}/api/farms/${farmstandId}/ownercomments/${commentId}`,
   //     {
   //       headers: {
   //         "Content-Type": "application/json",

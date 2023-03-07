@@ -29,6 +29,7 @@ import { faChildren } from "@fortawesome/free-solid-svg-icons"; // Play Area
 import { faUserDoctor } from "@fortawesome/free-solid-svg-icons"; // therapy
 import { faSeedling } from "@fortawesome/free-solid-svg-icons"; // garden center
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { backendUrl } from "../config";
 
 /* Create duplicate NewFarmstand.js and CreateListingForm.js files and remove ability to use address.  Free geocoding has been inaccurate and finding locations on map is easier */
 
@@ -84,7 +85,7 @@ const EditDescriptionType = ({farmstandId, prevName, prevDescription, prevFarmst
     console.log("post: ", values);
     try {
       await Axios.put(
-        `http://localhost:8080/api/farms/${farmstandId}/editDescription`,
+        `${backendUrl}/api/farms/${farmstandId}/editDescription`,
         {
         description: description,
         farmstandName: farmstandName,

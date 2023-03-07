@@ -15,6 +15,7 @@ import { useState, useEffect } from "react";
 import axios, {Axios} from "axios";
 import FoodBankIcon from '@mui/icons-material/FoodBank';
 import { selectFarmstandById } from "../farmstands/farmstandFilter";
+import { backendUrl } from "../config";
 
 /* Create duplicate NewFarmstand.js and CreateListingForm.js files and remove ability to use address.  Free geocoding has been inaccurate and finding locations on map is easier */
 
@@ -27,7 +28,7 @@ const EditProductsForm = ({farmstandId, prevProducts, setFarmstand}) => {
 
   const getAllProducts = async () => {
     if (runGetProducts) {
-    let allPostedProducts = await axios.get(`http://localhost:8080/api/farms/getallproducts`, {
+    let allPostedProducts = await axios.get(`${backendUrl}/api/farms/getallproducts`, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -65,7 +66,7 @@ const EditProductsForm = ({farmstandId, prevProducts, setFarmstand}) => {
     console.log("post: ", values);
     try {
       await axios.put(
-        `http://localhost:8080/api/farms/${farmstandId}/editproducts`,
+        `${backendUrl}/api/farms/${farmstandId}/editproducts`,
         values,
         {
           headers: {

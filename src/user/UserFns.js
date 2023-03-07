@@ -1,9 +1,10 @@
 import axios from "axios";
+import { backendUrl } from "../config";
 
 export const selectUserOwned = async () => {
   const token = await localStorage.getItem("token");  
     let ownedArray = await axios.get(
-      `http://localhost:8080/api/users/owned`,
+      `${backendUrl}/api/users/owned`,
       {
         headers: {
           "Content-Type": "application/json",

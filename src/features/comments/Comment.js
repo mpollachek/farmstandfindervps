@@ -12,6 +12,7 @@ import { selectCommentsByFarmstandId } from "./commentsFns";
 import { CommentsContext } from "../../App";
 import { SingleFarmstandContext } from "../../App";
 import { selectFarmstandById } from "../../farmstands/farmstandFilter";
+import { backendUrl } from "../../config";
 
 const Comment = ({ comment }) => {
   const { _id: commentId, text: commentText, rating, author, createdAt: date, updatedAt: updated, farmstandId } = comment;
@@ -47,7 +48,7 @@ const Comment = ({ comment }) => {
     const token = localStorage.getItem("token");
     try {
       const deleteComment = await axios.delete(
-        `http://localhost:8080/api/farms/${farmstandId}/comments/${commentId}`,
+        `${backendUrl}/api/farms/${farmstandId}/comments/${commentId}`,
         {
           headers: {
             Authorization: "Bearer " + token,

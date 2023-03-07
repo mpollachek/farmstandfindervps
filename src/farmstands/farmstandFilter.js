@@ -1,5 +1,6 @@
 import axios, { Axios } from "axios";
 import { FARMSTANDS } from "../testData/FARMSTANDS";
+import { backendUrl } from "../config";
 
 // export const selectAllFarmstands = () => {
 //   return FARMSTANDS;
@@ -8,7 +9,7 @@ import { FARMSTANDS } from "../testData/FARMSTANDS";
 // ***  Need to return all documents in collection as an array with each document as an item.  schema is used to select collection within database, but it appears to make a subfolder.  currently saving to "test" database, need to change that
 
 // export const selectAllFarmstands = () => {
-//   axios.get(`http://localhost:8080/api/farms`, {
+//   axios.get(`${backendUrl}/api/farms`, {
 //     headers: {
 //       "Content-Type": "application/json",
 //   },
@@ -30,7 +31,7 @@ export const selectAllFarmstands = async (
   // console.log("filter get long: ", long);
   // console.log("filter get distance: ", distance);
   console.log("farmstandType: ", farmstandType)
-  let allFarms = await axios.get(`http://localhost:8080/api/farms`, {
+  let allFarms = await axios.get(`${backendUrl}/api/farms`, {
     params: {
       longitude: long,
       latitude: lat,
@@ -49,7 +50,7 @@ export const selectAllFarmstands = async (
 };
 
 export const selectAllData = async () => {
-  let allData = await axios.get(`http://localhost:8080/api/farms`, {
+  let allData = await axios.get(`${backendUrl}/api/farms`, {
     headers: {
       "Content-Type": "application/json",
     },
@@ -59,7 +60,7 @@ export const selectAllData = async () => {
 };
 
 // export const selectCardImage = async (id) => {
-//   let cardImage = await axios.get(`http://localhost:8080/api/farms/cardImage`, {
+//   let cardImage = await axios.get(`${backendUrl}/api/farms/cardImage`, {
 //     params: {
 //       id: id
 //     },
@@ -71,7 +72,7 @@ export const selectAllData = async () => {
 // }
 
 export const selectImagesByIdsTest = async (id) => {
-  let allDataImages = await axios.get(`http://localhost:8080/api/farms/test`, {
+  let allDataImages = await axios.get(`${backendUrl}/api/farms/test`, {
     params: {
       id: id,
     },
@@ -99,7 +100,7 @@ export const selectRandomFarmstand = () => {
 
 export const selectFarmstandById = async (farmstandId) => {
   let farmstandById = await axios.get(
-    `http://localhost:8080/api/farms/${farmstandId}`,
+    `${backendUrl}/api/farms/${farmstandId}`,
     {
       headers: {
         "Content-Type": "application/json",
@@ -129,7 +130,7 @@ export const selectFavoriteFarmstands = async () => {
   //const token = await localStorage.getItem("token");
   
   let userFavorites = await axios.get(
-    `http://localhost:8080/api/users/favorites`,
+    `${backendUrl}/api/users/favorites`,
     {
       headers: {
         "Content-Type": "application/json",
@@ -163,7 +164,7 @@ export const selectFavoriteFarmstandIds = async () => {
   }
   
   let userFavorites = await axios.get(
-    `http://localhost:8080/api/users/favoritesIdList`,
+    `${backendUrl}/api/users/favoritesIdList`,
     {
       headers: {
         "Content-Type": "application/json",

@@ -62,6 +62,7 @@ import UserModal from "../user/UserModal";
 import axios from "axios";
 import { UserContext, MapContext, FarmstandsContext, SidebarContext } from "../App";
 import { Navigation } from "@mui/icons-material";
+import { backendUrl } from "../config";
 
 /* Add a List view button that will display all farmstands on mapview current boundaries */
 
@@ -254,7 +255,7 @@ function Map() {
     const token = localStorage.getItem("token");
     console.log("token: ", token);
     axios
-      .get("http://localhost:8080/api/users/protected", {
+      .get(`${backendUrl}/api/users/protected`, {
         headers: {
           Authorization: "Bearer " + token,
         },

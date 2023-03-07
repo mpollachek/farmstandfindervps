@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBrands, faFacebook, faGoogle } from "@fortawesome/free-brands-svg-icons";
 //import defaultAvatar from '../../app/assets/img/unicorn.png';
 //import { validateUserLoginForm } from '../../utils/validateUserLoginForm';
+import { backendUrl, siteUrl } from "../config";
 
 const UserLoginForm = () => {
   const { userId, setUserId, userName, setUserName } = useContext(UserContext);
@@ -17,8 +18,6 @@ const UserLoginForm = () => {
   const location = useLocation();
   const navigate = useNavigate();
   console.log("location", location)
-
-  const siteUrl = 'http://localhost:3000'
 
   const [currentUrl, setCurrentUrl] = useState(location.pathname)
 
@@ -38,7 +37,7 @@ const UserLoginForm = () => {
     try {
       console.log("post values: " + JSON.stringify(values));
       await axios
-        .post(`http://localhost:8080/api/users/login`, values)
+        .post(`${backendUrl}/api/users/login`, values)
         .then((user) => {
           console.log("user: ", user);
           localStorage.setItem("token", user.data.token);
@@ -56,7 +55,7 @@ const UserLoginForm = () => {
     try {
       console.log("post values: " + JSON.stringify(values));
       await axios
-        .post(`http://localhost:8080/api/users/signup`, values)
+        .post(`${backendUrl}/api/users/signup`, values)
         .then((user) => {
           console.log("user: ", user);
           localStorage.setItem("token", user.data.token);
@@ -69,7 +68,7 @@ const UserLoginForm = () => {
   };
 
   // const facebookLogin = async () => {
-  //   let facebook = await axios.get(`http://localhost:8080/api/users/login/facebook`, {
+  //   let facebook = await axios.get(`${backendUrl}/api/users/login/facebook`, {
   //     headers: {
   //       "Content-Type": "application/json",
   //     },
@@ -78,12 +77,12 @@ const UserLoginForm = () => {
   //   }
 
     const facebookLogin = async () => {
-      await window.open(`http://localhost:8080/api/users/login/facebook`,"_self")
+      await window.open(`${backendUrl}/api/users/login/facebook`,"_self")
       console.log("test")
     };
 
   const googleLogin = async () => {
-    await window.open("http://localhost:8080/api/users/login/google","_self")
+    await window.open(`${backendUrl}/api/users/login/google","_self`)
     console.log("test")
   };
   

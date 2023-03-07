@@ -43,6 +43,7 @@ import RemoveImages from "../components/RemoveImages";
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import EditDescriptionType from "../forms/EditDescriptionType";
 import { addImagesSchema } from "../forms/validations";
+import { backendUrl } from "../config";
 
 const FarmstandDetail = ({ currentFarmstand }) => {
   const { images, farmstandName, description, products, _id: farmstandId, location, owner: farmstandOwner, ownercomments: ownerComments, farmstandType, seasons, hours, useHours } = currentFarmstand;
@@ -52,7 +53,7 @@ const FarmstandDetail = ({ currentFarmstand }) => {
 
   //console.log("farmstand: ", farmstand);
 
-  const imageLink = `http://localhost:8080/images/${farmstandId}/`;
+  const imageLink = `${backendUrl}/images/${farmstandId}/`;
   const lat = location.coordinates[1]
   const long = location.coordinates[0]
 
@@ -99,7 +100,7 @@ const FarmstandDetail = ({ currentFarmstand }) => {
   }
   
     let favToggle = await axios.put(
-      `http://localhost:8080/api/users/isfavorite/${farmstandId}`,
+      `${backendUrl}/api/users/isfavorite/${farmstandId}`,
       {},
       {
         headers: {
@@ -127,7 +128,7 @@ const FarmstandDetail = ({ currentFarmstand }) => {
   
     if (runGet && farmstandId) {
       let fav = await axios.get(
-        `http://localhost:8080/api/users/isfavorite/${farmstandId}`,
+        `${backendUrl}/api/users/isfavorite/${farmstandId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -170,7 +171,7 @@ const FarmstandDetail = ({ currentFarmstand }) => {
     const token = localStorage.getItem("token");
     // console.log("token: ", token);
     axios
-      .get("http://localhost:8080/api/users/protected", {
+      .get(`${backendUrl}/api/users/protected`, {
         headers: {
           Authorization: "Bearer " + token,
         },
@@ -228,7 +229,7 @@ const FarmstandDetail = ({ currentFarmstand }) => {
         },
       };
       await axios.put(
-        `http://localhost:8080/api/farms/${farmstandId}/images`,
+        `${backendUrl}/api/farms/${farmstandId}/images`,
         formData,
         config
       ).then((response) => {
@@ -260,7 +261,7 @@ const FarmstandDetail = ({ currentFarmstand }) => {
     token = await localStorage.getItem("facebook");
   }
   
-      let ownerToggle = await axios.put(`http://localhost:8080/api/users/owned/${farmstandId}`,
+      let ownerToggle = await axios.put(`${backendUrl}/api/users/owned/${farmstandId}`,
       {},
       {
         headers: {

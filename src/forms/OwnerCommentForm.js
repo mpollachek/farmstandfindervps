@@ -17,6 +17,7 @@ import { selectFarmstandById } from "../farmstands/farmstandFilter";
 import EditIcon from "@mui/icons-material/Edit";
 import Picker, {EmojiStyle} from "emoji-picker-react";
 //import { validateCommentForm } from "../../utils/validateCommentForm";
+import { backendUrl } from "../config";
 
 const OwnerCommentForm = ({ farmstandId, setFarmstand }) => {
   const { userId, userName } = useContext(UserContext);
@@ -43,7 +44,7 @@ const OwnerCommentForm = ({ farmstandId, setFarmstand }) => {
       console.log("post comment values: ", values);
       console.log("textareavalue", textAreaValue)
       await axios.post(
-        `http://localhost:8080/api/farms/${farmstandId}/ownercomments`,
+        `${backendUrl}/api/farms/${farmstandId}/ownercomments`,
         {
           author: userId,
           text: textAreaValue,

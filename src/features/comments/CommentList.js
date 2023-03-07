@@ -9,6 +9,7 @@ import { UserContext } from "../../App";
 import { CommentsContext } from "../../App";
 import { SingleFarmstandContext } from "../../App";
 import { selectFarmstandById } from "../../farmstands/farmstandFilter";
+import { backendUrl } from "../../config";
 
 import "../../css/CommentList.css";
 

@@ -32,6 +32,7 @@ import { faSeedling } from "@fortawesome/free-solid-svg-icons"; // garden center
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import { selectAllFarmstands } from "../farmstands/farmstandFilter";
+import { backendUrl } from "../config";
 
 
 
@@ -86,7 +87,7 @@ const CreateListingFormNoAddress = ({ lat, long, toggle2, setFarmstands, refresh
 
   const getAllProducts = async () => {
     if (runGetProducts) {
-    let allPostedProducts = await axios.get(`http://localhost:8080/api/farms/getallproducts`, {
+    let allPostedProducts = await axios.get(`${backendUrl}/api/farms/getallproducts`, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -146,7 +147,7 @@ const CreateListingFormNoAddress = ({ lat, long, toggle2, setFarmstands, refresh
   //     };
 
   //     const { response } = await Axios.post(
-  //       "http://localhost:8080/api/farms",
+  //       `${backendUrl}/api/farms`,
   //       formData,
   //       config
   //     );
@@ -199,7 +200,7 @@ const CreateListingFormNoAddress = ({ lat, long, toggle2, setFarmstands, refresh
         },
       };
       await Axios.post(
-        `http://localhost:8080/api/farms`,
+        `${backendUrl}/api/farms`,
         formData,
         config
       ).then((response) => {

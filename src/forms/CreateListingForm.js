@@ -17,6 +17,7 @@ import { useState, useEffect } from "react";
 import MultipleFileUpload from "../utils/MultipleFileUpload";
 import Axios from "axios";
 import { Dropzone, FileItem, FullScreenPreview } from "@dropzone-ui/react";
+import { backendUrl } from "../config";
 
 /* Create duplicate NewFarmstand.js and CreateListingForm.js files and remove ability to use address.  Free geocoding has been inaccurate and finding locations on map is easier */
 
@@ -136,7 +137,7 @@ const CreateListingForm = ({
       };
 
       const { response } = await Axios.post(
-        "http://localhost:8080/api/farms",
+        `${backendUrl}/api/farms`,
         formData,
         config
       );
@@ -173,7 +174,7 @@ const CreateListingForm = ({
         },
       };
       await Axios.post(
-        `http://localhost:8080/api/farms`,
+        `${backendUrl}/api/farms`,
         formData,
         config
       ).then((response) => {

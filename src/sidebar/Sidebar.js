@@ -26,6 +26,7 @@ import { faChildren } from "@fortawesome/free-solid-svg-icons"; // Play Area
 import { faUserDoctor } from "@fortawesome/free-solid-svg-icons"; // therapy
 import { faSeedling } from "@fortawesome/free-solid-svg-icons"; // garden center
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { backendUrl } from "../config";
 
 /* NOTE TO SELF: NEXT STEP IS ENSURING FILTER STATE IS PASSED TO SERVER AND NOT SELECTING ANY PRODUCTS MEANS ALL PRODUCTS.  ALSO CLEAR INPUT FIELD WHEN ADDING PRODUCT. NEED TO CHECK IF STATE STAYS WHEN CLOSING AND REOPENING SIDEBAR. */
 
@@ -86,7 +87,7 @@ const Sidebar = ({
 
   const getAllProducts = async () => {
     if (runGetProducts) {
-    let allPostedProducts = await axios.get(`http://localhost:8080/api/farms/getallproducts`, {
+    let allPostedProducts = await axios.get(`${backendUrl}/api/farms/getallproducts`, {
       headers: {
         "Content-Type": "application/json",
       },

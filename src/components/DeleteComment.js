@@ -1,6 +1,7 @@
 import { Button, Col, Modal, ModalFooter, ModalHeader, Row } from "reactstrap";
 import { useState } from "react";
 import axios from "axios";
+import { backendUrl } from "../config";
 
 const DeleteComment = ({getMyComments, farmstandId, commentId, setRunGetMyComments}) => {
 
@@ -18,7 +19,7 @@ const DeleteComment = ({getMyComments, farmstandId, commentId, setRunGetMyCommen
   
     try {
       const deleteComment = await axios.delete(
-        `http://localhost:8080/api/farms/${farmstandId}/comments/${commentId}`,
+        `${backendUrl}/api/farms/${farmstandId}/comments/${commentId}`,
         {
           headers: {
             Authorization: "Bearer " + token,

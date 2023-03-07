@@ -1,9 +1,10 @@
 import axios, { Axios } from "axios";
+import { backendUrl } from "../../config";
 
 export const selectCommentsByFarmstandId = async (farmstandId) => {
   console.log("get comments farmstand Id: ", farmstandId);
   let allComments = await axios.get(
-    `http://localhost:8080/api/farms/${farmstandId}/comments`,
+    `${backendUrl}/api/farms/${farmstandId}/comments`,
     {
       headers: {
         "Content-Type": "application/json",
@@ -17,7 +18,7 @@ export const selectCommentsByFarmstandId = async (farmstandId) => {
 export const selectOwnerCommentsByFarmstandId = async (farmstandId) => {
   console.log("get comments farmstand Id: ", farmstandId);
   let allComments = await axios.get(
-    `http://localhost:8080/api/farms/${farmstandId}/ownercomments`,
+    `${backendUrl}/api/farms/${farmstandId}/ownercomments`,
     {
       headers: {
         "Content-Type": "application/json",
@@ -31,7 +32,7 @@ export const selectOwnerCommentsByFarmstandId = async (farmstandId) => {
 export const selectMyComments = async () => {
   const token = await localStorage.getItem("token");
   let userComments = await axios.get(
-    `http://localhost:8080/api/users/mycomments`,
+    `${backendUrl}/api/users/mycomments`,
     {
       headers: {
         "Content-Type": "application/json",

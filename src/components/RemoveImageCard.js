@@ -15,10 +15,11 @@ import {
 import axios from "axios";
 import { SingleFarmstandContext } from "../App";
 import { selectFarmstandById } from "../farmstands/farmstandFilter";
+import { backendUrl } from "../config";
 
 const RemoveImageCard = ({farmstandId, image, setImages }) => {
 
-  const imageLink = `http://localhost:8080/images/${farmstandId}/${image}`;
+  const imageLink = `${backendUrl}/images/${farmstandId}/${image}`;
 
   const getFarmstandImages = async () => {
     const farm = await selectFarmstandById(farmstandId);
@@ -30,7 +31,7 @@ const RemoveImageCard = ({farmstandId, image, setImages }) => {
     try {
       console.log("post comment values: ", values);
       await axios.put(
-        `http://localhost:8080/api/farms/${farmstandId}/removeImage`,
+        `${backendUrl}/api/farms/${farmstandId}/removeImage`,
         {
           image: image,
         },

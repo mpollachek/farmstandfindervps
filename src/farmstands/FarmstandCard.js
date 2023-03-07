@@ -21,6 +21,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import GMapsIconOld from '../assets/google-maps-old.2048x2048.ico';
 import FarmTypeIconsMap from "../components/FarmTypeIconsMap";
+import { backendUrl } from "../config";
 
 /* Bring name above image and add avg rating to it
 avg of farmstand.comments.rating
@@ -29,7 +30,7 @@ Also add avg rating in farmstandDetailpage */
 const FarmstandCard = ({ item, favorite, getFavorites, setRunGet }) => {
   console.log("farmstand card item: ", item);
   const { _id, images, farmstandName, comments, location, farmstandType } = item;
-  const imageLink = `http://localhost:8080/images/${_id}/${images[0]}`;
+  const imageLink = `${backendUrl}/images/${_id}/${images[0]}`;
   console.log("comments: ", comments)
   console.log("favorite: ", favorite)
   console.log("location: ", location)
@@ -46,13 +47,13 @@ const FarmstandCard = ({ item, favorite, getFavorites, setRunGet }) => {
   }
 
   const avgRating = (ratingsSum()/comments.length).toFixed(1)
-  // const testImage = `http://localhost:8080/images/63ae1562439a346736c442fb/1672353122205.jpg`;
-  // const testImage2 = `http://localhost:8080/images/63ae1562439a346736c442fb/1672353122205.jpg`;
+  // const testImage = `${backendUrl}/images/63ae1562439a346736c442fb/1672353122205.jpg`;
+  // const testImage2 = `${backendUrl}/images/63ae1562439a346736c442fb/1672353122205.jpg`;
 
   const favoriteToggle = async () => {
     const token = await localStorage.getItem("token");
     let favToggle = await axios.put(
-      `http://localhost:8080/api/users/isfavorite/${_id}`,
+      `${backendUrl}/api/users/isfavorite/${_id}`,
       {},
       {
         headers: {
