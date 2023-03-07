@@ -1,0 +1,13 @@
+body {
+  /* pick fonts */
+  font-family:'Kanit', 'Roboto', 'sans-serif';
+}
+
+.navfont {
+  font-size: 2em; 
+}
+
+.navicons {
+  font-size: 48;
+}
+
