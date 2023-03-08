@@ -19,7 +19,7 @@ import { backendUrl } from "../config";
 
 const SelectCoverImageCard = ({farmstandId, image, setImages, images }) => {
 
-  const imageLink = `${backendUrl}/images/${farmstandId}/${image}`;
+  const imageLink = `${backendUrl}/public/images/${farmstandId}/${image}`;
 
   const getFarmstandImages = async () => {
     const farm = await selectFarmstandById(farmstandId);
