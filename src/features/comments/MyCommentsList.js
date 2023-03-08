@@ -6,7 +6,7 @@ import Comment from "./Comment";
 import { selectMyComments } from "./commentsFns";
 import EditCommentForm from "../../forms/EditCommentForm";
 import DeleteComment from "../../components/DeleteComment";
-import { backendUrl } from "../../config";
+import { backendUrl, localPath  } from "../../config";
 
 
 const MyCommentsList = () => {
@@ -41,7 +41,7 @@ const MyCommentsList = () => {
         const farmName = comment.farmstandId.farmstandName
         const commentId = comment._id
         const images = comment.farmstandId.images
-        const imageLink = `http://localhost:8080/public/images/${farmId}/${images[0]}`
+        const imageLink = `${localPath}/public/images/${farmId}/${images[0]}`
         return (
           <Col md="4" className="p-4" key={commentId}>
             <Card>

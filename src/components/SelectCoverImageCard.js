@@ -15,11 +15,11 @@ import {
 import axios from "axios";
 import { SingleFarmstandContext } from "../App";
 import { selectFarmstandById } from "../farmstands/farmstandFilter";
-import { backendUrl } from "../config";
+import { backendUrl, localPath  } from "../config";
 
 const SelectCoverImageCard = ({farmstandId, image, setImages, images }) => {
 
-  const imageLink = `http://localhost:8080/public/images/${farmstandId}/${image}`;
+  const imageLink = `${localPath}/public/images/${farmstandId}/${image}`;
 
   const getFarmstandImages = async () => {
     const farm = await selectFarmstandById(farmstandId);

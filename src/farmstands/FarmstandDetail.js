@@ -43,7 +43,7 @@ import RemoveImages from "../components/RemoveImages";
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import EditDescriptionType from "../forms/EditDescriptionType";
 import { addImagesSchema } from "../forms/validations";
-import { backendUrl } from "../config";
+import { backendUrl, localPath } from "../config";
 
 const FarmstandDetail = ({ currentFarmstand }) => {
   const { images, farmstandName, description, products, _id: farmstandId, location, owner: farmstandOwner, ownercomments: ownerComments, farmstandType, seasons, hours, useHours } = currentFarmstand;
@@ -53,7 +53,7 @@ const FarmstandDetail = ({ currentFarmstand }) => {
 
   //console.log("farmstand: ", farmstand);
 
-  const imageLink = `http://localhost:8080/public/images/${farmstandId}/`;
+  const imageLink = `${localPath}/public/images/${farmstandId}/`;
   const lat = location.coordinates[1]
   const long = location.coordinates[0]
 
