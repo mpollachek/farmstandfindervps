@@ -21,7 +21,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import GMapsIconOld from '../assets/google-maps-old.2048x2048.ico';
 import FarmTypeIconsMap from "../components/FarmTypeIconsMap";
-import { backendUrl } from "../config";
+import { backendUrl, localPath } from "../config";
 
 /* Bring name above image and add avg rating to it
 avg of farmstand.comments.rating
