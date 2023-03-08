@@ -17,9 +17,9 @@ const TestPage2 = () => {
   const [images2, setImages2] = useState([]);
   const [cardImage, setCardImage] = useState("");
 
-  const testPath = `${localPath}/public/images/`;
+  const testPath = `${localPath}/images/`;
 
-  const testImage = `${localPath}/public/images/63ae1562439a346736c442fb/1672353122205.jpg`;
+  const testImage = `${localPath}/images/63ae1562439a346736c442fb/1672353122205.jpg`;
 
   const id = "63ae4f5c7ab1e01e94b626e8";
 
@@ -77,7 +77,7 @@ const TestPage2 = () => {
   return (
     <Container>
       <img
-        src={`${localPath}/public/images/${id}/${cardImage}`}
+        src={`${localPath}/images/${id}/${cardImage}`}
         style={{ maxWidth: "300px" }}
       />
       {console.log("images[0]: ", images[0])}
@@ -88,7 +88,7 @@ const TestPage2 = () => {
       return(
       <img 
       key={index} 
-      src={`${localPath}/public/images/${id}/${image}`} 
+      src={`${localPath}/images/${id}/${image}`} 
       style={{maxWidth: '300px'}}
       />
     )})

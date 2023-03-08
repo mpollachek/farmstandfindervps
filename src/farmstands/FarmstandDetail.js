@@ -53,7 +53,7 @@ const FarmstandDetail = ({ currentFarmstand }) => {
 
   //console.log("farmstand: ", farmstand);
 
-  const imageLink = `${localPath}/public/images/${farmstandId}/`;
+  const imageLink = `${localPath}/images/${farmstandId}/`;
   const lat = location.coordinates[1]
   const long = location.coordinates[0]
 
