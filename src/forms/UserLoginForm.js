@@ -82,7 +82,7 @@ const UserLoginForm = () => {
     };
 
   const googleLogin = async () => {
-    await window.open(`${backendUrl}/api/users/login/google","_self`)
+    await window.open(`${backendUrl}/api/users/login/google`,"_self")
     console.log("test")
   };
   
