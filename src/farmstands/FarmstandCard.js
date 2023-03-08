@@ -30,7 +30,7 @@ Also add avg rating in farmstandDetailpage */
 const FarmstandCard = ({ item, favorite, getFavorites, setRunGet }) => {
   console.log("farmstand card item: ", item);
   const { _id, images, farmstandName, comments, location, farmstandType } = item;
-  const imageLink = `https://localhost:8443/public/images/${_id}/${images[0]}`;
+  const imageLink = `http://localhost:8080/public/images/${_id}/${images[0]}`;
   console.log("comments: ", comments)
   console.log("favorite: ", favorite)
   console.log("location: ", location)
@@ -47,8 +47,8 @@ const FarmstandCard = ({ item, favorite, getFavorites, setRunGet }) => {
   }
 
   const avgRating = (ratingsSum()/comments.length).toFixed(1)
-  // const testImage = `https://localhost:8443/public/images/63ae1562439a346736c442fb/1672353122205.jpg`;
-  // const testImage2 = `https://localhost:8443/public/images/63ae1562439a346736c442fb/1672353122205.jpg`;
+  // const testImage = `http://localhost:8080/public/images/63ae1562439a346736c442fb/1672353122205.jpg`;
+  // const testImage2 = `http://localhost:8080/public/images/63ae1562439a346736c442fb/1672353122205.jpg`;
 
   const favoriteToggle = async () => {
     const token = await localStorage.getItem("token");
