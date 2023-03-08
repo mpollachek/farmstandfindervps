@@ -19,7 +19,7 @@ import { backendUrl } from "../config";
 
 const RemoveImageCard = ({farmstandId, image, setImages }) => {
 
-  const imageLink = `http://${backendUrl}/public/images/${farmstandId}/${image}`;
+  const imageLink = `http://http://localhost:8080/public/images/${farmstandId}/${image}`;
 
   const getFarmstandImages = async () => {
     const farm = await selectFarmstandById(farmstandId);
