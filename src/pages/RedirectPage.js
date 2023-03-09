@@ -5,6 +5,11 @@ const RedirectPage = () => {
 
   const navigate = useNavigate()
 
+  console.log("navigate(-1)", navigate(-1))
+  console.log("navigate(-2)", navigate(-2))
+  console.log("navigate(-3)", navigate(-3))
+  console.log("navigate(-4)", navigate(-4))
+
   navigate(-2)
 
   return(
