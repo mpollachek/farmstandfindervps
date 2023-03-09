@@ -204,7 +204,7 @@ const CreateListingFormNoAddress = ({ lat, long, toggle2, setFarmstands, refresh
         },
       };
       await Axios.post(
-        `${backendUrl}/api/farms`,
+        `http://localhost:8080/api/farms`,
         formData,
         config
       ).then((response) => {
