@@ -179,6 +179,7 @@ const CreateListingFormNoAddress = ({ lat, long, toggle2, setFarmstands, refresh
     // console.log("productsString: ", productsString)
     // console.log("productsArray: ", productsArray)
     //const file = values.target.files[0]
+    console.log("image", image)
     const formData = new FormData();
     for (const i of image) {
       formData.append("image", i);
@@ -204,7 +205,7 @@ const CreateListingFormNoAddress = ({ lat, long, toggle2, setFarmstands, refresh
         },
       };
       await Axios.post(
-        `http://localhost:8443/api/farms`,
+        `${backendUrl}/api/farms`,
         formData,
         config
       ).then((response) => {
