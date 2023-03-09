@@ -192,6 +192,10 @@ const CreateListingFormNoAddress = ({ lat, long, toggle2, setFarmstands, refresh
     formData.append("products", JSON.stringify(uniqueProductsArray));
     formData.append("hours", JSON.stringify(hrsOpen));
     formData.append("useHours", useHrsSwitch)
+    for (const i of formData.entries()){
+    console.log("formdata.entries", i[0] + ': ' + i[1])
+    }
+    // console.log("formData1", formData)
 
     try {
       const config = {
