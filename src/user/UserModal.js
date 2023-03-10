@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import UserLoginForm from "../forms/UserLoginForm";
 import { UserContext } from "../App";
 import axios from "axios";
+import { backendUrl } from "../config";
 import { selectUserOwned } from "./UserFns";
 
 const UserModal = () => {
@@ -20,6 +21,7 @@ const UserModal = () => {
     for (const key of keysToRemove) {
       document.cookie = `${key}=; path=/; Expires=Sun, 20 Apr 1969 00:00:00 UTC;`;
     }
+    axios.get(`${backendUrl}/api/users/logout`)
     setUserId("");
     setUserName("");
   };
