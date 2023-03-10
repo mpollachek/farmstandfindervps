@@ -80,11 +80,15 @@ const Comment = ({ comment }) => {
 
   return (
     <div>
-      {author.username ? 
+      {author ? 
       <h5>
         {author.username} <br />
       </h5>
-      : null }
+      : 
+      <h5>
+        Account Deleted <br />
+      </h5>
+       }
       <h5>
         {/* {rating}/5 stars */}
         <ReactStars {...starsRating} className='stars' />
@@ -97,6 +101,8 @@ const Comment = ({ comment }) => {
         <div>{updated && date !== updated ? <TextEdited /> : null}</div>
       </p>
       
+      {author ? 
+      <div>
       {author._id === userId ? (
         <div className="justify-content-between">
           <Col md={6} style={{display: 'inline-block'}}>
@@ -109,6 +115,7 @@ const Comment = ({ comment }) => {
         </Col>
         </div>
       ) : null}
+      </div> : null}
       <Modal isOpen={modalOpen} size='lg'>
         <ModalHeader toggle={() => setModalOpen(false)}>
         Are you sure you wish to delete?

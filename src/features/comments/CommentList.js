@@ -26,7 +26,9 @@ const CommentsList = ({ currentFarmstand }) => {
 
   if (farmstand.comments) {
     farmstand.comments.forEach((comment) => {
+      if (comment.author) {
       authorArray.push(comment.author._id)
+      }
     })
   }
 
