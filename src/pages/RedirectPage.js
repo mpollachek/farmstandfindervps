@@ -1,4 +1,5 @@
 import { useNavigate} from "react-router-dom";
+import { useEffect } from "react";
 
 
 const RedirectPage = () => {
@@ -10,7 +11,10 @@ const RedirectPage = () => {
   console.log("navigate(-3)", navigate(-3))
   console.log("navigate(-4)", navigate(-4))
 
-  navigate(-2)
+  useEffect(() => {
+    navigate(-2)
+  }, [])
+  
 
   return(
     <div>
