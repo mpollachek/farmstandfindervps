@@ -86,7 +86,7 @@ const UserLoginForm = () => {
   //   console.log("test")
   // };
     const googleLogin = async () => {
-      await axios.get(`${backendUrl}/api/users/login/facebook`)
+      await axios.get(`${backendUrl}/api/users/login/google`)
     }
 
   return (
