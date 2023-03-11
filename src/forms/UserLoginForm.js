@@ -81,13 +81,10 @@ const UserLoginForm = () => {
       console.log("test")
     };
 
-  // const googleLogin = async () => {
-  //   await window.open(`${backendUrl}/api/users/login/google`,"_self")
-  //   console.log("test")
-  // };
-    const googleLogin = async () => {
-      await <a href={`${backendUrl}/api/users/login/google`}></a> 
-    }
+  const googleLogin = async () => {
+    await window.open(`${backendUrl}/api/users/login/google`,"_self")
+    console.log("test")
+  };
 
   return (
     <Container>
@@ -219,9 +216,10 @@ const UserLoginForm = () => {
               <Button onClick={facebookLogin} color="primary" className="col-5" size="lg">
               <FontAwesomeIcon icon={faFacebook} className='me-2 text-nowrap' /> Facebook 
               </Button>
-              <Button onClick={googleLogin} color="primary" className="col-5" size="lg">
+              {/* <Button onClick={googleLogin} color="primary" className="col-5" size="lg">
               <FontAwesomeIcon icon={faGoogle} className='me-2 text-nowrap'  /> Google
-              </Button>      
+              </Button>       */}
+              <a href={`${backendUrl}/api/users/login/google`} class='btn btn-danger' >sign in with google</a>
             </FormGroup>
             <div>
             <h5>Google and Facebook Oauth currently for test users only</h5>    
