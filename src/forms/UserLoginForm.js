@@ -81,11 +81,13 @@ const UserLoginForm = () => {
       console.log("test")
     };
 
-  const googleLogin = async () => {
-    await window.open(`${backendUrl}/api/users/login/google`,"_self")
-    console.log("test")
-  };
-  
+  // const googleLogin = async () => {
+  //   await window.open(`${backendUrl}/api/users/login/google`,"_self")
+  //   console.log("test")
+  // };
+    const googleLogin = async () => {
+      await axios.get(`${backendUrl}/api/users/login/facebook`)
+    }
 
   return (
     <Container>
