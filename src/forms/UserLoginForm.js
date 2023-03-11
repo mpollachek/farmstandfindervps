@@ -86,7 +86,7 @@ const UserLoginForm = () => {
   //   console.log("test")
   // };
     const googleLogin = async () => {
-      await axios.get(`${backendUrl}/api/users/login/google`)
+      await <a href={`${backendUrl}/api/users/login/google`}></a> 
     }
 
   return (
