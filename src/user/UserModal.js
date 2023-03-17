@@ -10,7 +10,38 @@ import { selectUserOwned } from "./UserFns";
 const UserModal = () => {
   const { userId, setUserId, userName, setUserName, userOwned, setUserOwned } = useContext(UserContext);
 
-  const [runGetOwner, setRunGetOwner] = useState(false);
+  const [ runGetUser, setRunGetUser ] = useState(false)
+
+  const getUser = async () => {
+    let token = ""
+    console.log("user modal get user")
+    if (localStorage.getItem("token")) {
+      token = await localStorage.getItem("token");
+  }
+
+  if (runGetUser) {
+    let getUser = await axios.get(`${backendUrl}/api/users/profile`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    })
+    console.log(getUser.data)
+    setUserName(getUser.data.username)
+    setUserId(getUser.data._id)
+    setRunGetUser(false)
+  }
+}
+
+  useEffect(() => {
+    console.log("setRunGetUser")
+    setRunGetUser(true);
+  }, []);
+
+  useEffect(() => {
+    getUser();
+  }, [runGetUser]);
 
   const logout = () => {
     //localStorage.removeItem("token");
@@ -67,6 +98,13 @@ const UserModal = () => {
           <Col>
             <Link to={`/mycomments`}>
               <h3>My Comments</h3>
+            </Link>
+          </Col>
+        </Row>
+        <Row className="my-3">
+          <Col>
+            <Link to={`/profile`}>
+              <h3>Profile</h3>
             </Link>
           </Col>
         </Row>

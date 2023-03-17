@@ -13,6 +13,8 @@ import RemoveImages from "./components/RemoveImages";
 import CookieChecker from "./components/CookieChecker";
 import RedirectPage from "./pages/RedirectPage";
 import SelectCoverImage from "./components/SelectCoverImage";
+import ProfilePage from "./pages/ProfilePage";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
 
 export const UserContext = createContext();
 export const FarmstandsContext = createContext();
@@ -27,6 +29,7 @@ const App = () => {
 
   const [userId, setUserId] = useState('');
   const [userName, setUserName] = useState('');
+  const [userEmail, setUserEmail] = useState('');
   const [userOwned, setUserOwned] = useState([])
 
   const [farmstands, setFarmstands] = useState([]); //all farmstands in view
@@ -56,7 +59,7 @@ const App = () => {
 
   return (
     <div className="App">
-      <UserContext.Provider value={{userId, setUserId, userName, setUserName, userOwned, setUserOwned}}> 
+      <UserContext.Provider value={{userId, setUserId, userName, setUserName, userOwned, setUserOwned, userEmail, setUserEmail}}> 
       <FarmstandsContext.Provider value={{farmstands, setFarmstands}}>
       <SingleFarmstandContext.Provider value={{farmstand, setFarmstand}}>
       <CommentsContext.Provider value={{comments, setComments}}>
@@ -81,8 +84,10 @@ const App = () => {
             />
         <Route path='favorites' element={<FavoritesPage />} />
         <Route path='mycomments' element={<MyCommentsPage />} /> 
+        <Route path='profile' element={<ProfilePage />} /> 
         <Route path='redirect' element={<RedirectPage/>} />
         <Route path='privacy' element={<PrivacyPolicyPage/>} />
+        <Route path="passwordreset/:userId" element={<ResetPasswordPage />} />
         <Route path="test" element={<TestPage />} />
         <Route path="test2" element={<TestPage2 />} />        
       </Routes>
