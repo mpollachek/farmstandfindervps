@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { FormGroup, Label, Button, Col, Row, Container, Modal, ModalHeader, ModalFooter, ModalBody, Input } from "reactstrap";
+import { FormGroup, Label, Button, Col, Row, Container, Modal, ModalHeader, ModalFooter, ModalBody, Input, Alert } from "reactstrap";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Divider } from "@mui/material";
@@ -8,9 +8,13 @@ import { UserContext } from "../App";
 import { loginSchema, registerSchema } from "./validations";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBrands, faFacebook, faGoogle } from "@fortawesome/free-brands-svg-icons";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 //import defaultAvatar from '../../app/assets/img/unicorn.png';
-//import { validateUserLoginForm } from '../../utils/validateUserLoginForm';
 import { backendUrl, siteUrl } from "../config";
+import IconButton from '@mui/material/IconButton';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 const UserLoginForm = () => {
   const { userId, setUserId, userName, setUserName } = useContext(UserContext);
@@ -25,7 +29,27 @@ const UserLoginForm = () => {
   const [resetModal, setResetModal] = useState(false)
   const resetToggle = () => setResetModal(!resetModal) 
 
+  const [ showPassword, setShowPassword ] = useState(false)
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const [ showRegisterPassword, setShowRegisterPassword ] = useState(false)
+  const handleClickShowRegisterPassword = () => setShowRegisterPassword((show) => !show);
+  const [ showRegisterConfirmPassword, setShowRegisterConfirmPassword ] = useState(false)
+  const handleClickShowRegisterConfirmPassword = () => setShowRegisterConfirmPassword((show) => !show);
+
   const [passwordNotMatch, setPasswordNotMatch] = useState(false)
+
+  const resetEmailNotify = (responseMessage) => 
+  toast.success(`${responseMessage}`, {
+    position: "top-center",
+    autoClose: 3000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+    });
 
   const initialValuesLogin = {
 
@@ -86,6 +110,11 @@ const UserLoginForm = () => {
       await axios
         .post(`${backendUrl}/api/users/profile/resetuserpassword`, 
         {'resetemail': resetEmail})
+        .then((reset) => {
+          console.log(reset)
+          resetEmailNotify(reset.data)
+          resetToggle()
+          })
     } catch (error) {
       console.error(error);
     }
@@ -140,6 +169,7 @@ const UserLoginForm = () => {
 
   return (
     <Container>
+      <ToastContainer />
       <Formik
         initialValues={initialValuesLogin}
         onSubmit={handleLoginSubmit}
@@ -164,15 +194,25 @@ const UserLoginForm = () => {
           <FormGroup row>
             <Col>
               <Label htmlFor="password">Password</Label>
+              <div style={{whiteSpace: 'nowrap'}}>
               <Field
                 className="form-control"
                 name="password"
                 placeholder="password"
+                type={showPassword ? 'text' : 'password'}
+                style={{width: '92%', display: 'inline-block'}}
               />
+              <IconButton
+              aria-label="toggle password visibility"
+              onClick={handleClickShowPassword}
+              style={{display: 'inline-block'}}
+             >
+               {showPassword ? <VisibilityOff /> : <Visibility />}
+             </IconButton>
+              </div>
               <ErrorMessage name="password">
                 {(msg) => <p className="text-danger">{msg}</p>}
               </ErrorMessage>
-
             </Col>
           </FormGroup>
           <div className="text-center">
@@ -232,7 +272,7 @@ const UserLoginForm = () => {
                 className="form-control"
                 name="useremail"
                 placeholder="johndoe@email.com"
-              />
+                />
               <ErrorMessage name="useremail">
                 {(msg) => <p className="text-danger">{msg}</p>}
               </ErrorMessage>
@@ -241,11 +281,22 @@ const UserLoginForm = () => {
           <FormGroup row>
             <Col>
               <Label htmlFor="registerpassword">Password</Label>
+              <div style={{whiteSpace: 'nowrap'}}>
               <Field
                 className="form-control"
                 name="registerpassword"
                 placeholder="password"
+                type={showRegisterPassword ? 'text' : 'password'}
+                style={{width: '92%', display: 'inline-block'}}
               />
+              <IconButton
+              aria-label="toggle password visibility"
+              onClick={handleClickShowRegisterPassword}
+              style={{display: 'inline-block'}}
+             >
+               {showRegisterPassword ? <VisibilityOff /> : <Visibility />}
+             </IconButton>
+              </div>
               <ErrorMessage name="registerpassword">
                 {(msg) => <p className="text-danger">{msg}</p>}
               </ErrorMessage>
@@ -254,11 +305,22 @@ const UserLoginForm = () => {
           <FormGroup row>
             <Col>
               <Label htmlFor="confirmpassword">Confirm Password</Label>
+              <div style={{whiteSpace: 'nowrap'}}>
               <Field
                 className="form-control"
                 name="confirmpassword"
                 placeholder="confirm password"
+                type={showRegisterConfirmPassword ? 'text' : 'password'}
+                style={{width: '92%', display: 'inline-block'}}
               />
+              <IconButton
+              aria-label="toggle password visibility"
+              onClick={handleClickShowRegisterConfirmPassword}
+              style={{display: 'inline-block'}}
+             >
+               {showRegisterConfirmPassword ? <VisibilityOff /> : <Visibility />}
+             </IconButton>
+             </div>
               <ErrorMessage name="confirmpassword">
                 {(msg) => <p className="text-danger">{msg}</p>}
               </ErrorMessage>
