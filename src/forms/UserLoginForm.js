@@ -197,7 +197,7 @@ const UserLoginForm = () => {
           {incorrectLogin ? <LoginErrorMsg /> : null}
           <FormGroup row>
             <Col>
-              <Label htmlFor="username">Username</Label>
+              <Label htmlFor="username">Username or Email Address</Label>
               <Field
                 className="form-control"
                 name="username"
