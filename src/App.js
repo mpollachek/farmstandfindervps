@@ -15,6 +15,8 @@ import RedirectPage from "./pages/RedirectPage";
 import SelectCoverImage from "./components/SelectCoverImage";
 import ProfilePage from "./pages/ProfilePage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
+import TOSPage from "./pages/TOSPage";
+import ContactUsPage from "./pages/ContactUsPage";
 
 export const UserContext = createContext();
 export const FarmstandsContext = createContext();
@@ -87,6 +89,8 @@ const App = () => {
         <Route path='profile' element={<ProfilePage />} /> 
         <Route path='redirect' element={<RedirectPage/>} />
         <Route path='privacy' element={<PrivacyPolicyPage/>} />
+        <Route path='termsofservice' element={<TOSPage/>} />
+        <Route path='contactus' element={<ContactUsPage/>} />
         <Route path="passwordreset/:userId" element={<ResetPasswordPage />} />
         <Route path="test" element={<TestPage />} />
         <Route path="test2" element={<TestPage2 />} />        

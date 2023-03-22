@@ -21,7 +21,7 @@ const ResetPasswordPage = () => {
 
   const navigate = useNavigate();
 
-  const resetResetNotify = (responseMessage) => 
+  const resetSuccessNotify = (responseMessage) => 
   toast.success(`${responseMessage}`, {
     position: "top-center",
     autoClose: 3000,
@@ -40,7 +40,7 @@ const ResetPasswordPage = () => {
         .put(`${backendUrl}/api/users/profile/resetuserpassword/${userId}`, 
         {'resetUserPassword': resetUserPassword})
         .then((reset) => {
-          resetResetNotify(reset.data)
+          resetSuccessNotify(reset.data)
           navigate("/")
         })
     } catch (error) {

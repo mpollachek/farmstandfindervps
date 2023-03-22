@@ -1,6 +1,6 @@
 import { Container, Row } from 'reactstrap'
 import SubHeader from '../components/SubHeader';
-import PrivacyPolicy from "../legal/PrivacyPolicy";
+import { iframePrivacy } from '../assets/legal/privacypolicy';
 
 const PrivacyPolicyPage = () => {
 
@@ -8,7 +8,7 @@ const PrivacyPolicyPage = () => {
     <Container>
       <SubHeader current="Privacy Policy" detail={false} />
       <Row>
-        <PrivacyPolicy />
+      <div dangerouslySetInnerHTML={{ __html: iframePrivacy }} />;
       </Row>
     </Container>
   )

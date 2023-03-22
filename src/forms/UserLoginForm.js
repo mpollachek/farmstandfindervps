@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
-import { FormGroup, Label, Button, Col, Row, Container, Modal, ModalHeader, ModalFooter, ModalBody, Input, Alert } from "reactstrap";
+import { FormGroup, Label, Button, Col, Row, Container, Modal, ModalHeader, ModalFooter, ModalBody, Input } from "reactstrap";
 import { Formik, Field, Form, ErrorMessage } from "formik";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link  } from "react-router-dom";
 import { Divider } from "@mui/material";
 import axios, { Axios } from "axios";
 import { UserContext } from "../App";
@@ -17,7 +17,7 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 const UserLoginForm = () => {
-  const { userId, setUserId, userName, setUserName } = useContext(UserContext);
+  const { userId, setUserId, userName, setUserName, setUserEmail } = useContext(UserContext);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -51,6 +51,18 @@ const UserLoginForm = () => {
     theme: "light",
     });
 
+  const resetEmailFailureNotify = (responseMessage) => 
+  toast.error(`${responseMessage}`, {
+    position: "top-center",
+    autoClose: 3000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+    });
+
   const initialValuesLogin = {
 
     username: "",
@@ -74,6 +86,7 @@ const UserLoginForm = () => {
           localStorage.setItem("token", user.data.token);
           setUserName(user.data.userName);
           setUserId(user.data.userId);
+          setUserEmail(user.data.userEmail)
           setIncorrectLogin(false)
           navigate(currentUrl);
           console.log("login username: ", userName)
@@ -112,9 +125,13 @@ const UserLoginForm = () => {
         {'resetemail': resetEmail})
         .then((reset) => {
           console.log(reset)
-          resetEmailNotify(reset.data)
-          resetToggle()
-          })
+          if (reset.status === 201) {
+            resetToggle()
+            resetEmailFailureNotify(reset.data)
+          } else {
+            resetToggle()
+            resetEmailNotify(reset.data)
+    }})
     } catch (error) {
       console.error(error);
     }
@@ -350,6 +367,25 @@ const UserLoginForm = () => {
           </div>
         </Form>
       </Formik>
+      <Row className="text-center">
+        <Col sm={{size: 6}}>
+          <Button onClick={() => navigate('/termsofservice')} color="link" >
+            Terms of Service
+          </Button>
+        </Col>
+        <Col sm={{size: 6}}>
+          <Button onClick={() => navigate('/privacy')} color="link" >
+            Privacy Policy
+          </Button>
+        </Col>
+      </Row>
+      <Row className="text-center">
+        <Col>
+          <Button onClick={() => navigate('/contactus')} color="link" >
+            Contact Us
+          </Button>
+        </Col>
+      </Row>
     </Container>
   );
 };

@@ -11,3 +11,6 @@ body {
   font-size: 48;
 }
 
+.Toastify__toast-container {
+  z-index: 200000;
+  }
