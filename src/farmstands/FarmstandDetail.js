@@ -331,7 +331,7 @@ const FarmstandDetail = ({ currentFarmstand }) => {
         onExited={() => setAnimating(false)}
         key={item.src}
       >
-        <img src={item.src} alt={item.altText} style={{ width: "100%" }} />
+        <img src={item.src} alt={item.altText} style={{ width: "100%", height: '700px', objectFit: 'contain', background: 'black' }} />
         <CarouselCaption
           captionText={item.caption}
           captionHeader={item.caption}
