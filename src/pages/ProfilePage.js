@@ -9,7 +9,8 @@ import IconButton from '@mui/material/IconButton';
 import InputLabel from '@mui/material/InputLabel';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { profileSchema } from '../forms/validations'
+import { profileUsernameSchema, profilePasswordSchema, profileEmailSchema } from '../forms/validations'
+import { toast, ToastContainer } from 'react-toastify';
 
 
 const ProfilePage = () => {
@@ -27,6 +28,30 @@ const ProfilePage = () => {
   const handleClickShowOldPassword = () => setShowOldPassword((show) => !show);
   const [ showNewPassword, setShowNewPassword ] = useState(false)
   const handleClickShowNewPassword = () => setShowNewPassword((show) => !show);
+
+  const changeSuccessNotify = (responseMessage) => 
+  toast.success(`${responseMessage}`, {
+    position: "top-center",
+    autoClose: 3000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+    });
+
+  const changeFailureNotify = (responseMessage) => 
+  toast.error(`${responseMessage}`, {
+    position: "top-center",
+    autoClose: 3000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+    });
 
   const initialUsernameValues = {
     newUsername: newUsername
@@ -87,7 +112,11 @@ const ProfilePage = () => {
           headers: {
             Authorization: "Bearer " + token,
           },
-        });
+        })
+        .then((changeValue) => {
+          if (changeValue.status === 200) {
+            changeSuccessNotify(changeValue.data)
+        }})
         setUserName(values.newUsername);
   }
 
@@ -105,8 +134,12 @@ const ProfilePage = () => {
           headers: {
             Authorization: "Bearer " + token,
           },
-        });
-        setUserEmail(values.useremail);
+        })
+        .then((changeValue) => {
+          if (changeValue.status === 200) {
+            changeSuccessNotify(changeValue.data)
+        }})
+        setUserEmail(values.newUseremail);
   }
 
   const changeUserpassword = async(values) => {
@@ -124,15 +157,23 @@ const ProfilePage = () => {
           headers: {
             Authorization: "Bearer " + token,
           },
-        });
+        })
+        .then((changeValue) => {
+          if (changeValue.status === 201) {
+            changeFailureNotify(changeValue.data)
+        } else {
+          changeSuccessNotify(changeValue.data)
+        }})
   }
 
   return(
     <Container>
       <SubHeader current="Profile" detail={false} />
+      <ToastContainer />
+
       <Formik
         onSubmit={changeUsername}
-        validationSchema={profileSchema}
+        validationSchema={profileUsernameSchema}
         initialValues={initialUsernameValues}
       >
         <Form>
@@ -155,10 +196,11 @@ const ProfilePage = () => {
       </Row>
       </Form>
       </Formik>
+
       <br/>
       <Formik
         onSubmit={changeUseremail}
-        validationSchema={profileSchema}
+        validationSchema={profileEmailSchema}
         initialValues={initialUseremailValues}
       >
         <Form>
@@ -181,10 +223,11 @@ const ProfilePage = () => {
       </Row>
       </Form>
       </Formik>
+
       <br/>
       <Formik
         onSubmit={changeUserpassword}
-        validationSchema={profileSchema}
+        validationSchema={profilePasswordSchema}
         initialValues={initialUserpasswordValues}
       >
         <Form>
