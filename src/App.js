@@ -17,6 +17,7 @@ import ProfilePage from "./pages/ProfilePage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import TOSPage from "./pages/TOSPage";
 import ContactUsPage from "./pages/ContactUsPage";
+import RNMapsPage from "./pages/RNMapPage";
 
 export const UserContext = createContext();
 export const FarmstandsContext = createContext();
@@ -71,6 +72,7 @@ const App = () => {
       <Routes>             
         <Route path="/" element={<MapsPage />} />
         {/* <Route path="/:mapCenter" element={<MapsPage mapCenter={mapCenter} />}/> */}
+        <Route path="/reactnativemaps" element={<RNMapsPage />} />
         <Route path="farmstands" element={<FarmstandsPage />} />
           <Route
             path="farmstands/:farmstandId"
