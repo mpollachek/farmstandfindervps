@@ -114,13 +114,21 @@ function RNMap() {
   const navigate = useNavigate();
 
   //window.addEventListener('message', message => alert(JSON.stringify(message)))
-  window.addEventListener('message', function(event) {
-    console.log("testing onmessage event: ", event)
-    setMapCenter([45, 39])
-  })
+  // document.addEventListener('message', function(event) {
+  //   console.log("testing onmessage event: ", event)
+  //   setMapCenter([45, 39])
+  // })
+  // document.addEventListener('message', function(event) {
+  //   alert(`testing onmessage event.data: ${event.data}`)
+  //   setMapCenter(event.data)
+  // })
+
   document.addEventListener('message', function(event) {
-    console.log("testing onmessage event: ", event.message)
-    setMapCenter([45, 39])
+    console.log(`testing onmessage event.data`, event.data)
+    console.log(`testing onmessage event:`, event)
+    console.log(`stringify: JSON.parse`, JSON.parse(event.data))
+    setMapCenter(JSON.parse(event.data))
+    console.log("mapCenter after set from RN", mapCenter)
   })
 
   const sendMsg = ( item2) => {window.ReactNativeWebView.postMessage(JSON.stringify({ "something": item2 }))}
