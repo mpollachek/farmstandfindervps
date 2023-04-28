@@ -75,7 +75,7 @@ function RNMap() {
   const {sidebarProducts, setSidebarProducts, sidebarSeasons, setSidebarSeasons, sidebarSearch, setSidebarSearch, sidebarTypes, setSidebarTypes, sidebarProductSearch, setSidebarProductSearch } = useContext(SidebarContext)
 
   //const [myLocation, setMyLocation] = useState({lat: 51.505, lng: -0.09});
-  const [myLocation, setMyLocation] = useState([51.505, -0.09]);
+  const [myLocation, setMyLocation] = useState([]);
 
   const [runGet, setRunGet] = useState(false);
   const [boundsDistance, setBoundsDistance] = useState(30000);
@@ -100,6 +100,10 @@ function RNMap() {
 
   const [farmIds, setFarmIds] = useState([]);
 
+  const [eventMsg, setEventMsg] = useState();
+  const [eventCtr1, setEventCtr1] = useState();
+  const [eventCtr2, setEventCtr2] = useState();
+
   // sidebar states:
   // const [sidebarProducts, setSidebarProducts] = useState([]);
   // const [sidebarSeasons, setSidebarSeasons] = useState("yearRound");
@@ -123,15 +127,55 @@ function RNMap() {
   //   setMapCenter(event.data)
   // })
 
-  document.addEventListener('message', function(event) {
-    console.log(`testing onmessage event.data`, event.data)
-    console.log(`testing onmessage event:`, event)
-    console.log(`stringify: JSON.parse`, JSON.parse(event.data))
-    setMapCenter(JSON.parse(event.data))
-    console.log("mapCenter after set from RN", mapCenter)
-  })
+  const handleEventMsg = async (event) => {
+    //await document.removeEventListener('message', handleEventMsg);
+    //await setEventMsg(JSON.parse(event.data))
+    //await setEventCtr1(JSON.parse(event.data)[1])
+    //await setEventCtr2(JSON.parse(event.data)[2])
+    //sendMsg("eventCtr1: " + eventCtr1)
+    //sendMsg("eventCtr2: " + eventCtr2)
 
-  const sendMsg = ( item2) => {window.ReactNativeWebView.postMessage(JSON.stringify({ "something": item2 }))}
+    //***NOTE TO SELF: must split string into array.  currently crashing. possibly \ character. need to setMapCenter to [array[1], array[2]]***
+
+    const eventString = JSON.parse(event.data);
+    sendMsg("eventString: " + eventString)
+    //const eventArray = JSON.parse(event.data).split(',');
+    //const eventArray = eventString.split(',')
+    //sendMsg("eventArray: " + eventArray.toString())
+
+    //sendMsg("eventMsg: " + eventMsg)
+    sendMsg(`event.data message parse:` + JSON.parse(event.data))
+
+    await setMapCenter(JSON.parse(event.data)[1]) 
+    //await setMapCenter([JSON.parse(eventCtr1), JSON.parse(eventCtr2)])
+    //await setMapCenter([JSON.parse(event.data)[1], JSON.parse(event.data)[2]])
+    //sendMsg("map center: " + mapCenter)
+    //await setMapCenter(JSON.parse(event.data))
+    // await setMyLocation(JSON.parse(event.data))
+
+    // await setMapCenter(myLocation)
+    
+    setRunGet(true)
+    console.log("mapCenter after set from RN", mapCenter)
+    //document.addEventListener('message', handleEventMsg);
+  }
+
+  document.addEventListener('message', handleEventMsg);
+
+  // document.addEventListener('message', async function (event) {
+  //   //alert(`testing onmessage event.data`, event.data)
+  //   console.log(`testing onmessage event:`, event)
+  //   // alert(`stringify: JSON.parse`, JSON.parse(event.data))
+  //   await setMapCenter(JSON.parse(event.data))
+  //   // await setMyLocation(JSON.parse(event.data))
+
+  //   // await setMapCenter(myLocation)
+    
+  //   setRunGet(true)
+  //   console.log("mapCenter after set from RN", mapCenter)
+  // })
+
+  const sendMsg = ( item2) => {window.ReactNativeWebView.postMessage(JSON.stringify({ "sending message from webview": item2 }))}
 
   const getFarmstands = async () => {
     if (runGet) {
@@ -187,7 +231,6 @@ function RNMap() {
   }
 
   const ChangeMyLocation = async () => {
-    sendMsg(navigator)
     if (navigator.geolocation) {
       sendMsg("navigator.geolocation exists")
       await navigator.geolocation.getCurrentPosition((position) => {
