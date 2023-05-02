@@ -127,14 +127,31 @@ function RNMap() {
   //   setMapCenter(event.data)
   // })
 
+  // ***NOTE*** when moving map need to send msg to RN app with map center and corner lat, long
+  // ***NOTE*** RN webview not making api calls.  images are not fetched.  could solve many issues with sending information back and forth if webview could make api calls
+
   const handleEventMsg = async (event) => {
     const eventObject = JSON.parse(event.data);    
     const eventArray = Object.values(eventObject);
+    //sendMsg("eventObject: " + eventObject)
+    sendMsg("eventArray: " + eventArray)
     if (eventArray[0] === "locationCtr") {
       await setMapCenter([eventArray[1], eventArray[2]])
-    }    
-    
-    setRunGet(true)
+      // setRunGet(true)
+      getFarmstands()
+    } else if (eventArray[0] === "searchThisArea") {
+      // sendMsg("searchThisArea")
+      getFarmstands()      
+    } else if (eventArray[0] === "farmsList") {
+      sendMsg("farmsList")
+      let farmsList = []
+      eventObject.forEach((farm, index) => {
+        if (index > 0) {
+          farmsList.push(farm)
+        }
+      })
+      setFarmstands(farmsList)
+    }
   }
 
   document.addEventListener('message', handleEventMsg);
@@ -154,9 +171,12 @@ function RNMap() {
 
   const sendMsg = ( item2) => {window.ReactNativeWebView.postMessage(JSON.stringify({ "sending message from webview": item2 }))}
 
+  // May need to create filters on RN app and make backend call through app, then send response object to webview and setFarmstands to that object
+
   const getFarmstands = async () => {
     if (runGet) {
       console.log("sidebarTypes: ", sidebarTypes)
+      // sendMsg("getFarmstands ran" + mapCenter[0] + ", " + mapCenter[1])
       const allFarms = await selectAllFarmstands(
         mapCenter[0],
         mapCenter[1],
@@ -167,6 +187,7 @@ function RNMap() {
         sidebarTypes
       );
       setFarmstands(allFarms);
+      // sendMsg("allFarms: " + allFarms)
       // console.log("allFarms: ", allFarms );
       // console.log("object.values allfarms[0].id: ", Object.values(allFarms)[0]._id)
       let farmIdList = [];
@@ -209,10 +230,10 @@ function RNMap() {
 
   const ChangeMyLocation = async () => {
     if (navigator.geolocation) {
-      sendMsg("navigator.geolocation exists")
+      // sendMsg("navigator.geolocation exists")
       await navigator.geolocation.getCurrentPosition((position) => {
         console.log("position.coords.latitude: ", position.coords.latitude)
-        sendMsg(position)
+        // sendMsg(position)
         setMapCenter([position.coords.latitude, position.coords.longitude]);
       });
     }
