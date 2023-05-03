@@ -458,7 +458,7 @@ const CreateListingFormNoAddress = ({ lat, long, toggle2, setFarmstands, refresh
           <Col>
           {allProducts.map((item, index) => {
               return(
-              <Label check md={4} sm={6}>
+              <Label check md={4} xs={6}>
               <Field type='checkbox' name="productsCheckbox" value={item} key={index} />
               {" "} {item} {" "}
             </Label>
@@ -554,12 +554,13 @@ const CreateListingFormNoAddress = ({ lat, long, toggle2, setFarmstands, refresh
               type="file"
               multiple="multiple"
               name="image"
+              accept="image/*"
               id="exampleFile"
               value={undefined}
               onChange={(e) => setImage(e.target.files)}
             />
             <FormText color="muted">
-              Select 1 or multiple images. jpg, jpeg, gif and png images under 3mb
+              Select 1 or multiple images. jpg, jpeg, gif and png images under 3mb. You may use camera.
             </FormText>
           </Col>
         </FormGroup>

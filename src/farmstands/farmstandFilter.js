@@ -1,6 +1,6 @@
 import axios, { Axios } from "axios";
 import { FARMSTANDS } from "../testData/FARMSTANDS";
-import { backendUrl } from "../config";
+import { backendUrl, mobileBackendUrl } from "../config";
 
 // export const selectAllFarmstands = () => {
 //   return FARMSTANDS;

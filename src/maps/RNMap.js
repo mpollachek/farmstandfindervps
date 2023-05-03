@@ -128,7 +128,10 @@ function RNMap() {
   // })
 
   // ***NOTE*** when moving map need to send msg to RN app with map center and corner lat, long
-  // ***NOTE*** RN webview not making api calls.  images are not fetched.  could solve many issues with sending information back and forth if webview could make api calls
+  // ***NOTE*** RN webview not making api calls.  images are not fetched.  could solve many issues with sending information back and forth if webview could make api calls.  LOCALHOST is pointing to device.  need ip address of backend server!!
+  // ***NOTE*** setting to backend ip address worked!  need to fix all backend url calls for mobile and change the set farmstands to webview api call instead of RN api call and posting msg to webview
+
+
 
   const handleEventMsg = async (event) => {
     const eventObject = JSON.parse(event.data);    
@@ -137,11 +140,12 @@ function RNMap() {
     sendMsg("eventArray: " + eventArray)
     if (eventArray[0] === "locationCtr") {
       await setMapCenter([eventArray[1], eventArray[2]])
-      // setRunGet(true)
-      getFarmstands()
+      setRunGet(true)
+      // getFarmstands()
     } else if (eventArray[0] === "searchThisArea") {
-      // sendMsg("searchThisArea")
-      getFarmstands()      
+      sendMsg("searchThisArea")
+      setRunGet(true)
+      // getFarmstands()      
     } else if (eventArray[0] === "farmsList") {
       sendMsg("farmsList")
       let farmsList = []

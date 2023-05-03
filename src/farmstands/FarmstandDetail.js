@@ -418,12 +418,13 @@ const FarmstandDetail = ({ currentFarmstand }) => {
               type="file"
               multiple="multiple"
               name="image"
+              accept="image/*"
               id="exampleFile"
               value={undefined}
               onChange={(e) => setImage(e.target.files)}
             />
             <FormText color="muted">               
-            Select 1 or multiple images. jpg, jpeg, gif and png images under 3mb
+            Select 1 or multiple images. jpg, jpeg, gif and png images under 3mb. You may use camera.
             </FormText>   
           </Col>
         </FormGroup>
