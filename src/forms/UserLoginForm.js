@@ -79,8 +79,9 @@ const UserLoginForm = () => {
   const handleLoginSubmit = async (values) => {
     try {
       console.log("post values: " + JSON.stringify(values));
+      let userData = {"username": values.username.toLowerCase(), "password": values.password}
       await axios
-        .post(`${backendUrl}/api/users/login`, values)
+        .post(`${backendUrl}/api/users/login`, userData)
         .then((user) => {
           console.log("user: ", user);
           localStorage.setItem("token", user.data.token);
