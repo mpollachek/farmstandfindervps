@@ -78,10 +78,14 @@ const UserLoginForm = () => {
 
   const handleLoginSubmit = async (values) => {
     try {
-      console.log("post values: " + JSON.stringify(values));
-      let userData = {"username": values.username.toLowerCase(), "password": values.password}
+      // console.log("post values: " + JSON.stringify(values));
+      // console.log("values.username: ", values.username.toLowerCase())
+      // console.log("values.password: ", values.password)
+      // let userData = {username: values.username.toLowerCase(), password: values.password}
+      // console.log("userData: ", JSON.stringify(userData))
       await axios
-        .post(`${backendUrl}/api/users/login`, userData)
+        .post(`${backendUrl}/api/users/login`, values)
+        //.post(`${backendUrl}/api/users/login`, userData)
         .then((user) => {
           console.log("user: ", user);
           localStorage.setItem("token", user.data.token);
@@ -123,7 +127,7 @@ const UserLoginForm = () => {
       console.log("resetEmail post: ", resetEmail)
       await axios
         .post(`${backendUrl}/api/users/profile/resetuserpassword`, 
-        {'resetemail': resetEmail})
+        {'resetemail': resetEmail.toLowerCase()})
         .then((reset) => {
           console.log(reset)
           if (reset.status === 201) {
