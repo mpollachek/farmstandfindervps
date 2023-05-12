@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { Container, Row, Col, Button as RSButton } from "reactstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import UserLoginForm from "../forms/UserLoginForm";
 import { UserContext } from "../App";
 import axios from "axios";
@@ -11,6 +11,7 @@ const UserModal = () => {
   const { userId, setUserId, userName, setUserName, userOwned, setUserOwned } = useContext(UserContext);
 
   const [ runGetUser, setRunGetUser ] = useState(false)
+  const navigate = useNavigate();
 
   const getUser = async () => {
     let token = ""
@@ -124,6 +125,25 @@ const UserModal = () => {
       <Row>
         {/* need to check login status via token */}
         {userId ? <Protected /> : <UserLoginForm />}
+      </Row>
+      <Row className="text-center">
+        <Col sm={{size: 6}}>
+          <RSButton onClick={() => navigate('/termsofservice')} color="link" >
+            Terms of Service
+          </RSButton>
+        </Col>
+        <Col sm={{size: 6}}>
+          <RSButton onClick={() => navigate('/privacy')} color="link" >
+            Privacy Policy
+          </RSButton>
+        </Col>
+      </Row>
+      <Row className="text-center">
+        <Col>
+          <RSButton onClick={() => navigate('/contactus')} color="link" >
+            Contact Us
+          </RSButton>
+        </Col>
       </Row>
     </Container>
   );

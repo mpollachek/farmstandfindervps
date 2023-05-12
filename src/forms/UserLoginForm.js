@@ -372,7 +372,7 @@ const UserLoginForm = () => {
           </div>
         </Form>
       </Formik>
-      <Row className="text-center">
+      {/* <Row className="text-center">
         <Col sm={{size: 6}}>
           <Button onClick={() => navigate('/termsofservice')} color="link" >
             Terms of Service
@@ -390,7 +390,7 @@ const UserLoginForm = () => {
             Contact Us
           </Button>
         </Col>
-      </Row>
+      </Row> */}
     </Container>
   );
 };
