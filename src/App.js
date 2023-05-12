@@ -57,7 +57,7 @@ const App = () => {
     },
   ]);
 
-  const [mapCenter, setMapCenter] = useState([51.505, -0.09]);
+  const [mapCenter, setMapCenter] = useState([39.9, -75.98]);
   const { centerParam } = useParams()
 
   return (

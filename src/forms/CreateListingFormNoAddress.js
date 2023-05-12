@@ -93,7 +93,7 @@ const CreateListingFormNoAddress = ({ lat, long, toggle2, setFarmstands, refresh
       },
     })
     console.log("allPostedProducts: ", allPostedProducts)
-    setAllProducts(allPostedProducts.data);
+    setAllProducts(allPostedProducts.data.sort());
     setRunGetProducts(false);
   }}
 
@@ -460,7 +460,7 @@ const CreateListingFormNoAddress = ({ lat, long, toggle2, setFarmstands, refresh
               return(
               <Label check md={4} xs={6}>
               <Field type='checkbox' name="productsCheckbox" value={item} key={index} />
-              {" "} {item} {" "}
+              {item} {'\u00A0 \u00A0'}
             </Label>
               )})            
             }

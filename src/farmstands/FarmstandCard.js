@@ -22,6 +22,7 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import GMapsIconOld from '../assets/google-maps-old.2048x2048.ico';
 import FarmTypeIconsMap from "../components/FarmTypeIconsMap";
 import { backendUrl, localPath } from "../config";
+import "../css/FarmstandCard.css"
 
 /* Bring name above image and add avg rating to it
 avg of farmstand.comments.rating
@@ -76,14 +77,14 @@ const FarmstandCard = ({ item, favorite, getFavorites, setRunGet }) => {
       {console.log("farmstand card image: ", images)}
       {console.log("farmstand card name: ", farmstandName)}      
             <CardTitle
-            tag="h5"
+            tag="h6"
             className="my-2 title"
-            style={{ fontWeight: "bold" }}>
+            style={{ fontWeight: "bold", whiteSpace: "nowrap" }}>
               <Row>
                 <Col className="col-8">
               {farmstandName}
               </Col>
-              <Col tag="h6" className="text-end">
+              <Col tag="h6" className="text-end" style={{position: "relative", right: "15px", top: "-20px", whiteSpace: "nowrap"}}>
               {avgRating > 0 ? (
                 <div>
                 <StarIcon style={{color: '#f79707', fontWeight: 'bold'}}  /> {avgRating}
@@ -94,13 +95,13 @@ const FarmstandCard = ({ item, favorite, getFavorites, setRunGet }) => {
               </CardTitle>
               <CardBody>
         {images.length > 0 ? (
-          <CardImg width="100%" src={imageLink} alt={farmstandName} />
+          <CardImg height="100%" src={imageLink} alt={farmstandName} />
         ) : null}
         </CardBody>
         </Link>
         <CardFooter>
-          <Row>
-            <Col className="col-8">
+          <Row  style={{height: 60, whiteSpace: "nowrap"}}>
+            <Col className="col-2">
             <a 
             href = {`https://www.google.com/maps/search/?api=1&query=${lat},${long}`}
             target="blank"
@@ -108,7 +109,10 @@ const FarmstandCard = ({ item, favorite, getFavorites, setRunGet }) => {
             <img src={GMapsIconOld} style={{width:'50px'}} className='mt-1' />
             </a>
             </Col>
-            <Col className="text-end">
+            <Col className="col-8" style={{position: "relative", top: "-15px", left: "5%", whiteSpace: "normal"}}>
+            <FarmTypeIconsMap farmType={farmstandType} />
+            </Col>
+            <Col className="text-start col-2" style={{position: "relative", right: "35px" }}>
             {favorite ? (
             <IconButton onClick={favoriteToggle}>
               <FavoriteIcon fontSize='large' style={{color: 'red'}} /> 
@@ -119,9 +123,9 @@ const FarmstandCard = ({ item, favorite, getFavorites, setRunGet }) => {
             )}
             </Col>
             </Row>
-            <Row>
+            {/* <Row>
               <FarmTypeIconsMap farmType={farmstandType} />
-            </Row>
+            </Row> */}
           </CardFooter>
       </Card>    
   );

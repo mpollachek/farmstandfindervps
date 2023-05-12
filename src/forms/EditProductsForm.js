@@ -34,7 +34,7 @@ const EditProductsForm = ({farmstandId, prevProducts, setFarmstand}) => {
       },
     })
     console.log("allPostedProducts: ", allPostedProducts)
-    setAllProducts(allPostedProducts.data);
+    setAllProducts(allPostedProducts.data.sort());
     setRunGetProducts(false);
   }}
 
@@ -116,7 +116,7 @@ const EditProductsForm = ({farmstandId, prevProducts, setFarmstand}) => {
               return(
               <Label check md={4} sm={6}>
               <Field type='checkbox' name="products" value={item} key={index} />
-              {" "} {item} {" "}
+              {item} {'\u00A0 \u00A0'}
             </Label>
               )})            
             }

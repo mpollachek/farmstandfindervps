@@ -1,0 +1,16 @@
+/* .card-body {
+  padding: 0;
+} */
+
+.leaflet-popup-content {
+  margin: 4px 8px 4px 8px !important;
+}
+
+.card-footer {
+  margin: 4px !important;
+  padding: 0px !important;  
+}
+
+.card-body {
+  padding: 2px !important;
+}

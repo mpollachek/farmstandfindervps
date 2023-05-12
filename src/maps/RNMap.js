@@ -62,7 +62,7 @@ import UserModal from "../user/UserModal";
 import axios from "axios";
 import { UserContext, MapContext, FarmstandsContext, SidebarContext } from "../App";
 import { Navigation } from "@mui/icons-material";
-import { backendUrl } from "../config";
+import { backendUrl, mobileUrl } from "../config";
 
 /* Add a List view button that will display all farmstands on mapview current boundaries */
 
@@ -142,21 +142,23 @@ function RNMap() {
       await setMapCenter([eventArray[1], eventArray[2]])
       setRunGet(true)
       // getFarmstands()
-    } else if (eventArray[0] === "searchThisArea") {
-      sendMsg("searchThisArea")
-      setRunGet(true)
-      // getFarmstands()      
-    } else if (eventArray[0] === "farmsList") {
-      sendMsg("farmsList")
-      let farmsList = []
-      eventObject.forEach((farm, index) => {
-        if (index > 0) {
-          farmsList.push(farm)
-        }
-      })
-      setFarmstands(farmsList)
+    } else if (eventArray[0] === "mapViewRedirect") {
+      navigate(`../reactnativemaps`)
+      sendMsg(`navigate to: ${mobileUrl}`)
     }
   }
+
+  // ***Below is if sending farms list from RN
+  // else if (eventArray[0] === "farmsList") {
+  //   sendMsg("farmsList")
+  //   let farmsList = []
+  //   eventObject.forEach((farm, index) => {
+  //     if (index > 0) {
+  //       farmsList.push(farm)
+  //     } 
+  //   })
+  //   setFarmstands(farmsList)
+  // }
 
   document.addEventListener('message', handleEventMsg);
 
@@ -242,6 +244,10 @@ function RNMap() {
       });
     }
   };
+
+  const ChangeMyLocationRN = () => {
+    window.ReactNativeWebView.postMessage("changeLocation")
+  }
 
   const MapMoveEventDrag = () => {
     const mapMoveEnd = useMapEvent("dragend", () => {
@@ -368,7 +374,7 @@ function RNMap() {
             <Button
               onClick={() => {
                 //sendMsg()
-                ChangeMyLocation();
+                ChangeMyLocationRN();
               }}
               color="inherit"
             >
@@ -522,7 +528,7 @@ function RNMap() {
           <Control prepend position="topleft">
             <div>
               <RSButton
-                color="warning"
+                color="primary"
                 onClick={toggleOffcanvas}
                 className="mt-5"
               >

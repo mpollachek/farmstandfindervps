@@ -45,6 +45,10 @@ const MapList = ({ farmstands }) => {
   const [favoriteFarmstands, setFavoriteFarmstands] = useState([]);
   const [runGet, setRunGet] = useState(false);
 
+  console.log("window.innerWidth: ", window.innerWidth)
+  const popupMinWidth = window.innerWidth * 0.4
+  const popupMaxWidth = window.innerWidth * 0.6
+
   const getFavorites = async () => {
     if (runGet) {
       //need to make empty array and add all ids 
@@ -90,8 +94,9 @@ const MapList = ({ farmstands }) => {
             ]}
             icon={farmIcon}
           >
-            <Popup minWidth="250" >
-              <Col className="mx-2 mt-3">
+            <Popup minWidth="200">
+              {/* try setting image max height */}
+              <Col className="mt-3 px-1" >
                 <FarmstandCard item={farmstand} favorite={favorite} getFavorites={getFavorites} setRunGet={setRunGet} />
                 {/* <Row className="mx-1 mt-3" style={{ fontSize: 20 }}>{farmstand.description}</Row> */}
               </Col>

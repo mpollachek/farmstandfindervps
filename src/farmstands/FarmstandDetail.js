@@ -64,6 +64,7 @@ const FarmstandDetail = ({ currentFarmstand }) => {
 
   const [files, setFiles] = useState([]);
   const [image, setImage] = useState([]);
+  const [productsAlpha, setProductsAlpha] = useState(products.sort())
 
   useEffect(() => {
     //cons("image changed: ", image)
