@@ -78,8 +78,8 @@ const FarmstandCard = ({ item, favorite, getFavorites, setRunGet }) => {
       {console.log("farmstand card name: ", farmstandName)}      
             <CardTitle
             tag="h6"
-            className="my-2 title"
-            style={{ fontWeight: "bold", whiteSpace: "nowrap" }}>
+            className="mt-2 title"
+            style={{ fontWeight: "bold"}}>
               <Row>
                 <Col className="col-8">
               {farmstandName}
